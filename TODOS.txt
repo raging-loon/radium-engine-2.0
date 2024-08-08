@@ -1,0 +1,12 @@
+======================[ MAJOR TODOS ]======================
+
+RTL
+	[ ] rtl::copy_on_write
+	[ ] rtl::string
+	[ ] rtl::wstring
+	[ ] rtl::array
+	[ ] rtl::function
+	[ ] rtl::smart_ptr
+	[ ] rtl::hash_map
+LOG
+	[ ] 
