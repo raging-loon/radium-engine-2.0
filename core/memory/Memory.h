@@ -23,7 +23,7 @@ public:
 	///		This will allocate an extra 4-8 bytes of memory
 	///		You will receive the end of that 4-8 bytes.
 	///		
-	///		0			    64	  64 + sizeof data
+	///		0			    64	  		  128
 	///		↓			    ↓			   ↓
 	/// 	┌───────────────┬──────────────┐
 	///		│  Raw Address  │ Aligned Addr │
@@ -45,9 +45,36 @@ public:
 	///		Frees this address	Based on this address
 	static void  free_aligned(void* ptr);
 
-	static constexpr uint64_t get_pointer_adjustment_unsafe(void* ptr);
+	template <class T>
+	static constexpr T* alloc_aligned(int n)
+	{
+		return (T*)alloc_aligned(sizeof(T), n, alignof(T));
+	}
 
-	static constexpr void* get_pointer_base_unsafe(void* ptr);
+
+	static constexpr uint64_t get_pointer_adjustment_unsafe(void* ptr)
+	{
+		assert(ptr);
+		return *(uint64_t*)(get_pointer_base_unsafe(ptr));
+	}
+
+	static constexpr void* get_pointer_base_unsafe(void* ptr)
+	{
+		assert(ptr);
+		return ((void**)ptr)[-1];
+	}
+
+	static constexpr uintptr_t get_aligned_address(size_t alignment, void* ptr)
+	{
+		return ((uintptr_t)(ptr)+(sizeof(void*)) + alignment - 1) & ~(alignment - 1);
+	}
+
+	static constexpr uintptr_t get_num_bytes_aligned(void* ptr)
+	{
+		return (uintptr_t)(ptr) - (uintptr_t)(get_pointer_base_unsafe(ptr)) ;
+
+	}
+
 };
 
 

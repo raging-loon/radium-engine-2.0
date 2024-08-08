@@ -3,20 +3,6 @@
 using radium::Allocator;
 
 
-constexpr uint64_t Allocator::get_pointer_adjustment_unsafe(void* ptr)
-{
-	assert(ptr);
-
-	return *(uint64_t*)(get_pointer_base_unsafe(ptr));
-
-}
-
-constexpr void* Allocator::get_pointer_base_unsafe(void* ptr)
-{
-	assert(ptr);
-
-	return ((void**)ptr)[-1];
-}
 
 void* Allocator::alloc_aligned(size_t size, size_t n, size_t alignment)
 {
