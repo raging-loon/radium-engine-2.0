@@ -57,6 +57,13 @@ constexpr T&& forward(remove_reference_t<T>& arg)
 	return static_cast<T&&>(arg);
 }
 
+template <class T>
+constexpr T&& forward(remove_reference_t<T>&& arg)
+{
+	return static_cast<T&&>(arg);
+}
+
+
 ///
 /// @brief
 ///		Used in move semantics
@@ -67,6 +74,8 @@ constexpr typename remove_reference<T>::type&& move(T&& arg)
 {
 	return static_cast<typename remove_reference<T>::type&&>(arg);
 }
+
+
 
 } // rtl
 

@@ -7,7 +7,7 @@ RTL
 	[-] rtl::wstring
 	[ ] rtl::array
 	[ ] rtl::function
-	[ ] rtl::shared_ptr
+	[-] rtl::shared_ptr
 	[ ] rtl::unique_ptr
 	[ ] rtl::hash_map
 
