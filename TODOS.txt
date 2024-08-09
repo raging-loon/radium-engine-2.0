@@ -2,11 +2,13 @@
 
 RTL
 	[ ] rtl::copy_on_write
+	[ ] rtl::basic_string
 	[ ] rtl::string
 	[ ] rtl::wstring
 	[ ] rtl::array
 	[ ] rtl::function
-	[ ] rtl::smart_ptr
+	[ ] rtl::shared_ptr
+	[ ] rtl::unique_ptr
 	[ ] rtl::hash_map
-LOG
-	[ ] 
+
+

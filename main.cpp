@@ -1,22 +1,22 @@
 #include <stdio.h>
 #include "core/rtl/copy_on_write.h"
+#include "core/rtl/basic_string.h"
 #include "core/memory/Memory.h"
 
 
 int main(int argc, char** argv)
 {
-	printf("Builded\n");
+
+	rtl::basic_string<char> sd;
+
+	sd.resize(10);
 	
-	rtl::copy_on_write<int> x;
-	x.resize(10);
-
-	rtl::copy_on_write<int> y = x;
-
-	printf("x.size() = %d\ny.size() = %d\n", x.get_size(), y.get_size());
-
-
-	x.resize(20);
-	printf("x.size() = %d\ny.size() = %d\n", x.get_size(), y.get_size());
-
+	sd = "hello";
+	printf("%s\n", sd.data());
+	printf("%c\n", sd[0]);
+	sd[0] = 'j';
+	printf("%s\n", sd.data());
+	printf("Size = %zd\n",sd.length());
+	
 	return 0;
-}
+} 

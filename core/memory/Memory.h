@@ -9,20 +9,19 @@ namespace radium
 {
 
 ///
-/// PURPOSE
+/// @class
 ///		Generic Aligned Memory allocator
 ///		
 class Allocator
 {
 public:
 
-	///
-	/// PURPOSE
-	///		Allocate (size * n) bytes that are aligned.
 	/// 
-	///		This will allocate an extra 4-8 bytes of memory
-	///		You will receive the end of that 4-8 bytes.
-	///		
+	///	Allocate (size * n) bytes that are aligned.
+	/// 
+	///	This will allocate an extra 4-8 bytes of memory
+	///	You will receive the end of that 4-8 bytes.
+	///	@code
 	///		0			    64	  		  128
 	///		↓			    ↓			   ↓
 	/// 	┌───────────────┬──────────────┐
@@ -30,33 +29,35 @@ public:
 	///		└───────────────┴──────────────┘
 	///								↑
 	///						You receive this
-	///		 
-	static void* alloc_aligned(size_t size, size_t n, size_t alignment);
+	///	@endcode	 
 
+	static void* alloc_aligned(size_t size, size_t n, size_t alignment);
+	static void* alloc_aligned(size_t size, size_t alignment);
 	/// 
-	/// PURPOSE
+	/// @details
+	/// 
 	///		Free aligned memory
 	///		This will backtrack in memory
-	/// 	
+	/// @code
 	///		┌───────────────┬──────────────┐
 	///		│  Raw Address  │ Aligned Addr │
 	///		└───────────────┴──────────────┘
 	///			   ↑				↑
 	///		Frees this address	Based on this address
+	///	@endcode
+	///
 	static void  free_aligned(void* ptr);
 
 	template <class T>
 	static constexpr T* alloc_aligned(int n)
 	{
-		return (T*)alloc_aligned(sizeof(T), n, alignof(T));
+		if constexpr (sizeof(T) < 4)
+			return (T*)alloc_aligned(n, 4);
+		else
+			return (T*)alloc_aligned(n, alignof(T));
+
 	}
 
-
-	static constexpr uint64_t get_pointer_adjustment_unsafe(void* ptr)
-	{
-		assert(ptr);
-		return *(uint64_t*)(get_pointer_base_unsafe(ptr));
-	}
 
 	static constexpr void* get_pointer_base_unsafe(void* ptr)
 	{
@@ -64,12 +65,12 @@ public:
 		return ((void**)ptr)[-1];
 	}
 
-	static constexpr uintptr_t get_aligned_address(size_t alignment, void* ptr)
+	static constexpr uintptr_t get_aligned_address_unsafe(size_t alignment, void* ptr)
 	{
 		return ((uintptr_t)(ptr)+(sizeof(void*)) + alignment - 1) & ~(alignment - 1);
 	}
 
-	static constexpr uintptr_t get_num_bytes_aligned(void* ptr)
+	static constexpr uintptr_t get_num_bytes_aligned_unsafe(void* ptr)
 	{
 		return (uintptr_t)(ptr) - (uintptr_t)(get_pointer_base_unsafe(ptr)) ;
 
