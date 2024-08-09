@@ -14,14 +14,16 @@ class basic_string
 {
 public:
 
-	basic_string()
-	{
-
-	}
+	basic_string() { }
 
 	basic_string(basic_string& other)
 		: m_chars(other.m_chars)
 	{
+	}
+
+	basic_string(const T* source)
+	{
+		*this = source;
 	}
 
 	basic_string& operator=(basic_string& other)
@@ -31,16 +33,19 @@ public:
 
 	}
 
+	template <size_t N>
+	basic_string& operator=(const T(&other)[N])
+	{
+		resize(N);
+		assign(other);
+		return *this;
+	}
+
 	basic_string& operator=(const T* other)
 	{
 		// todo: this  is temporary code
-
-		int size = 0;
-		const T* temp = other;
-		while (*temp++)
-			size++;
+		size_t size = strlen(other);
 		size += 1;
-		m_length = size;
 		resize(size);
 		assign(other);
 
@@ -48,35 +53,39 @@ public:
 	}
 
 	template <size_t N>
-	basic_string& operator=(const T(&other)[N])
+	basic_string& operator+=(const T(&other)[N])
 	{
-		resize(N - 1);
-		m_length = N;
-		assign(other);
+		// +2, old null and other null
+		size_t newsize = length() + (N - 1);
+		size_t oldlen = length();
+		resize(newsize);
+		// -2 to copy over old data's null
+		m_chars.memcpy(other, N , oldlen - 1);
+
 		return *this;
 	}
 
 
-
-	void resize(int n)
+	basic_string& operator+=(basic_string& other)
 	{
-		m_chars.resize(n);
+		size_t newSize = length() + (other.length() - 1);
+		size_t oldlen = length();
+
+		resize(newSize);
+		m_chars.memcpy(other.c_str(), other.length(), oldlen - 1);
+		return *this;
+
 	}
 
-	void assign(const T* chars)
+
+	FORCEINLINE void resize(int n)
 	{
-		T* raw_data = m_chars.copy();
+		m_chars.resize((size_t)n);
+	}
 
-		int idx = 0;
-		while (*chars)
-		{
-			*(raw_data + idx++) = *chars++;
-		
-		}
-		*(raw_data + idx) = 0;
-
-		m_length = idx;
-
+	inline void assign(const T* chars)
+	{
+		m_chars.memcpy(chars, strlen(chars) + 1);
 	}
 
 	FORCEINLINE T* data() 
@@ -91,7 +100,7 @@ public:
 
 	constexpr size_t length() const
 	{
-		return m_length;
+		return m_chars.get_data_size();
 	}
 
 
@@ -105,13 +114,22 @@ public:
 		return *(m_chars.at(pos));
 	}
 
+	static size_t strlen(const T* other)
+	{
+		size_t size = 0;
+		while (*other++) size++;
+		return size;
+	}
 
 private:
 	/// Our buffer. COW happens implicitly
 	copy_on_write<T> m_chars;
 
-	/// Number of characters in our string
-	size_t m_length;
+
+	FORCEINLINE void resize(size_t n)
+	{
+		m_chars.resize(n);
+	}
 
 
 };

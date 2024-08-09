@@ -64,7 +64,7 @@ public:
 	~copy_on_write()
 	{
 		// only free the buffer if we are the owner
-		if (m_ptr)
+		if (m_ptr && *get_refc_ptr() == 1)
 			radium::Allocator::free_aligned(m_ptr);
 		else
 			*get_refc_ptr() -= 1;
@@ -144,17 +144,17 @@ public:
 	/// 	Resize the buffer to (n * T) + DATA_SECTION_OFFSET bytes
 	///		Will create a new copy
 	///		
-	void resize(int n);
+	void resize(size_t n);
 
 	/// Copy to the <i>data section offset</i>
-	void memcpy(const T* source, int n);
+	void memcpy(const T* source, size_t n);
 
 	///
 	/// @brief
 	///		Copy to the data section + offset
 	///		Note that this will copy relative to the offset
 	///		
-	void memcpy(const T* source, int n, int offset);
+	void memcpy(const T* source, size_t n, size_t offset);
 
 
 	FORCEINLINE uint32_t get_reference_count() const
@@ -248,18 +248,21 @@ uint32_t copy_on_write<T>::__copy_on_write()
 ///	This will perform a copy-on-write
 /// 
 template<class T>
-void copy_on_write<T>::resize(int n)
+void copy_on_write<T>::resize(size_t n)
 {
 	bool wasOwner = m_ptr != nullptr;
 
 	uint32_t rc = __copy_on_write();
 	// Allocate T * n + room for the headers
 	
-	int curSize = get_alloc_size();
+	size_t curSize = get_alloc_size();
 
 	T* newBuffer = radium::Allocator::alloc_aligned<T>((n * sizeof(T)) + DATA_SECTION_OFFSET);
 	
-	T* oldBuffer = m_ptr;
+	T* oldBuffer = m_ptr; 
+	T* old_data = get_data();
+	size_t data_sz = get_num_data();
+
 	m_ptr = newBuffer;
 
 	uint32_t* refc = get_refc_ptr();
@@ -270,8 +273,12 @@ void copy_on_write<T>::resize(int n)
 	
 	*refc = rc;
 
+	uint32_t size = static_cast<uint32_t>(n);
+	*data_size = size;
+	
+	if(old_data)
+		memcpy(old_data, data_sz);
 
-	*data_size = n;
 
 	if (wasOwner && rc == 1)
 		radium::Allocator::free_aligned(oldBuffer);
@@ -280,14 +287,14 @@ void copy_on_write<T>::resize(int n)
 }
 
 template<class T>
-void copy_on_write<T>::memcpy(const T* source, int n)
+void copy_on_write<T>::memcpy(const T* source, size_t n)
 {
 	__copy_on_write();
 	::memcpy(get_data(), source, (n * sizeof(T)));
 }
 
 template<class T>
-inline void copy_on_write<T>::memcpy(const T* source, int n, int offset)
+inline void copy_on_write<T>::memcpy(const T* source, size_t n, size_t offset)
 {
 	__copy_on_write();
 	::memcpy(get_data() + (offset * sizeof(T)), source, (n * sizeof(T)));

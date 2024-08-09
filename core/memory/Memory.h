@@ -49,7 +49,7 @@ public:
 	static void  free_aligned(void* ptr);
 
 	template <class T>
-	static constexpr T* alloc_aligned(int n)
+	static constexpr T* alloc_aligned(size_t n)
 	{
 		if constexpr (sizeof(T) < 4)
 			return (T*)alloc_aligned(n, 4);

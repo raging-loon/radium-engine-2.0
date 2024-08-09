@@ -42,7 +42,6 @@ void* radium::Allocator::alloc_aligned(size_t size, size_t alignment)
 
 void Allocator::free_aligned(void* ptr)
 {
-
 	void* addr = get_pointer_base_unsafe(ptr);
 	free(addr);
 }

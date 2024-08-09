@@ -1,10 +1,10 @@
 ======================[ MAJOR TODOS ]======================
 
 RTL
-	[ ] rtl::copy_on_write
-	[ ] rtl::basic_string
-	[ ] rtl::string
-	[ ] rtl::wstring
+	[-] rtl::copy_on_write
+	[-] rtl::basic_string
+	[-] rtl::string
+	[-] rtl::wstring
 	[ ] rtl::array
 	[ ] rtl::function
 	[ ] rtl::shared_ptr
