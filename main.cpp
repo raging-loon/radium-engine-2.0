@@ -6,12 +6,12 @@
 
 int main(int argc, char** argv)
 {
-	rtl::unique_ptr<int> t = rtl::make_unique<int>(1);
+    rtl::unique_ptr<int> t = rtl::make_unique<int>(1);
 
-	rtl::unique_ptr<int> z = rtl::move(t);
+    rtl::unique_ptr<int> z = rtl::move(t);
 
-	printf("%d\n", *z);
+    printf("%d\n", *z);
 
-	return 0;
+    return 0;
 } 
 
