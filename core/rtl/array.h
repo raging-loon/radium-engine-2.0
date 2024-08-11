@@ -63,7 +63,6 @@ public:
         return *m_data.at(index);
     }
 
-
     constexpr size_t size()
     {
         return m_index;

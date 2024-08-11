@@ -5,7 +5,7 @@
 #include "core/rtl/smart_ptr.h"
 #include "core/rtl/function.h"
 #include "core/rtl/array.h"
-
+#include "core/error.h"
 struct asdf
 {
     int x;
@@ -17,16 +17,9 @@ int main(int argc, char** argv)
 {
     rtl::string test = "hello";
 
-    test += "hello";
-    test += "hello";
-    test += "hello";
-    test += "hello";
-    test += "hello";
-    test += "hello";
-    test += "hello";
-    test += "hello";
+    rtl::string t = test.substr(1,3);
 
-    printf("%s\n",test.c_str());
+    printf("%s\n",t.c_str());
     return 0;
 } 
 

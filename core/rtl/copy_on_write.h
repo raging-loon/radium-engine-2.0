@@ -97,9 +97,10 @@ public:
     }
 
     /// data[where] without copy
-    const T* at(size_t where)
+    const T& at(size_t where)
     {
-        return (get_data() + where);
+        T* _ptr = get_data();
+        return _ptr[where];
     }
 
     /// data[where] with copy

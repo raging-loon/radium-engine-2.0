@@ -5,10 +5,10 @@ RTL
     [-] rtl::basic_string
     [-] rtl::string
     [-] rtl::wstring
-    [ ] rtl::array
-    [ ] rtl::function
+    [-] rtl::array
+    [-] rtl::function
     [-] rtl::shared_ptr
-    [ ] rtl::unique_ptr
+    [-] rtl::unique_ptr
     [ ] rtl::hash_map
 
 RM

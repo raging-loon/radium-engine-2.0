@@ -3,7 +3,8 @@
 
 #include "copy_on_write.h"
 #include "core/radium.h"
-
+#include "core/error.h"
+#include <limits.h>
 
 namespace rtl
 {
@@ -13,7 +14,9 @@ template<class T>
 class basic_string
 {
 public:
-
+    
+    static constexpr size_t npos = UINT64_MAX;
+    
     basic_string() { }
 
     basic_string(basic_string& other)
@@ -48,6 +51,7 @@ public:
         size += 1;
         resize(size);
         assign(other);
+        UNREACHABLE;
 
         return *this;
     }
@@ -77,49 +81,65 @@ public:
 
     }
 
+    /// return a substring
+    basic_string<T> substr(size_t pos = 0, size_t count = npos);
+
 
     FORCEINLINE void resize(int n)
     {
         m_chars.resize((size_t)n);
     }
 
+    /// copy these characters
     inline void assign(const T* chars)
     {
         m_chars.memcpy(chars, strlen(chars) + 1);
     }
 
-    FORCEINLINE T* data() 
+    /// returns raw data from string
+    constexpr T* data() 
     {
         return m_chars.copy();
     }
 
-    FORCEINLINE const T* c_str() const
+    /// returns a const c array
+    constexpr const T* c_str() const
     {
         return m_chars.reference();
     }
 
+    /// get the length
     constexpr size_t length() const
     {
         return m_chars.get_data_size();
     }
 
+    /// get reference character at pos
+    constexpr T& operator[](size_t pos) { return m_chars.at_c(pos); }
+    
+    /// get const reference character at pos
+    constexpr const T& operator[](size_t pos) const { return m_chars.at(pos); }
 
-    T& operator[](size_t pos)
-    {
-        return *(m_chars.at_c(pos));
-    }
-
-    const T& operator[](size_t pos) const
-    {
-        return *(m_chars.at(pos));
-    }
-
+    /// Get the length of a string
     static size_t strlen(const T* other)
     {
         size_t size = 0;
         while (*other++) size++;
         return size;
     }
+
+    /// get a const reference to the first character
+    constexpr const T& front() const { return *m_chars.at(0); }
+    /// get a reference to the first character
+    constexpr T& front() { return m_chars.at_c(0); }
+    
+    /// get a const reference to the last character
+    constexpr const T& back() const { return m_chars.at(length() - 2); }
+    /// get a reference to the last character
+    constexpr T& back() { return m_chars.at_c(length() - 2); }
+
+
+
 
 private:
     /// Our buffer. COW happens implicitly
@@ -135,6 +155,25 @@ private:
 };
 
 
+
+template<class T>
+basic_string<T> basic_string<T>::substr(size_t pos, size_t count)
+{
+    if (count > length())
+        count = length();
+
+    basic_string<T> newString;
+    newString.resize(count - pos + 1);
+    
+    size_t idx = 0;
+    for (size_t i = pos; i < count; i++)
+    {
+        newString[idx++] = m_chars.at(i);
+    }
+
+    newString[idx] = 0;
+    return newString;
+}
 
 } // radium::rtl
 

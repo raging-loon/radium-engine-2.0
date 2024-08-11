@@ -86,9 +86,6 @@ constexpr typename remove_reference<T>::type&& move(T&& arg)
     return static_cast<typename remove_reference<T>::type&&>(arg);
 }
 
-///
-template <class T>
-using is_trivially_copyable_v = std::is_trivially_copyable_v;
 
 } // rtl
 

@@ -53,7 +53,7 @@ add_executable(radium-engine
     "core/rtl/string.h"
     "core/rtl/basic_string.h"
     "core/radium.h"
- "core/memory/Memory.h" "core/memory/Memory.cpp" "core/rtl/smart_ptr.h" "core/rtl/utility.h" "core/rtl/function.h" "core/rtl/array.h")
+ "core/memory/Memory.h" "core/memory/Memory.cpp" "core/rtl/smart_ptr.h" "core/rtl/utility.h" "core/rtl/function.h" "core/rtl/array.h" "core/error.h")
 
 target_include_directories(radium-engine PUBLIC "./")
 
