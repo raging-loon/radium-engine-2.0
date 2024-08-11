@@ -12,5 +12,6 @@ RTL
     [ ] rtl::hash_map
 
 RM
-    [ ] 
+    [ ] rm::vec
+    [ ] rm::mat
 

@@ -4,10 +4,29 @@
 #include "core/memory/Memory.h"
 #include "core/rtl/smart_ptr.h"
 #include "core/rtl/function.h"
-#include <functional>
+#include "core/rtl/array.h"
+
+struct asdf
+{
+    int x;
+    int y;
+    int z;
+};
 
 int main(int argc, char** argv)
 {
+    rtl::string test = "hello";
+
+    test += "hello";
+    test += "hello";
+    test += "hello";
+    test += "hello";
+    test += "hello";
+    test += "hello";
+    test += "hello";
+    test += "hello";
+
+    printf("%s\n",test.c_str());
     return 0;
 } 
 

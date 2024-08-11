@@ -1,6 +1,17 @@
 #ifndef CORE_RTL_UTILITY_H_
 #define CORE_RTL_UTILITY_H_
 
+
+/// 
+/// This is the only STL library included in this project
+/// why? There are something we cannot do with fancy
+/// template metaprograming. 
+///    
+/// Instead we must rely on information provided by the compiler;
+/// information found in the type_traits header
+/// 
+#include <type_traits>
+
 namespace rtl
 {
 
@@ -75,7 +86,9 @@ constexpr typename remove_reference<T>::type&& move(T&& arg)
     return static_cast<typename remove_reference<T>::type&&>(arg);
 }
 
-
+///
+template <class T>
+using is_trivially_copyable_v = std::is_trivially_copyable_v;
 
 } // rtl
 

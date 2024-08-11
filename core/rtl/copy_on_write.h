@@ -9,6 +9,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+template <class U>
+class array;
+class basic_string;
 namespace rtl
 {
 
@@ -49,10 +52,18 @@ namespace rtl
 ///    or another clients m_ptr if we don't.
 ///    
 ///    The function @ref __copy_on_write will ensure that we do own our own copy
-///        
+/// 
 template <class T>
 class copy_on_write
 {
+    struct dummy_aligner
+    {
+        T* t;
+        uint32_t _1;
+        uint32_t _2;
+    };
+
+    template <class U> friend class array;
 public:
     copy_on_write()
         : m_ptr(nullptr)
@@ -65,7 +76,7 @@ public:
     {
         // only free the buffer if we are the owner
         if (m_ptr && *get_refc_ptr() == 1)
-            radium::GenericAllocator::free_aligned(m_ptr);
+            radium::GenericAllocator::free_static(m_ptr);
         else
             *get_refc_ptr() -= 1;
     }
@@ -92,10 +103,11 @@ public:
     }
 
     /// data[where] with copy
-    T* at_c(size_t where)
+    T& at_c(size_t where)
     {
         __copy_on_write();
-        return (get_data() + where);
+        T* _ptr = get_data();
+        return _ptr[where];
     }
 
     /// How many bytes are allocated?
@@ -122,7 +134,7 @@ public:
     {
         if (!m_ptr)
             return 0;
-        return (uint32_t)(get_data_size());
+        return (get_data_size());
     }
 
     /// Get your own copy
@@ -164,7 +176,7 @@ public:
 
     FORCEINLINE uint32_t get_data_size() const
     {
-        return *(uint32_t*)(void*)(*m_dataPtr + DATA_SIZE_SECTION_OFFSET);
+        return *(uint32_t*)(((uint8_t*)*m_dataPtr) + DATA_SIZE_SECTION_OFFSET);
     }
 
 
@@ -172,25 +184,31 @@ public:
 private:
     static constexpr size_t REF_SECTION_OFFSET = 0;
 
-    static constexpr size_t DATA_SIZE_SECTION_OFFSET = REF_SECTION_OFFSET + alignof(T) < sizeof(uint32_t) ? sizeof(uint32_t) : 1;
+    static constexpr size_t DATA_SIZE_SECTION_OFFSET = REF_SECTION_OFFSET + 4;
     
     static constexpr size_t DATA_SECTION_OFFSET = DATA_SIZE_SECTION_OFFSET + DATA_SIZE_SECTION_OFFSET;
      
     FORCEINLINE T* get_data()
-    {
-        return *m_dataPtr + DATA_SECTION_OFFSET;
+    { 
+        return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
+
     }
 
     FORCEINLINE uint32_t* get_refc_ptr()
     {
-        return (uint32_t*)(void*)(*m_dataPtr + REF_SECTION_OFFSET);
+        return (uint32_t*)(((uint8_t*)*m_dataPtr) + REF_SECTION_OFFSET);
     }
 
     FORCEINLINE uint32_t* get_data_size_ptr()
     {
-        return (uint32_t*)(void*)(*m_dataPtr + DATA_SIZE_SECTION_OFFSET);
+        return (uint32_t*)(((uint8_t*)*m_dataPtr) + DATA_SIZE_SECTION_OFFSET);
     }
     
+    constexpr size_t get_alloc_size(size_t n)
+    {
+        //          objects             meta data
+        return (n * sizeof(T)) + (sizeof(uint32_t) * 2);
+    }
 
     uint32_t __copy_on_write();
 
@@ -227,8 +245,8 @@ uint32_t copy_on_write<T>::__copy_on_write()
     (*old_ref_count_ptr) -= 1;
     
     T* old_data_ptr = get_data();
+    T* newBuffer = (T*)radium::GenericAllocator::alloc_static(size);
 
-    T* newBuffer = radium::GenericAllocator::alloc_aligned<T>((sizeof(T)*size) + DATA_SECTION_OFFSET);
 
     m_ptr = newBuffer;
     m_dataPtr = &m_ptr;
@@ -255,9 +273,9 @@ void copy_on_write<T>::resize(size_t n)
     uint32_t rc = __copy_on_write();
     // Allocate T * n + room for the headers
     
-    size_t curSize = get_alloc_size();
+    size_t curSize = get_size();
 
-    T* newBuffer = radium::GenericAllocator::alloc_aligned<T>((n * sizeof(T)) + DATA_SECTION_OFFSET);
+    T* newBuffer = (T*)radium::GenericAllocator::alloc_static(get_alloc_size(n));
     
     T* oldBuffer = m_ptr; 
     T* old_data = get_data();
@@ -276,12 +294,12 @@ void copy_on_write<T>::resize(size_t n)
     uint32_t size = static_cast<uint32_t>(n);
     *data_size = size;
     
-    if(old_data)
+    if(old_data && curSize > 0)
         memcpy(old_data, data_sz);
 
 
     if (wasOwner && rc == 1)
-        radium::GenericAllocator::free_aligned(oldBuffer);
+        radium::GenericAllocator::free_static(oldBuffer);
     m_dataPtr = &m_ptr;
 
 }

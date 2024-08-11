@@ -16,6 +16,10 @@ class GenericAllocator
 {
 public:
 
+    static void* alloc_static(size_t size);
+    static void  free_static(void* ptr);
+
+
     /// 
     ///    Allocate (size * n) bytes that are aligned.
     /// 
