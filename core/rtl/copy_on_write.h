@@ -56,15 +56,9 @@ namespace rtl
 template <class T>
 class copy_on_write
 {
-    struct dummy_aligner
-    {
-        T* t;
-        uint32_t _1;
-        uint32_t _2;
-    };
-
     template <class U> friend class array;
 public:
+
     copy_on_write()
         : m_ptr(nullptr)
     {
@@ -189,7 +183,7 @@ private:
     
     static constexpr size_t DATA_SECTION_OFFSET = DATA_SIZE_SECTION_OFFSET + DATA_SIZE_SECTION_OFFSET;
      
-    FORCEINLINE T* get_data()
+    constexpr T* get_data()
     { 
         return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
 

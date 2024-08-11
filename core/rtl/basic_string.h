@@ -51,7 +51,6 @@ public:
         size += 1;
         resize(size);
         assign(other);
-        UNREACHABLE;
 
         return *this;
     }

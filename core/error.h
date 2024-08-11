@@ -4,13 +4,13 @@
 #include <assert.h>
 
 #ifdef _MSC_VER
-#define UNREACHABLE(x) \
+#define UNREACHABLE \
 {\
 printf("UNREACHABLE CODE REACHED: %s @ %s:%d\n", __FUNCSIG__, __FILE__, __LINE__);\
 abort();\
 }
 #else
-#define UNREACHABLE(x) \
+#define UNREACHABLE \
 {\
 printf("UNREACHABLE CODE REACHED: %s @ %s:%d\n", __PRETTY_FUNCTION__, __FILE__, __LINE__);\
 abort();\

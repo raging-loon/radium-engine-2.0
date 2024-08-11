@@ -6,12 +6,6 @@
 #include "core/rtl/function.h"
 #include "core/rtl/array.h"
 #include "core/error.h"
-struct asdf
-{
-    int x;
-    int y;
-    int z;
-};
 
 int main(int argc, char** argv)
 {
