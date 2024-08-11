@@ -1,10 +1,10 @@
 #include "core/memory/Memory.h"
 #include <assert.h>
-using radium::Allocator;
+using radium::GenericAllocator;
 
 
 
-void* Allocator::alloc_aligned(size_t size, size_t n, size_t alignment)
+void* GenericAllocator::alloc_aligned(size_t size, size_t n, size_t alignment)
 {
     assert((alignment & (alignment - 1)) == 0);
 
@@ -22,7 +22,7 @@ void* Allocator::alloc_aligned(size_t size, size_t n, size_t alignment)
     return (void*)aligned_addr;
 }
 
-void* radium::Allocator::alloc_aligned(size_t size, size_t alignment)
+void* radium::GenericAllocator::alloc_aligned(size_t size, size_t alignment)
 {
     assert((alignment & (alignment - 1)) == 0);
 
@@ -40,7 +40,7 @@ void* radium::Allocator::alloc_aligned(size_t size, size_t alignment)
     return (void*)aligned_addr;
 }
 
-void Allocator::free_aligned(void* ptr)
+void GenericAllocator::free_aligned(void* ptr)
 {
     void* addr = get_pointer_base_unsafe(ptr);
     free(addr);

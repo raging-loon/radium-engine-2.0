@@ -65,7 +65,7 @@ public:
     {
         // only free the buffer if we are the owner
         if (m_ptr && *get_refc_ptr() == 1)
-            radium::Allocator::free_aligned(m_ptr);
+            radium::GenericAllocator::free_aligned(m_ptr);
         else
             *get_refc_ptr() -= 1;
     }
@@ -228,7 +228,7 @@ uint32_t copy_on_write<T>::__copy_on_write()
     
     T* old_data_ptr = get_data();
 
-    T* newBuffer = radium::Allocator::alloc_aligned<T>((sizeof(T)*size) + DATA_SECTION_OFFSET);
+    T* newBuffer = radium::GenericAllocator::alloc_aligned<T>((sizeof(T)*size) + DATA_SECTION_OFFSET);
 
     m_ptr = newBuffer;
     m_dataPtr = &m_ptr;
@@ -257,7 +257,7 @@ void copy_on_write<T>::resize(size_t n)
     
     size_t curSize = get_alloc_size();
 
-    T* newBuffer = radium::Allocator::alloc_aligned<T>((n * sizeof(T)) + DATA_SECTION_OFFSET);
+    T* newBuffer = radium::GenericAllocator::alloc_aligned<T>((n * sizeof(T)) + DATA_SECTION_OFFSET);
     
     T* oldBuffer = m_ptr; 
     T* old_data = get_data();
@@ -281,7 +281,7 @@ void copy_on_write<T>::resize(size_t n)
 
 
     if (wasOwner && rc == 1)
-        radium::Allocator::free_aligned(oldBuffer);
+        radium::GenericAllocator::free_aligned(oldBuffer);
     m_dataPtr = &m_ptr;
 
 }

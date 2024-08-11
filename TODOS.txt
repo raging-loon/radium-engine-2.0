@@ -11,4 +11,6 @@ RTL
     [ ] rtl::unique_ptr
     [ ] rtl::hash_map
 
+RM
+    [ ] 
 

@@ -90,7 +90,7 @@ public:
         
         if (_int_store->_refcount == 1)
         {
-            radium::Allocator::free_aligned(_int_store->_ptr);
+            radium::GenericAllocator::free_aligned(_int_store->_ptr);
             delete _int_store;
         }
         else
@@ -123,7 +123,7 @@ private:
 template <class T, class... Args>
 shared_ptr<T> make_shared(Args... args)
 {
-    T* nt = radium::Allocator::alloc_aligned<T>(1);
+    T* nt = radium::GenericAllocator::alloc_aligned<T>(1);
 
     return shared_ptr<T>(
         new (nt) T(rtl::forward<Args>(args)...)
@@ -151,7 +151,7 @@ public:
     ~unique_ptr()
     {
         if (m_ptr)
-            radium::Allocator::free_aligned(m_ptr);
+            radium::GenericAllocator::free_aligned(m_ptr);
     }
 
     unique_ptr(unique_ptr&& other) 
@@ -186,11 +186,11 @@ private:
 };
 
 
-/// Create a new shared pointer
+/// Create a new unique pointer
 template <class T, class... Args>
 unique_ptr<T> make_unique(Args... args)
 {
-    T* nt = radium::Allocator::alloc_aligned<T>(1);
+    T* nt = radium::GenericAllocator::alloc_aligned<T>(1);
 
     return unique_ptr<T>(
         new (nt) T(rtl::forward<Args>(args)...)

@@ -3,15 +3,11 @@
 #include "core/rtl/string.h"
 #include "core/memory/Memory.h"
 #include "core/rtl/smart_ptr.h"
+#include "core/rtl/function.h"
+#include <functional>
 
 int main(int argc, char** argv)
 {
-    rtl::unique_ptr<int> t = rtl::make_unique<int>(1);
-
-    rtl::unique_ptr<int> z = rtl::move(t);
-
-    printf("%d\n", *z);
-
     return 0;
 } 
 

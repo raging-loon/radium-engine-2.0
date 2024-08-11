@@ -12,7 +12,7 @@ namespace radium
 /// @class
 ///    Generic Aligned Memory allocator
 ///    
-class Allocator
+class GenericAllocator
 {
 public:
 
@@ -24,7 +24,7 @@ public:
     ///    @code
     ///    0                64                128
     ///    ↓                ↓               ↓
-    ///     ┌───────────────┬──────────────┐
+    ///    ┌───────────────┬──────────────┐
     ///    │  Raw Address  │ Aligned Addr │
     ///    └───────────────┴──────────────┘
     ///                            ↑
@@ -77,6 +77,13 @@ public:
     }
 
 };
+
+
+
+
+
+
+
 
 
 
