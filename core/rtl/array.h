@@ -2,7 +2,7 @@
 #define CORE_RTL_ARRAY_H_
 
 #include "copy_on_write.h"
-
+#include "core/rtl/utility.h"
 namespace rtl
 {
 
@@ -42,25 +42,15 @@ public:
         (m_data.at_c(m_index++)) = value;
     }
 
-    void push_back(T&& value)
-    {
-        size_t idx = size() - 1;
-        if (should_resize())
-        {
-            resize(size() + 1);
-        }
-        (m_data.at_c(m_index++)) = rtl::move(value);
 
+    T& operator[](size_t index)
+    {
+        return m_data.at_c(index);
     }
 
-    T operator[](size_t index)
+    const T& operator[](size_t index) const
     {
-        return *m_data.at_c(index);
-    }
-
-    const T operator[](size_t index) const
-    {
-        return *m_data.at(index);
+        return m_data.at(index);
     }
 
     constexpr size_t size()

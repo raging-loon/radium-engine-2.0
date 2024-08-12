@@ -3,7 +3,7 @@
 
 #include "core/radium.h"
 #include "core/memory/Memory.h"
-
+#include "core/rtl/utility.h"
 #include <stdint.h>
 #include <assert.h>
 #include <string.h>
@@ -72,7 +72,7 @@ public:
     ~copy_on_write()
     {
         // only free the buffer if we are the owner
-        if (m_ptr)
+        if (m_ptr && *get_refc_ptr() == 1)
             radium::GenericAllocator::free_static(m_ptr);
         else
             *get_refc_ptr() -= 1;
@@ -81,21 +81,32 @@ public:
     copy_on_write(const copy_on_write& other)
         : m_dataPtr(other.m_dataPtr)
     {
+        *get_refc_ptr() += 1;
         m_ptr = nullptr;
     }
 
-    copy_on_write& operator=(copy_on_write& other)
+    copy_on_write& operator=(const copy_on_write& other)
     {
         m_dataPtr = other.m_dataPtr;
-        *(other.get_refc_ptr()) += 1;
+        *get_refc_ptr() += 1;
+
         m_ptr = nullptr;
         return *this;
     }
 
-    /// data[where] without copy
-    const T& at(size_t where)
+    copy_on_write& operator=(const copy_on_write&& other)
     {
-        T* _ptr = get_data();
+        m_dataPtr = rtl::move(other.m_dataPtr);
+        m_ptr = nullptr;
+        *get_refc_ptr() += 1;
+
+        return *this;
+    }
+
+    /// data[where] without copy
+    const T& at(size_t where) const
+    {
+        const T* _ptr = get_data();
         return _ptr[where];
     }
 
@@ -189,6 +200,10 @@ private:
     { 
         return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
 
+    }
+    constexpr const T* get_data() const
+    {
+        return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
     }
 
     FORCEINLINE uint32_t* get_refc_ptr()

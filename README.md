@@ -19,7 +19,13 @@ Why?
 What will I be building?
 - [ ] Radium Template Library (`rtl`)
 - [ ] Radium Math libary (`rm`)
-- [ ] 
+- [ ] A 2D renderer geared towards isometric graphics
+- [ ] Component-System akin to Unity's GameObject + MonoBehaviour system
+- [ ] Scene Graph
+- [ ] Resource Management/Loading/Conditioning
+- [ ] UI Library
+- [ ] Audio Library (prob. WASAPI/ALSA)
+- [ ] Small self-contained VM language
 
 ## Coding Style
 I am using Allman Style bracing.

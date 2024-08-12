@@ -7,14 +7,13 @@
 #include "core/rtl/array.h"
 #include "core/error.h"
 #include "core/log/log.h"
+#include "core/log/outputsystems/FileOutputSystem.h"
 int main(int argc, char** argv)
 {
     radium::Logger l("hello");
-    l.log(radium::LogLevel::INFO, "hello");
-    rtl::string test;
-    test.resize(10);
-    test += "hello";
-    printf("\n%s\n",test.c_str());
+    l.setOutputSystem<radium::FileOutputSystem>("hello.log", 10);
+    l.info("hello");
+
     return 0;
 } 
 

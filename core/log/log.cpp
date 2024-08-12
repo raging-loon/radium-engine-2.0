@@ -1,7 +1,7 @@
 #include "log.h"
 #include <time.h>
 #include <stdio.h>
-#include <varargs.h>
+#include <stdarg.h>
 
 using radium::Logger;
 
@@ -14,8 +14,16 @@ static const char* LogNameMap[5] =
     "CRITICAL"
 };
 
+Logger::~Logger()
+{
+    if (m_outputSystem)
+        delete m_outputSystem;
+}
+
 void Logger::log(LogLevel ll, const char* msg, ...)
 {
+    assert(m_outputSystem);
+
     rtl::string output;
     
     char timeBuffer[25];
@@ -37,10 +45,31 @@ void Logger::log(LogLevel ll, const char* msg, ...)
 
 
     output += " [";
-    output += LogNameMap[(int)ll];
+
+    if (m_outputSystem->supportsColor())
+    {
+        output += m_colorMap[(int)ll];
+        output += LogNameMap[(int)ll];
+        output += Colors::CLEAR;
+    }
+    else
+    {
+        output += LogNameMap[(int)ll];
+    }
     output += "] ";
 
-    printf("%s\n",output.c_str());
-    
+    char temp[256] = { 0 };
+    va_list args;
+    va_start(args, msg);
 
+    vsnprintf_s(temp, 256, msg, args);
+    va_end(args);
+
+    output += temp;
+    output += "\n";
+
+    m_outputSystem->log(output);
 }
+
+
+

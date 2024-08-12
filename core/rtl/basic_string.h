@@ -4,7 +4,11 @@
 #include "copy_on_write.h"
 #include "core/radium.h"
 #include "core/error.h"
+#include "core/rtl/utility.h"
+#include <stdio.h>
 #include <limits.h>
+
+#include <type_traits>
 
 namespace rtl
 {
@@ -19,25 +23,37 @@ public:
     
     basic_string() : m_length(1) { }
 
-    basic_string(const basic_string<T>& other)
+    basic_string(const basic_string& other)
         : m_chars(other.m_chars), m_length (other.m_length)
     {
     }
 
+    basic_string(const basic_string&& other)
+        : m_chars(rtl::move(other.m_chars)), m_length(rtl::move(other.m_length))
+    {
 
-
+    }
     basic_string(const T* source)
     {
         *this = source;
     }
 
-    basic_string& operator=(basic_string& other)
+    basic_string& operator=(const basic_string& other)
     {
         m_chars = other.m_chars;
         m_length = other.length();
         return *this;
 
     }
+
+    basic_string& operator=(const basic_string&& other)
+    {
+        m_length = rtl::move(other.length());
+        m_chars = rtl::move(other.m_chars);
+
+        return *this;
+    }
+
 
     template <size_t N>
     basic_string& operator=(const T(&other)[N])
@@ -69,7 +85,7 @@ public:
         size_t oldlen = length();
         m_length = newsize;
         if(should_resize())
-            resize(newsize);
+            resize(newsize + 1);
 
         // -2 to copy over old data's null
         m_chars.memcpy(other, olen,  oldlen - 1);
@@ -83,7 +99,7 @@ public:
         size_t oldlen = length();
         m_length = newsize;
         if (should_resize())
-            resize(newsize + 1);
+            resize(newsize);
 
         m_chars.memcpy(other.c_str(), other.length() + 1, oldlen - 1);
         return *this;
@@ -148,8 +164,6 @@ public:
     constexpr T& back() { return m_chars.at_c(length() - 2); }
 
 
-
-
 private:
     /// Our buffer. COW happens implicitly
     copy_on_write<T> m_chars;
@@ -181,6 +195,9 @@ basic_string<T> basic_string<T>::substr(size_t pos, size_t count)
     newString[idx] = 0;
     return newString;
 }
+
+
+
 
 } // radium::rtl
 
