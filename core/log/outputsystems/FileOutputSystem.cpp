@@ -1,6 +1,6 @@
 #include "FileOutputSystem.h"
 #include <stdarg.h>
-
+#include <stdio.h>
 using radium::FileOutputSystem;
 
 FileOutputSystem::FileOutputSystem(const rtl::string& name, int flushEveryNLogs)
@@ -43,6 +43,7 @@ void FileOutputSystem::log(const rtl::string& msg)
 
 void FileOutputSystem::flush()
 {
+    printf("flushing\n");
     for (int i = 0; i < m_curInterval; i++)
     {
         fprintf(m_outFp, m_logCache[i].c_str());

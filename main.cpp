@@ -8,12 +8,20 @@
 #include "core/error.h"
 #include "core/log/log.h"
 #include "core/log/outputsystems/FileOutputSystem.h"
+#include "core/rtl/utility.h"
 int main(int argc, char** argv)
 {
-    radium::Logger l("hello");
-    l.setOutputSystem<radium::FileOutputSystem>("hello.log", 10);
-    l.info("hello");
+    
+    radium::Logger test("hello");
 
+    test.setOutputSystem<radium::FileOutputSystem>("test.log", 10);
+
+    test.debug("hello");
+    test.debug("hello");
+    test.debug("hello");
+    test.debug("hello");
+  
     return 0;
 } 
 
+ 

@@ -1,5 +1,6 @@
-﻿#ifndef CORE_RTL_COPY_ONE_WRITE_H_
-#define CORE_RTL_COPY_ONE_WRITE_H_
+#error "this should NOT be built"
+#ifndef CORE_RTL_COPY_ON_WRITE_H_
+#define CORE_RTL_COPY_ON_WRITE_H_
 
 #include "core/radium.h"
 #include "core/memory/Memory.h"
@@ -8,7 +9,7 @@
 #include <assert.h>
 #include <string.h>
 #include <stdlib.h>
-#include <stdio.h>
+
 template <class U>
 class array;
 
@@ -62,128 +63,172 @@ class copy_on_write
     template <class U> friend class basic_string;
 public:
 
-
-    copy_on_write() : m_ptr(nullptr)
+    copy_on_write()
+        : m_ptr(nullptr)
     {
+        m_dataPtr = &m_ptr;
         resize(1);
     }
 
     ~copy_on_write()
     {
-        unref();
+        // only free the buffer if we are the owner
+        if (m_ptr && *get_refc_ptr() == 1)
+            radium::GenericAllocator::free_static(m_ptr);
+        else
+            *get_refc_ptr() -= 1;
     }
 
     copy_on_write(const copy_on_write& other)
-        : m_ptr(other.m_ptr)
+        : m_dataPtr(other.m_dataPtr)
     {
-        ref();
-    }
-
-    copy_on_write(const copy_on_write&& other) 
-        : m_ptr(rtl::move(other.m_ptr))
-    {
-
+        *get_refc_ptr() += 1;
+        m_ptr = nullptr;
     }
 
     copy_on_write& operator=(const copy_on_write& other)
     {
-        m_ptr = other.m_ptr;
-        ref();
+        m_dataPtr = other.m_dataPtr;
+        *get_refc_ptr() += 1;
+
+        m_ptr = nullptr;
         return *this;
     }
 
     copy_on_write& operator=(const copy_on_write&& other)
     {
-        m_ptr = rtl::move(other.m_ptr);
+        m_dataPtr = rtl::move(other.m_dataPtr);
+        m_ptr = nullptr;
+        *get_refc_ptr() += 1;
+
         return *this;
     }
 
-
     /// data[where] without copy
-    const T& at(size_t where) const;
+    const T& at(size_t where) const
+    {
+        const T* _ptr = get_data();
+        return _ptr[where];
+    }
 
     /// data[where] with copy
-    T& at_c(size_t where);
+    T& at_c(size_t where)
+    {
+        __copy_on_write();
+        T* _ptr = get_data();
+        return _ptr[where];
+    }
 
-    /// Get your own copy
-    T* copy();
-
-    /// Obtain a const reference to the data
-    const T* reference() const;
-
+    /// How many bytes are allocated?
+    uint32_t get_alloc_size() const
+    {
+        if (!*m_dataPtr)
+            return 0;
+        else
+            return (get_data_size() + DATA_SECTION_OFFSET )* sizeof(T);
+    }
     /// size of data section
-    uint32_t get_size() const;
+    uint32_t get_size() const
+    {
+        if (!*m_dataPtr)
+            return 0;
+
+        return get_data_size() * sizeof(T);
+    }
 
     /// @brief
     ///    How many individual T's can fit in the data section
     ///    This is generally what you will want to use
-    uint32_t get_num_data() const;
+    uint32_t get_num_data() const
+    {
+        if (!m_ptr)
+            return 0;
+        return (get_data_size());
+    }
+
+    /// Get your own copy
+    T* copy()
+    {
+        __copy_on_write();
+        return *m_dataPtr + DATA_SECTION_OFFSET;
+    }
+
+    /// Obtain a const reference to the data
+    const T* reference() const
+    {
+        return *m_dataPtr + DATA_SECTION_OFFSET;
+    }
+    
+
     ///
     /// @brief
-    ///    Resize the buffer to (n * T) + DATA_OFFSET bytes
+    ///     Resize the buffer to (n * T) + DATA_SECTION_OFFSET bytes
     ///    Will create a new copy
     ///    
     void resize(size_t n);
 
     /// Copy to the <i>data section offset</i>
     void memcpy(const T* source, size_t n);
-    
+
+    ///
     /// @brief
     ///    Copy to the data section + offset
     ///    Note that this will copy relative to the offset
     ///    
     void memcpy(const T* source, size_t n, size_t offset);
 
-    constexpr uint32_t get_reference_count() const
-    {
-        return *(uint32_t*)(((uint8_t*)m_ptr) + REFCOUNT_OFFSET);
 
+    FORCEINLINE uint32_t get_reference_count() const
+    {
+        return *get_refc_ptr();
     }
 
-    constexpr uint32_t get_data_size() const
+    FORCEINLINE uint32_t get_data_size() const
     {
-        return *(uint32_t*)(((uint8_t*)m_ptr) + SIZE_OFFSET);
+        return *(uint32_t*)(((uint8_t*)*m_dataPtr) + DATA_SIZE_SECTION_OFFSET);
     }
+
 
 
 private:
+    static constexpr size_t REF_SECTION_OFFSET = 0;
 
-    static constexpr size_t REFCOUNT_OFFSET = 0;
-    static constexpr size_t SIZE_OFFSET = REFCOUNT_OFFSET + 4;
-    static constexpr size_t DATA_OFFSET = SIZE_OFFSET + 4;
+    static constexpr size_t DATA_SIZE_SECTION_OFFSET = REF_SECTION_OFFSET + 4;
+    
+    static constexpr size_t DATA_SECTION_OFFSET = DATA_SIZE_SECTION_OFFSET + DATA_SIZE_SECTION_OFFSET;
+     
     constexpr T* get_data()
-    {
-        return (T*)(((uint8_t*)m_ptr) + DATA_OFFSET);
+    { 
+        return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
 
     }
     constexpr const T* get_data() const
     {
-        return (T*)(((uint8_t*)m_ptr) + DATA_OFFSET);
+        return (T*)(((uint8_t*)*m_dataPtr) + DATA_SECTION_OFFSET);
     }
 
-    constexpr uint32_t* get_refc_ptr()
+    FORCEINLINE uint32_t* get_refc_ptr()
     {
-        return (uint32_t*)(((uint8_t*)m_ptr) + REFCOUNT_OFFSET);
+        return (uint32_t*)(((uint8_t*)*m_dataPtr) + REF_SECTION_OFFSET);
     }
 
-    constexpr uint32_t* get_data_size_ptr()
+    FORCEINLINE uint32_t* get_data_size_ptr()
     {
-        return (uint32_t*)(((uint8_t*)m_ptr) + SIZE_OFFSET);
+        return (uint32_t*)(((uint8_t*)*m_dataPtr) + DATA_SIZE_SECTION_OFFSET);
     }
-
+    
     constexpr size_t get_alloc_size(size_t n)
     {
         //          objects             meta data
         return (n * sizeof(T)) + (sizeof(uint32_t) * 2);
     }
 
-
     uint32_t __copy_on_write();
 
-    void ref();
-    void unref();
 
-    T* m_ptr;
+    T* m_ptr;    
+    T** m_dataPtr;
+
 };
 
 /// 
@@ -196,57 +241,37 @@ private:
 template<class T>
 uint32_t copy_on_write<T>::__copy_on_write()
 {
-    if (!m_ptr || get_size() == 0)
+    // if we own the data, don't do anything
+    if (m_ptr)
+        return *get_refc_ptr();
+
+    
+    if(!*m_dataPtr || get_size() == 0)
         return 0;
 
-    if (get_reference_count() == 1)
-        return 1;
-
-    uint32_t old_size = get_size();
+    uint32_t size = get_size();
 
     uint32_t* old_size_ptr = get_data_size_ptr();
     uint32_t* old_ref_count_ptr = get_refc_ptr();
-
-    (*old_ref_count_ptr)--;
-
-    T* old_data_ptr = get_data();
-
-    T* new_buffer = static_cast<T*>(radium::GenericAllocator::alloc_static(old_size));
-
-    m_ptr = new_buffer;
-
-    *(get_data_size_ptr()) = old_size;
-    *(get_refc_ptr()) = 1;
-
-    ::memcpy(get_data(), old_data_ptr, old_size);
-
-    return 1;
     
+    
+    (*old_ref_count_ptr) -= 1;
+    
+    T* old_data_ptr = get_data();
+    T* newBuffer = (T*)radium::GenericAllocator::alloc_static(size);
+
+
+    m_ptr = newBuffer;
+    m_dataPtr = &m_ptr;
+
+    *get_data_size_ptr() = *old_size_ptr;
+    *get_refc_ptr() = 1;
+
+    ::memcpy(get_data(), old_data_ptr, *old_size_ptr);
+    return 1;
+
 }
 
-template<class T>
-void copy_on_write<T>::ref()
-{
-    if (m_ptr)
-    {
-        *(get_refc_ptr()) += 1;
-    }
-}
-
-template<class T>
-void copy_on_write<T>::unref()
-{
-    if (m_ptr)
-    {
-        *(get_refc_ptr()) -= 1;
-
-        if (get_reference_count() <= 0)
-        {
-            radium::GenericAllocator::free_static(m_ptr);
-            printf("deleted\n");
-        }
-    }
-}
 
 ///
 /// Resizes the buffer
@@ -256,28 +281,39 @@ void copy_on_write<T>::unref()
 template<class T>
 void copy_on_write<T>::resize(size_t n)
 {
+    bool wasOwner = m_ptr != nullptr;
+
     uint32_t rc = __copy_on_write();
+    // Allocate T * n + room for the headers
+    
+    size_t curSize = get_size();
 
-    size_t cur_size = get_size();
-
-    T* new_buffer = static_cast<T*>(radium::GenericAllocator::alloc_static(get_alloc_size(n)));
-
-    T* old_buffer = m_ptr;
+    T* newBuffer = (T*)radium::GenericAllocator::alloc_static(get_alloc_size(n));
+    
+    T* oldBuffer = m_ptr; 
     T* old_data = get_data();
-    size_t old_size = get_num_data();
+    size_t data_sz = get_num_data();
 
-    m_ptr = new_buffer;
+    m_ptr = newBuffer;
 
-    *(get_refc_ptr()) = 1;
-    *(get_data_size_ptr()) = (uint32_t)n;
+    uint32_t* refc = get_refc_ptr();
+    uint32_t* data_size = get_data_size_ptr();
+    
+    if (wasOwner)
+        rc = 1;
+    
+    *refc = rc;
 
-    if (old_size)
-        memcpy(old_data, old_size); 
+    uint32_t size = static_cast<uint32_t>(n);
+    *data_size = size;
+    
+    if(old_data && curSize > 0)
+        memcpy(old_data, data_sz);
 
-    if (rc == 1)
-        radium::GenericAllocator::free_static(old_buffer);
 
-
+    if (wasOwner)
+        radium::GenericAllocator::free_static(oldBuffer);
+    m_dataPtr = &m_ptr;
 
 }
 
@@ -289,58 +325,14 @@ void copy_on_write<T>::memcpy(const T* source, size_t n)
 }
 
 template<class T>
-void copy_on_write<T>::memcpy(const T* source, size_t n, size_t offset)
+inline void copy_on_write<T>::memcpy(const T* source, size_t n, size_t offset)
 {
     __copy_on_write();
     ::memcpy(get_data() + (offset * sizeof(T)), source, (n * sizeof(T)));
-}
 
-template<class T>
-const T& copy_on_write<T>::at(size_t where) const
-{
-    const T* _ptr = get_data();
-    return _ptr[where];
-}
-
-template <class T>
-T& copy_on_write<T>::at_c(size_t where)
-{
-    __copy_on_write();
-    T* _ptr = get_data();
-    return _ptr[where];
-}
-
-template <class T>
-T* copy_on_write<T>::copy()
-{
-    __copy_on_write();
-    return m_ptr + DATA_OFFSET;
-}
-
-template <class T>
-const T* copy_on_write<T>::reference() const
-{
-    return m_ptr + DATA_OFFSET;
-}
-
-
-template <class T>
-uint32_t copy_on_write<T>::get_size() const
-{
-    if (!m_ptr)
-        return 0;
-    return get_data_size() * sizeof(T);
-}
-
-template <class T>
-uint32_t copy_on_write<T>::get_num_data() const
-{
-    if (!m_ptr)
-        return 0;
-    return (get_data_size());
 }
 
 } // rtl
 
 
-#endif // CORE_RTL_COPY_ONE_WRITE_H_
+#endif // CORE_RTL_COPY_ON_WRITE_H_
