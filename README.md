@@ -20,3 +20,19 @@ What will I be building?
 - [ ] Radium Template Library (`rtl`)
 - [ ] Radium Math libary (`rm`)
 - [ ] 
+
+## Coding Style
+I am using Allman Style bracing.
+
+Everything RTL/Math related is in lower_snake_case.
+
+RTL classes are under the `rtl` namespace, Math classes are under the `rm` namespace, 
+everything else is in the `radium` namespace
+
+Classes are UpperCamelCase, class members/functions are lowerCamelCase
+
+Private member variables are preceded with `m_`
+
+Constants and Macros are in SCREAMING_SNAKE_CASE
+
+Please, *please* ensure your IDE/editor is using 4 spaces and NOT tabs.

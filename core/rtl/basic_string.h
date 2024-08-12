@@ -17,12 +17,14 @@ public:
     
     static constexpr size_t npos = UINT64_MAX;
     
-    basic_string() { }
+    basic_string() : m_length(1) { }
 
-    basic_string(basic_string& other)
-        : m_chars(other.m_chars)
+    basic_string(const basic_string<T>& other)
+        : m_chars(other.m_chars), m_length (other.m_length)
     {
     }
+
+
 
     basic_string(const T* source)
     {
@@ -32,6 +34,7 @@ public:
     basic_string& operator=(basic_string& other)
     {
         m_chars = other.m_chars;
+        m_length = other.length();
         return *this;
 
     }
@@ -40,6 +43,7 @@ public:
     basic_string& operator=(const T(&other)[N])
     {
         resize(N);
+        m_length = N;
         assign(other);
         return *this;
     }
@@ -49,33 +53,39 @@ public:
         // todo: this  is temporary code
         size_t size = strlen(other);
         size += 1;
+        m_length = size;
         resize(size);
         assign(other);
 
         return *this;
     }
 
-    template <size_t N>
-    basic_string& operator+=(const T(&other)[N])
+
+
+    basic_string& operator+=(const T* other)
     {
-        // +2, old null and other null
-        size_t newsize = length() + (N - 1);
+        size_t olen = strlen(other) + 1;
+        size_t newsize = length() + (olen) - 1;
         size_t oldlen = length();
-        resize(newsize);
+        m_length = newsize;
+        if(should_resize())
+            resize(newsize);
+
         // -2 to copy over old data's null
-        m_chars.memcpy(other, N , oldlen - 1);
+        m_chars.memcpy(other, olen,  oldlen - 1);
 
         return *this;
     }
 
-
     basic_string& operator+=(basic_string& other)
     {
-        size_t newSize = length() + (other.length() - 1);
+        size_t newsize = length() + (other.length() - 1);
         size_t oldlen = length();
+        m_length = newsize;
+        if (should_resize())
+            resize(newsize + 1);
 
-        resize(newSize);
-        m_chars.memcpy(other.c_str(), other.length(), oldlen - 1);
+        m_chars.memcpy(other.c_str(), other.length() + 1, oldlen - 1);
         return *this;
 
     }
@@ -84,9 +94,9 @@ public:
     basic_string<T> substr(size_t pos = 0, size_t count = npos);
 
 
-    FORCEINLINE void resize(int n)
+    FORCEINLINE void resize(size_t n)
     {
-        m_chars.resize((size_t)n);
+        m_chars.resize(n);
     }
 
     /// copy these characters
@@ -110,7 +120,7 @@ public:
     /// get the length
     constexpr size_t length() const
     {
-        return m_chars.get_data_size();
+        return m_length;
     }
 
     /// get reference character at pos
@@ -123,7 +133,7 @@ public:
     static size_t strlen(const T* other)
     {
         size_t size = 0;
-        while (*other++) size++;
+        while (*other++ != 0) size++;
         return size;
     }
 
@@ -143,14 +153,12 @@ public:
 private:
     /// Our buffer. COW happens implicitly
     copy_on_write<T> m_chars;
+    size_t m_length;
 
-
-    FORCEINLINE void resize(size_t n)
+    constexpr bool should_resize()
     {
-        m_chars.resize(n);
+        return m_length >= m_chars.get_data_size() - 1;
     }
-
-
 };
 
 

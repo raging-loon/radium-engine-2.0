@@ -11,6 +11,8 @@
 
 template <class U>
 class array;
+
+template <class U>
 class basic_string;
 namespace rtl
 {
@@ -56,7 +58,8 @@ namespace rtl
 template <class T>
 class copy_on_write
 {
-    template <class U> friend class array;
+    template <class U>  friend class array;
+    template <class U> friend class basic_string;
 public:
 
     copy_on_write()
@@ -69,16 +72,15 @@ public:
     ~copy_on_write()
     {
         // only free the buffer if we are the owner
-        if (m_ptr && *get_refc_ptr() == 1)
+        if (m_ptr)
             radium::GenericAllocator::free_static(m_ptr);
         else
             *get_refc_ptr() -= 1;
     }
 
-    copy_on_write(copy_on_write& other)
+    copy_on_write(const copy_on_write& other)
         : m_dataPtr(other.m_dataPtr)
     {
-        *(other.get_refc_ptr()) += 1;
         m_ptr = nullptr;
     }
 
@@ -293,7 +295,7 @@ void copy_on_write<T>::resize(size_t n)
         memcpy(old_data, data_sz);
 
 
-    if (wasOwner && rc == 1)
+    if (wasOwner)
         radium::GenericAllocator::free_static(oldBuffer);
     m_dataPtr = &m_ptr;
 
