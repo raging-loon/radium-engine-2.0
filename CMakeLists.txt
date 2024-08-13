@@ -59,7 +59,7 @@ add_executable(radium-engine
  "core/log/log.h"
  "core/log/colors.h" "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
  "core/log/outputsystems/StdOutSystem.h" "core/rtl/ios.h" "core/log/outputsystems/StdoutSystem.cpp" 
- "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp")
+ "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp")
 
 target_include_directories(radium-engine PUBLIC "./")
 
