@@ -24,9 +24,14 @@ FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
 )
+FetchContent_Declare(
+    glm
+    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
+)
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(glm) 
 
 enable_testing()
 
@@ -59,7 +64,7 @@ add_executable(radium-engine
  "core/log/log.h"
  "core/log/colors.h" "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
  "core/log/outputsystems/StdOutSystem.h" "core/rtl/ios.h" "core/log/outputsystems/StdoutSystem.cpp" 
- "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp")
+ "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp" "core/math/vec2.h" "core/math/vec2.cpp")
 
 target_include_directories(radium-engine PUBLIC "./")
 
@@ -72,9 +77,9 @@ target_link_libraries(
   radium-engine 
   GTest::gtest_main
 )
-
+include_directories("${CMAKE_SOURCE_DIR}/_deps/glm-src/")
 include(GoogleTest)
 gtest_discover_tests(radium-engine)
 
 
-endif()
+endif() 

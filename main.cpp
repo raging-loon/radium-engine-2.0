@@ -1,25 +1,15 @@
 #include <stdio.h>
-#include "core/rtl/copy_on_write.h"
-#include "core/rtl/string.h"
-#include "core/memory/Memory.h"
-#include "core/rtl/smart_ptr.h" 
-#include "core/rtl/function.h"
-#include "core/rtl/array.h"
-#include "core/error.h"
-#include "core/log/log.h"
-#include "core/log/outputsystems/FileOutputSystem.h"
-#include "core/rtl/utility.h"
+#include "core/math/vec2.h"
+
 int main(int argc, char** argv)
 {
-    rtl::string str1 = "hello";
+    rm::vec2 test(12.3352, 134);
 
-    rtl::string test = "hello world";
+    test *= 2;
 
-    rtl::string test2 = str1 + " world";
-
-    printf("%s\n", test2.c_str());
-    printf("%s\n", str1.c_str());
+    test = test.normalized();
+    printf("%f, %f\n",test.x, test.y);
     return 0;
 } 
 
- 
+  

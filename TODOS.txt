@@ -12,6 +12,7 @@ RTL
     [ ] rtl::hash_map
 
 RM
-    [ ] rm::vec
-    [ ] rm::mat
+    [ ] rm::vec2,3,4
+    [ ] rm::mat,4x4,3x3,3x4
+    [ ]
 

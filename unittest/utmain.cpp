@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <gtest/gtest.h>
 #include "rtl_tests.h"
-
-
+#include <glm.hpp>
 int main(int argc, char** argv)
 {
     testing::InitGoogleTest(&argc, argv);

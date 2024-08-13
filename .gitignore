@@ -13,3 +13,7 @@ CMakeUserPresets.json
 out
 build
 .vs
+*.vcx*
+*.sln
+*.cmake
+/x64
