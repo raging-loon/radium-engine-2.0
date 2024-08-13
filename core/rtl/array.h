@@ -27,7 +27,7 @@ public:
 
     void resize(size_t n)
     {
-        m_data.resize(n);
+        m_data.resize(n );
 
     }
 
@@ -66,7 +66,7 @@ private:
 
     constexpr bool should_resize()
     {
-        return (m_index >= m_data.get_data_size() - 1);
+        return (m_index >= m_data.get_data_size());
     }
 };
 

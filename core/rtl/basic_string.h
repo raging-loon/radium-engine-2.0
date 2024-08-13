@@ -93,7 +93,7 @@ public:
         return *this;
     }
 
-    basic_string& operator+=(basic_string& other)
+    basic_string& operator+=(const basic_string& other)
     {
         size_t newsize = length() + (other.length() - 1);
         size_t oldlen = length();
@@ -191,8 +191,8 @@ basic_string<T> basic_string<T>::substr(size_t pos, size_t count)
     {
         newString[idx++] = m_chars.at(i);
     }
-
     newString[idx] = 0;
+    newString.m_length = idx + 1;
     return newString;
 }
 

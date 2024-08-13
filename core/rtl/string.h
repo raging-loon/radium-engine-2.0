@@ -12,13 +12,15 @@ using wstring = basic_string<wchar_t>;
 
 
 bool operator==(const char* str1, const string& str2);
+bool operator==(const string& str1, const string& str2);
+
 bool operator!=(const char* str1, const string& str2);
 bool operator>(const char* str1, const string& str2);
 bool operator<(const char* str1, const string& str2);
 
 /// append str1 to str2
 string operator+(const char* str1, const string& str2);
-
+string operator+(const string& str1, const string& str2);
 
 
 

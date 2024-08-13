@@ -257,16 +257,25 @@ void copy_on_write<T>::resize(size_t n)
 
     T* old_buffer = m_ptr;
     T* old_data = get_data();
-    size_t old_size = get_num_data();
-
+    //size_t old_size = get_size();
+    size_t old_num_data = get_num_data();
     m_ptr = new_buffer;
 
     *(get_refc_ptr()) = 1;
     *(get_data_size_ptr()) = (uint32_t)n;
 
-    if (old_size > 0)
-        ::memcpy(get_data(), old_data, old_size); 
 
+
+    if (old_num_data > 0)
+    {
+
+        // if this is a larger buffer, copy all of the old data
+        if (n > old_num_data)
+            memcpy(old_data, old_num_data);
+        // otherwise, only copy the remaining data
+        else if (n <= old_num_data)
+            memcpy(old_data, n);
+    }
     if (rc == 1)
         radium::GenericAllocator::free_static(old_buffer);
 

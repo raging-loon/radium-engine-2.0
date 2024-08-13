@@ -11,20 +11,14 @@
 #include "core/rtl/utility.h"
 int main(int argc, char** argv)
 {
+    rtl::string str1 = "hello";
 
-    rtl::copy_on_write<int> x;
+    rtl::string test = "hello world";
 
-    rtl::copy_on_write<int> y;
-    x.resize(10);
+    rtl::string test2 = str1 + " world";
 
-    y = x;
-    y.resize(20);
-
-    if (y.reference() == x.reference())
-    {
-        printf("true\n");
-    }
-
+    printf("%s\n", test2.c_str());
+    printf("%s\n", str1.c_str());
     return 0;
 } 
 
