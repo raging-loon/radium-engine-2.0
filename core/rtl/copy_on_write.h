@@ -110,6 +110,8 @@ public:
     ///    How many individual T's can fit in the data section
     ///    This is generally what you will want to use
     uint32_t get_num_data() const;
+    uint32_t get_allocation_size() const;
+
     ///
     /// @brief
     ///    Resize the buffer to (n * T) + DATA_OFFSET bytes
@@ -340,6 +342,15 @@ uint32_t copy_on_write<T>::get_num_data() const
     if (!m_ptr)
         return 0;
     return (get_data_size());
+}
+
+template<class T>
+uint32_t copy_on_write<T>::get_allocation_size() const
+{
+    if (!m_ptr)
+        return 0;
+    else
+        return (get_data_size() * sizeof(T)) + DATA_OFFSET;
 }
 
 } // rtl

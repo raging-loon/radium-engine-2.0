@@ -47,6 +47,7 @@ public:
     {}
     Logger(const char* name) : m_name(name), m_outputSystem{ nullptr } {}
     ~Logger();
+    
     ///
     /// @brief
     ///     Log to the @ref OutputSystem
@@ -56,6 +57,16 @@ public:
     ///     3. Forward constructed log to the output system
     ///     
     void log(LogLevel ll, const char* msg, ...);
+
+    ///
+    /// @brief
+    ///     Log a section of memory from start to start + length
+    ///     This does NOT detect if you are reading from an area of memory 
+    ///     that has been freed or does not belong to you
+    /// 
+    void logMemorySection(const void* start, int length, const char* msg, ...);
+
+
 
     /// Set the output system
     template <class OutputSystemType>
@@ -128,6 +139,15 @@ private:
         {Colors::RED},   /// ERROR
         {Colors::RED}    /// CRITICAL
     };
+
+    /// Add current time + logger name
+    void writeMetaData(rtl::string& output);
+
+    /// write the log level (in color if supported, see @ref OutputSystem::supportsColor())
+    void writeLogLevel(LogLevel ll, rtl::string& output);
+
+    /// Add the users formatted arguments to the output, uses vsnprintf
+    void writeUserMessage(rtl::string& output, const char* message, va_list args);
 
 };
 
