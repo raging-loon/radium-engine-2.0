@@ -28,10 +28,11 @@ FileOutputSystem::~FileOutputSystem()
 
 void FileOutputSystem::log(const rtl::string& msg)
 {
+    
+    m_logCache[m_curInterval] = msg;
+
     ++m_curInterval;
     
-    m_logCache.push_back(msg);
-
     if (m_curInterval >= m_flushInterval)
     {
         flush();

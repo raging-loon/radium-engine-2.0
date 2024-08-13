@@ -11,16 +11,20 @@
 #include "core/rtl/utility.h"
 int main(int argc, char** argv)
 {
-    
-    radium::Logger test("hello");
 
-    test.setOutputSystem<radium::FileOutputSystem>("test.log", 10);
+    rtl::copy_on_write<int> x;
 
-    test.debug("hello");
-    test.debug("hello");
-    test.debug("hello");
-    test.debug("hello");
-  
+    rtl::copy_on_write<int> y;
+    x.resize(10);
+
+    y = x;
+    y.resize(20);
+
+    if (y.reference() == x.reference())
+    {
+        printf("true\n");
+    }
+
     return 0;
 } 
 

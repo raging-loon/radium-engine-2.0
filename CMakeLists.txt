@@ -14,7 +14,7 @@ project(radium-engine VERSION 2.0)
 option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
 
 ##########################
-###### UNIT TESTING ######
+###### UNIT TESTING ###### 
 ##########################
 
 if(ENABLE_UNIT_TESTS)

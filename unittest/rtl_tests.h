@@ -3,5 +3,8 @@
 
 #include "cow_test.h"
 #include "fn_ptr_test.h"
+#include "rtl_str_test.h"
+
+
 
 #endif // RTL_TESTS_H_

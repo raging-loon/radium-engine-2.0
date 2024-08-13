@@ -27,9 +27,6 @@ namespace rtl
 ///     
 ///    Provide a Copy on Write buffer for clients
 ///     
-///    m_dataPtr holds a pointer to a heap allocated 
-///    buffer of memory
-///     
 ///    When the copy constructor or copy assignment
 ///    operator is used, the pointer to the other COWs
 ///    buffer is used and it's refcounter incremented
@@ -48,11 +45,6 @@ namespace rtl
 ///        3. Set the new buffer's ref count to 1
 ///        4. Set the current buffer to the new buffer        
 ///     
-///     Sharing works via pointers-to-pointers
-///    m_ptr holds the data
-///    m_dataPtr will either hold the value of OUR m_ptr if we own it,
-///    or another clients m_ptr if we don't.
-///    
 ///    The function @ref __copy_on_write will ensure that we do own our own copy
 /// 
 template <class T>
@@ -206,7 +198,7 @@ uint32_t copy_on_write<T>::__copy_on_write()
 
     uint32_t* old_size_ptr = get_data_size_ptr();
     uint32_t* old_ref_count_ptr = get_refc_ptr();
-
+    uint32_t rc = *old_ref_count_ptr;
     (*old_ref_count_ptr)--;
 
     T* old_data_ptr = get_data();
@@ -220,7 +212,7 @@ uint32_t copy_on_write<T>::__copy_on_write()
 
     ::memcpy(get_data(), old_data_ptr, old_size);
 
-    return 1;
+    return rc;
     
 }
 
@@ -238,13 +230,14 @@ void copy_on_write<T>::unref()
 {
     if (m_ptr)
     {
-        *(get_refc_ptr()) -= 1;
 
-        if (get_reference_count() <= 0)
+        if (get_reference_count() == 1)
         {
             radium::GenericAllocator::free_static(m_ptr);
-            printf("deleted\n");
+            m_ptr = nullptr;
         }
+        else
+            *(get_refc_ptr()) -= 1;
     }
 }
 
@@ -271,8 +264,8 @@ void copy_on_write<T>::resize(size_t n)
     *(get_refc_ptr()) = 1;
     *(get_data_size_ptr()) = (uint32_t)n;
 
-    if (old_size)
-        memcpy(old_data, old_size); 
+    if (old_size > 0)
+        ::memcpy(get_data(), old_data, old_size); 
 
     if (rc == 1)
         radium::GenericAllocator::free_static(old_buffer);

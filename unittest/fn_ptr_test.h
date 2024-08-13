@@ -11,7 +11,7 @@ static int getSpecialNumber() { return 1234; }
 TEST(rtl_test, function_ptr_test)
 {
 
-    rtl::function<int()> test = getSpecialNumber;
+    rtl::function<int()> test = &getSpecialNumber;
 
     EXPECT_EQ(test.get(), getSpecialNumber);
     EXPECT_EQ(test(), 1234);

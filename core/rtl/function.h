@@ -67,25 +67,25 @@ public:
     }
 
     /// call the function
-    constexpr T operator()(Args... args)
+    constexpr T operator()(Args&&... args)
     {
-        return (m_fn)(args...);
+        return m_fn(rtl::forward<Args>(args)...);
     }
 
     /// check if the function is set
     constexpr bool is_valid() 
     {
-        return true;
+        return !!m_fn;
     }
 
-    constexpr const T& get()
+    constexpr const fn_ptr_t get() const
     {
         return m_fn;
     }
 
 private:
 
-    T& m_fn;
+    fn_ptr_t m_fn;
 
 };
 
