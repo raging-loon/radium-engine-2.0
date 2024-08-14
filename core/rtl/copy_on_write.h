@@ -97,6 +97,8 @@ public:
     /// data[where] with copy
     T& at_c(size_t where);
 
+    T* at_pc(size_t where);
+    const T* at_p(size_t where) const;
     /// Get your own copy
     T* copy();
 
@@ -198,14 +200,13 @@ uint32_t copy_on_write<T>::__copy_on_write()
 
     uint32_t old_size = get_size();
 
-    uint32_t* old_size_ptr = get_data_size_ptr();
     uint32_t* old_ref_count_ptr = get_refc_ptr();
     uint32_t rc = *old_ref_count_ptr;
     (*old_ref_count_ptr)--;
 
     T* old_data_ptr = get_data();
 
-    T* new_buffer = static_cast<T*>(radium::GenericAllocator::alloc_static(old_size));
+    T* new_buffer = static_cast<T*>(radium::GenericAllocator::alloc_static(old_size + 8));
 
     m_ptr = new_buffer;
 
@@ -252,8 +253,6 @@ template<class T>
 void copy_on_write<T>::resize(size_t n)
 {
     uint32_t rc = __copy_on_write();
-
-    size_t cur_size = get_size();
 
     T* new_buffer = static_cast<T*>(radium::GenericAllocator::alloc_static(get_alloc_size(n)));
 
@@ -314,11 +313,26 @@ T& copy_on_write<T>::at_c(size_t where)
     return _ptr[where];
 }
 
+template<class T>
+inline T* copy_on_write<T>::at_pc(size_t where)
+{
+    __copy_on_write();
+    T* _ptr = get_data();
+    return &_ptr[where];
+}
+
+template<class T>
+inline const T* copy_on_write<T>::at_p(size_t where) const
+{
+    const T* _ptr = get_data();
+    return &_ptr[where];
+}
+
 template <class T>
 T* copy_on_write<T>::copy()
 {
     __copy_on_write();
-    return m_ptr + DATA_OFFSET;
+    return (T*)(((uint8_t*)m_ptr) + DATA_OFFSET);
 }
 
 template <class T>
