@@ -11,9 +11,11 @@
 #include <stdio.h>
 template <class U>
 class array;
-
 template <class U>
 class basic_string;
+template <class K, class V, class H>
+class hash_map;
+
 namespace rtl
 {
 
@@ -52,6 +54,7 @@ class copy_on_write
 {
     template <class U>  friend class array;
     template <class U> friend class basic_string;
+    template <class K, class V, class H> friend class hash_map;
 public:
 
 
