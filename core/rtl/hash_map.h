@@ -13,7 +13,7 @@ namespace rtl
 {
 
 template <class U, class T, class H>
-class hash_map;
+class unordered_map;
 
 ///
 /// @brief
@@ -42,49 +42,72 @@ struct displaced_pair
         first = o.first;
         second = o.second;
 
-
         return *this;
     }
-
-
 
 };
 #pragma pack(pop)
 
 ///
 /// @brief
-///     A hash_map implementation using 'Robin Hood' collision resolution
+///     An unordered hash map implementation using 'Robin Hood' collision resolution
 ///     
-///     
+///     The API is basically the same as std::unordered_map
 /// 
 template <class K, class V, class Hash = rtl::hash<K> >
-class hash_map
+class unordered_map
 {
 public:
-    using hashing_function = Hash;
-    using kv_map_t = rtl::displaced_pair<K, V>;
+    using hashing_function  = Hash;
+    using kv_map_t          = rtl::displaced_pair<K, V>;
 
-    using const_iterator = rtl::generic_const_iterator<kv_map_t>;
-    using iterator       = rtl::generic_iterator<kv_map_t>;
+    using const_iterator    = rtl::generic_const_iterator<kv_map_t>;
+    using iterator          = rtl::generic_iterator<kv_map_t>;
 
-    hash_map() : m_data{}, m_element_count(0), m_size(0) { reserve(10); }
+    unordered_map() : m_data{}, m_element_count(0), m_size(1) { reserve(1); }
     /// Insert new value
     void insert(const kv_map_t& nkv);
     
     /// Get value at key
     V& at(const K& key);
     
+    /// Get element at key. Will create a new on if not exists
     V& operator[](const K& key);
     V& operator[](K&& key);
     
     size_t count(const K& k) const;
     
-    bool contains(const K& k) const;
+    bool contains(const K& k) const { return index_of(k) != -1; }
 
+
+    /// returns an iterator containing key's value
+    /// end() if not exists
+    iterator find(const K& key)
+    {
+        int idx = index_of(key);
+        if (idx == -1) return end();
+
+        return iterator(m_data.at_pc(idx));
+    }
+
+    /// returns an iterator containing key's value
+    /// cend() if not exists
+    const_iterator find(const K& key) const
+    {
+        int idx = index_of(key);
+        if (idx == -1) return cend();
+
+        return citerator(m_data.at_p(idx));
+    }
+
+    /// get total number of elements allowed before
+    /// a resize will occur
     size_t max_size() const { return m_size;  }
-    
-    size_t size() const { return m_element_count; }
 
+    /// get current number of elements
+    size_t size() const { return m_element_count; }
+    
+    /// is this map empty?
     bool empty() const { return m_element_count == 0; }
 
     /// Resize the array and rehash the data
@@ -92,6 +115,7 @@ public:
 
     /// Reserve 'n' entries, MUST be done before inserting data
     void reserve(size_t n);
+
 
     inline iterator begin() { return iterator(m_data.at_pc(0)); }
 
@@ -101,7 +125,9 @@ public:
 
     inline const_iterator cend() const { return const_iterator(m_data.at_p(m_element_count)); }
 
-
+    /// get the index of 'key'. 
+    /// @returns -1 on failure
+    int index_of(const K& key) const;
 public:
     copy_on_write<kv_map_t> m_data;
 private:
@@ -114,17 +140,17 @@ private:
 
 
 template<class K, class V, class Hash>
-void hash_map<K, V, Hash>::insert(const kv_map_t& nkv)
+void unordered_map<K, V, Hash>::insert(const kv_map_t& nkv)
 {
+    // resize if needed
+    if (m_element_count + 1 > m_size)
+        resize(m_size + 1);
+
     uint32_t index = hashing_function::run(nkv.first) % m_size;
     unsigned int probe_len = 0;
     unsigned int n_probe_len = 0;
 
     signed int swapIndex = -1;
-    // resize if needed
-    if (m_element_count + 1 > m_size)
-        resize(m_size + 1);
-
     while (probe_len < m_size)
     {
         
@@ -155,7 +181,7 @@ void hash_map<K, V, Hash>::insert(const kv_map_t& nkv)
         // linear probing
         else
         {
-            if (m_data.at(index).displacement  < (int)probe_len)
+            if (swapIndex == -1 &&  m_data.at(index).displacement  < (int)probe_len)
             {
                 swapIndex = index;
                 n_probe_len = probe_len;
@@ -169,7 +195,7 @@ void hash_map<K, V, Hash>::insert(const kv_map_t& nkv)
 }
 
 template<class K, class V, class Hash>
-V& hash_map<K, V, Hash>::at(const K& key)
+V& unordered_map<K, V, Hash>::at(const K& key)
 {
     uint32_t hash = hashing_function::run(key);
     unsigned int index = hash % m_size;
@@ -187,9 +213,30 @@ V& hash_map<K, V, Hash>::at(const K& key)
     abort();
 }
 
+template<class K, class V, class Hash>
+V& unordered_map<K, V, Hash>::operator[](const K& key)
+{
+
+    bool exists = index_of(key) != -1;
+
+    if (exists)
+        return m_data.at_c(index_of(key)).second;
+
+
+    insert({ key, V() });
+    return m_data.at_c(index_of(key)).second;
+
+}
 
 template<class K, class V, class Hash>
-void hash_map<K, V, Hash>::resize(size_t n)
+V& unordered_map<K, V, Hash>::operator[](K&& key)
+{
+    K value = rtl::move(key);
+    return this->operator[](value);
+}
+
+template<class K, class V, class Hash>
+void unordered_map<K, V, Hash>::resize(size_t n)
 {
     // get a copy of the data, this will increase the ref count
     copy_on_write<kv_map_t> copy = m_data;
@@ -213,11 +260,11 @@ void hash_map<K, V, Hash>::resize(size_t n)
 
    
     // when copy goes out of scope, it will either delete itself
-    // or decrease the ref count 
+    // or decrease the ref count  
 }
 
 template<class K, class V, class Hash>
-void hash_map<K, V, Hash>::reserve(size_t n)
+void unordered_map<K, V, Hash>::reserve(size_t n)
 {
     assert(m_element_count == 0);
     m_data.resize(n);
@@ -230,7 +277,22 @@ void hash_map<K, V, Hash>::reserve(size_t n)
 }
 
 template<class K, class V, class Hash>
-void hash_map<K, V, Hash>::swap(uint32_t old_index, uint32_t new_index, uint32_t probelen)
+int unordered_map<K, V, Hash>::index_of(const K& key) const
+{
+    uint32_t index = hashing_function::run(key) % m_size;
+    for (int i = 0; i < m_element_count; i++)
+    {
+        if (m_data.at(index).displacement != -1 && m_data.at(index).first == key)
+            return index;
+        index = (index + 1) % m_size;
+
+    }
+
+    return -1;
+}
+
+template<class K, class V, class Hash>
+void unordered_map<K, V, Hash>::swap(uint32_t old_index, uint32_t new_index, uint32_t probelen)
 {
     assert(probelen != -1 && probelen != 0xffffffff);
     kv_map_t temp = m_data.at(old_index);
@@ -245,7 +307,8 @@ void hash_map<K, V, Hash>::swap(uint32_t old_index, uint32_t new_index, uint32_t
     _new->first = temp.first;
     _new->second = temp.second;
     _new->displacement = probelen;
-   }
+}
+
 
 } // rtl
 

@@ -77,6 +77,7 @@ public:
     copy_on_write(const copy_on_write&& other) 
         : m_ptr(rtl::move(other.m_ptr))
     {
+        ref();
 
     }
 
@@ -90,6 +91,7 @@ public:
     copy_on_write& operator=(const copy_on_write&& other)
     {
         m_ptr = rtl::move(other.m_ptr);
+        ref();
         return *this;
     }
 

@@ -22,7 +22,10 @@ public:
     static constexpr size_t npos = UINT64_MAX;
     
     basic_string() : m_length(1) { }
+    ~basic_string()
+    {
 
+    }
     basic_string(const basic_string& other)
         : m_chars(other.m_chars), m_length (other.m_length)
     {
