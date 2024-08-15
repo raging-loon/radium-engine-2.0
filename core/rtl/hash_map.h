@@ -45,6 +45,8 @@ struct displaced_pair
         return *this;
     }
 
+
+
 };
 #pragma pack(pop)
 
@@ -65,6 +67,7 @@ public:
     using iterator          = rtl::generic_iterator<kv_map_t>;
 
     unordered_map() : m_data{}, m_element_count(0), m_size(1) { reserve(1); }
+    ~unordered_map();
     /// Insert new value
     void insert(const kv_map_t& nkv);
     
@@ -97,7 +100,7 @@ public:
         int idx = index_of(key);
         if (idx == -1) return cend();
 
-        return citerator(m_data.at_p(idx));
+        return const_iterator(m_data.at_p(idx));
     }
 
     /// get total number of elements allowed before
@@ -138,6 +141,22 @@ private:
 
 };
 
+
+template<class K, class V, class Hash>
+unordered_map<K, V, Hash>::~unordered_map()
+{
+    if (m_data.get_reference_count() != 1)
+        return;
+
+    for (int i = 0; i < m_element_count; i++)
+    {
+        auto* p = m_data.at_pc(i);
+        if constexpr (!std::is_trivially_destructible_v<V>)
+            p->second.~V();
+        if constexpr (!std::is_trivially_destructible_v<K>)
+            p->first.~K();
+    }
+}
 
 template<class K, class V, class Hash>
 void unordered_map<K, V, Hash>::insert(const kv_map_t& nkv)

@@ -9,12 +9,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+
+#include <type_traits>
+
+
 template <class U>
 class array;
 template <class U>
 class basic_string;
 template <class K, class V, class H>
-class hash_map;
+class unordered_map;
 
 namespace rtl
 {
@@ -241,6 +245,11 @@ void copy_on_write<T>::unref()
 
         if (get_reference_count() == 1)
         {
+            if constexpr (!std::is_trivially_destructible_v<T>)
+            {
+                for (size_t i = 0; i < get_num_data(); i++)
+                    at_c(i).~T();
+            }
             radium::GenericAllocator::free_static(m_ptr);
             m_ptr = nullptr;
         }
