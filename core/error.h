@@ -17,5 +17,22 @@ abort();\
 }
 #endif
 
+namespace radium
+{
+
+enum Status
+{
+    OK,
+    ERR_FILE_OPEN,
+    ERR_FILE_NOT_EXIST,
+    ERR_INVALID_VALUE
+};
+
+
+} // radium
+
+
+
+
 
 #endif // CORE_ERROR_H_

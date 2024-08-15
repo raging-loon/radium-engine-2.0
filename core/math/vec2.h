@@ -11,7 +11,6 @@ namespace rm
 /// @brief
 ///     ℝ² vector
 ///     
-/// 
 struct vec2
 {
     union

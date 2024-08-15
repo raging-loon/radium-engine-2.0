@@ -16,39 +16,17 @@ option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
 ##########################
 ###### UNIT TESTING ###### 
 ##########################
-
 if(ENABLE_UNIT_TESTS)
-
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
-)
-FetchContent_Declare(
-    glm
-    URL https://github.com/g-truc/glm/releases/download/1.0.1/glm-1.0.1-light.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(googletest)
-FetchContent_MakeAvailable(glm) 
-
-enable_testing()
-
-add_subdirectory("unittest")
-
+    add_subdirectory("unittest")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/unit-test")
-
 else()
 ##########################
 ###### NORMAL BUILD ######
 ##########################
-
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
-set(CONFIG_SOURCES
-    main.cpp
- )
-
+    set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
+    set(CONFIG_SOURCES
+        "main/main.cpp"
+     )
 endif()
 
 
@@ -64,7 +42,8 @@ add_executable(radium-engine
  "core/log/log.h"
  "core/log/colors.h" "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
  "core/log/outputsystems/StdOutSystem.h"  "core/log/outputsystems/StdoutSystem.cpp" 
- "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp" "core/math/vec2.h" "core/math/vec2.cpp" "core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h")
+ "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp"
+ "core/math/vec2.h" "core/math/vec2.cpp" "core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h")
 
 target_include_directories(radium-engine PUBLIC "./")
 
@@ -72,14 +51,11 @@ target_include_directories(radium-engine PUBLIC "./")
 ###### UNIT TESTING ######
 ##########################
 if(ENABLE_UNIT_TESTS)
-
-target_link_libraries(
-  radium-engine 
-  GTest::gtest_main
-)
-include_directories("${CMAKE_SOURCE_DIR}/_deps/glm-src/")
-include(GoogleTest)
-gtest_discover_tests(radium-engine)
-
-
+    target_link_libraries(
+      radium-engine 
+      GTest::gtest_main
+    )
+    include_directories("${CMAKE_SOURCE_DIR}/_deps/glm-src/")
+    include(GoogleTest)
+    gtest_discover_tests(radium-engine)
 endif() 
