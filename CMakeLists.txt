@@ -45,7 +45,7 @@ add_executable(radium-engine
  "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp"
  "core/math/vec2.h" "core/math/vec2.cpp" "core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h")
 
-target_include_directories(radium-engine PUBLIC "./")
+target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/")
 
 ##########################
 ###### UNIT TESTING ######
