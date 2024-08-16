@@ -29,9 +29,19 @@ else()
      )
 endif()
 
+if(WIN32)
+
+file(GLOB_RECURSE PLATFORM_SOURCES 
+    "${CMAKE_SOURCE_DIR}/platform/windows/*.h"
+    "${CMAKE_SOURCE_DIR}/platform/windows/*.cpp"
+)
+
+
+endif()
 
 add_executable(radium-engine
     ${CONFIG_SOURCES}
+    ${PLATFORM_SOURCES}
     #"core/rtl/__copy_on_write.h"
     "core/rtl/copy_on_write.h"
     "core/rtl/string.h"
@@ -43,7 +53,9 @@ add_executable(radium-engine
  "core/log/colors.h" "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
  "core/log/outputsystems/StdOutSystem.h"  "core/log/outputsystems/StdoutSystem.cpp" 
  "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp"
- "core/math/vec2.h" "core/math/vec2.cpp" "core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h")
+"core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h" "core/io/file.h")
+
+
 
 target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/")
 
