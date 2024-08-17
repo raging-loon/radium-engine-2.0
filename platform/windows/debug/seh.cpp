@@ -45,7 +45,19 @@ void WriteMiniDump(EXCEPTION_POINTERS* plist)
             GetCurrentProcess(),
             GetCurrentProcessId(),
             dumpfile,
+            // TODO: see how big of a file this generates during 
+            //       production
+            //       If small (< 200MB), keep for all buids
+#ifdef _DEBUG
+            (MINIDUMP_TYPE) (
+                MiniDumpWithHandleData  | 
+                MiniDumpWithDataSegs    |
+                MiniDumpWithThreadInfo  |
+                MiniDumpWithFullMemory
+            ),
+#else 
             MiniDumpNormal,
+#endif // DEBUG
             &dumpInfo,
             NULL,
             NULL

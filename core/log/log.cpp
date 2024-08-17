@@ -161,7 +161,7 @@ void Logger::writeLogLevel(LogLevel ll, rtl::string& output)
 void Logger::writeUserMessage(rtl::string& output, const char* message, va_list args)
 {
     char temp[256] = { 0 };
-    vsnprintf_s(temp, 256, message, args);
+    vsnprintf(temp, 256, message, args);
     output += temp;
 }
 

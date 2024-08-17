@@ -61,8 +61,6 @@
         [ ] Meta data??
 
 ===========================[ Modules ]===========================
-    [ ] Backtracing
-        [ ] PDB        [ ] DWARF
 
     [ ] YAML
 

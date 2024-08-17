@@ -4,7 +4,7 @@
 #include <stdint.h>
 #include "utility.h"
 #include "core/memory/Memory.h"
-#include <xutility>
+#include <utility>
 
 namespace rtl
 {
@@ -96,6 +96,8 @@ public:
             return;
         if (_int_store->_refcount == 1)
         {
+            if constexpr (!std::is_trivially_destructible_v<T>)
+                _int_store->_ptr->~T();
             radium::GenericAllocator::free_static(_int_store->_ptr);
             delete _int_store;
         }
@@ -151,6 +153,8 @@ template <class T>
 class unique_ptr 
 {
 public:
+    
+    unique_ptr() : m_ptr(nullptr) {}
 
     unique_ptr(T* _new) : m_ptr(_new) { assert(_new); }
 
@@ -196,7 +200,7 @@ private:
 template <class T, class... Args>
 unique_ptr<T> make_unique(Args... args)
 {
-    T* nt = radium::GenericAllocator::alloc_static<T>(1);
+    T* nt = radium::GenericAllocator::alloc_static(sizeof(T));
 
     return unique_ptr<T>(
         new (nt) T(rtl::forward<Args>(args)...)
