@@ -1,0 +1,9 @@
+#ifndef PLATFORM_WINDOWS_DEBUG_BACKTRACE_H_
+#define PLATFORM_WINDOWS_DEBUG_BACKTRACE_H_
+
+#include <Windows.h>
+#include <DbgHelp.h>
+
+
+
+#endif // PLATFORM_WINDOWS_DEBUG_BACKTRACE_H_

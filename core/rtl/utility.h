@@ -11,6 +11,7 @@
 /// information found in the type_traits header
 /// 
 #include <type_traits>
+#include <utility>
 
 namespace rtl
 {
@@ -83,7 +84,8 @@ constexpr T&& forward(remove_reference_t<T>&& arg)
 template <class T>
 constexpr typename remove_reference<T>::type&& move(T&& arg)
 {
-    return static_cast<typename remove_reference<T>::type&&>(arg);
+    return std::move(arg);
+    //return static_cast<remove_reference<T>&&>(arg);
 }
 
 

@@ -27,6 +27,9 @@ What will I be building?
 - [ ] Audio Library (prob. WASAPI/ALSA)
 - [ ] Small self-contained VM language
 
+## Directory Structure
+
+
 ## Coding Style
 I am using Allman Style bracing.
 

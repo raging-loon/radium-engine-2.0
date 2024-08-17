@@ -113,7 +113,7 @@ public:
     basic_string<T> substr(size_t pos = 0, size_t count = npos);
 
 
-    FORCEINLINE void resize(size_t n)
+    inline void resize(size_t n)
     {
         m_chars.resize(n);
     }

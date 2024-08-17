@@ -1,6 +1,4 @@
-======================[ MAJOR TODOS ]======================
-
-RTL
+﻿===========================[ RTL ]===========================
     [-] rtl::copy_on_write
     [-] rtl::basic_string
     [-] rtl::string
@@ -9,17 +7,79 @@ RTL
     [-] rtl::function
     [-] rtl::shared_ptr
     [-] rtl::unique_ptr
-    [ ] rtl::hash_map
-    [ ] iterators
-RM
-    [ ] rm::vec2,3,4
-    [ ] rm::mat,4x4,3x3,3x4
-    [ ]
+    [-] rtl::hash_map
+    [-] iterators
+
+============================[ IO ]============================
+    [ ] Input
+        [ ] Key Press               [ ] Key-combo detection
+        [ ] Mouse Press             [ ] Key => Action map
+        [ ] Get Mouse position      [ ] Game Pad?
+    
+    [ ] File I/O
+        [-] Open    [-] Close   [-] Write   [-] Read
+        [ ] Get Permissions
+        [-] Easy File size
+        [ ] '<<' '>>' overloading
+        [-] Should be RAII
+        [ ] Ansync Files
+
+    [ ] Directory I/O
+        [ ] Directory Listing
+            [ ] Pattern matching
+        [ ] Creation        [ ] Deletion
+
+    [ ] Network
+        [ ] TCP/UDP support
+            [ ] Sending     [ ] Receiving   [ ] Opening Ports
+        [ ] ???
+
+===========================[ Debugging ]===========================
+    [ ] Logging
+        [ ] Output Strategies
+            [-] stdout          [-] file output
+            [ ] network ???
+        [-] Categorized Logs
+        [-] User Messages
+        [-] Memory Logging
+        [ ] Scheduled Logging
+    [ ] Debug Console
+        [ ] REPL for commands
+        [ ] Probably socket/HUD based
+
+===========================[ Resources ]===========================
+    [ ] Resource Manager
+        [ ] Abstract Resource Factory
+        [ ] BST or B-Tree for storing IDs
+        [ ] ResourcePtr ??
+        [ ] Built in support for
+            [ ] Images (PNG, JPG)
+            [ ] Fonts
+            [ ] Localization Data
+            [ ] Audio
+            [ ] Script Bytecode
+        [ ] Meta data??
+
+===========================[ Modules ]===========================
+
+    [ ] YAML
+
+    [ ] PNG Loader
+
+===========================[ Graphics ]===========================
+    [ ] DirectX 12
+        [ ] General Buffer
+        [ ] General texture
+        [ ] Command Queue
+        [ ] Immediate Mode interface
+        [ ] Primitive drawing interface
 
 MISC
-    [ ] Stack trace
-    [ ] Back trace
     [ ] Small Object Allocator
-    [ ] File system abstraction
-    [ ] Input System
+    [ ] Audio
+    [ ] Scripting Language
+        [ ] Bindings from C++ to language
+        [ ] VM
+    [ ] Multi-threading
+
 
