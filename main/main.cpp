@@ -12,26 +12,19 @@
 
 #include "core/io/file.h"
 
+#include "core/debug/globlog.h"
+#include "core/debug/seh.h"
 using namespace radium;
 
 int main(int argc, char** argv)
 {
-    Logger info("debug-info");
-    info.setOutputSystem<StdoutSystem>();
+    radium::setSEHHandlers();
 
-    File f;
-    
-    if (f.open("test.log", File::APPEND) != Status::OK)
-    {
-        printf("fail\n");
-    
-    }
+    GlobLoggers::init();
+    GlobLoggers::getEngineLogger()->info("hello from engine logger");
+    GlobLoggers::getClientLogger()->info("hello from client logger");
 
-    printf("%zd\n", f.getSize());
 
-    f.write((void*)"hello world", 10);
-    f.write((void*)"hello world", 10);
-    f.write((void*)"hello world", 10);
 }
 
 

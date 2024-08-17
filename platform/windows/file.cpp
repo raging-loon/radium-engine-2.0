@@ -2,7 +2,10 @@
 #include "core/error.h"
 #include <fileapi.h>
 #include <windows.h>
-
+///
+/// @brief
+///     Windows-Specific File operations
+/// 
 
 using radium::File;
 using radium::Status;
@@ -111,7 +114,7 @@ Status File::read(void* out, size_t numBytes, size_t* bytesRead)
     return OK;
 }
 
-Status File::write(void* in, size_t numBytes, size_t* bytesWritten)
+Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
 {
     assert(m_isOpen && m_amode != READ);
     DWORD br;
@@ -127,7 +130,7 @@ Status File::write(void* in, size_t numBytes, size_t* bytesWritten)
     
 }
 
-Status File::write(void* in, size_t _szof_1, size_t n, size_t* bytesWritten)
+Status File::write(const void* in, size_t _szof_1, size_t n, size_t* bytesWritten)
 {
     assert(m_isOpen && m_amode != READ);
 

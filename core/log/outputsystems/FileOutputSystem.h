@@ -5,6 +5,8 @@
 
 #include "core/rtl/string.h"
 #include "core/rtl/array.h"
+#include "core/io/file.h"
+
 namespace radium
 {
 
@@ -49,7 +51,7 @@ private:
 
     /// the file we are writing to
     FILE* m_outFp;
-
+    File m_file;
     /// array of logs, this will continually be overwritten
     rtl::array<rtl::string> m_logCache;
 

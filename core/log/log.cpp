@@ -2,6 +2,7 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include "log.h"
 
 using radium::Logger;
 
@@ -142,7 +143,7 @@ void Logger::writeMetaData(rtl::string& output)
 
 void Logger::writeLogLevel(LogLevel ll, rtl::string& output)
 {
-    output += " [";
+    output += "[";
 
     if (m_outputSystem->supportsColor())
     {
@@ -154,7 +155,7 @@ void Logger::writeLogLevel(LogLevel ll, rtl::string& output)
     {
         output += LogNameMap[(int)ll];
     }
-    output += "]";
+    output += "] ";
 }
 
 void Logger::writeUserMessage(rtl::string& output, const char* message, va_list args)
@@ -163,6 +164,4 @@ void Logger::writeUserMessage(rtl::string& output, const char* message, va_list 
     vsnprintf_s(temp, 256, message, args);
     output += temp;
 }
-
-
 

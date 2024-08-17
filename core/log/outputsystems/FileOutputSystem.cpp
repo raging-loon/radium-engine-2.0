@@ -19,11 +19,14 @@ FileOutputSystem::FileOutputSystem(const char* filename, int flushEveryNLogs)
 
 FileOutputSystem::~FileOutputSystem()
 {
-    if(m_outFp)
-    {
+    if(m_file.isOpen())
         flush();
-        fclose(m_outFp);
-    }
+
+    // resize to whatever current interval is. 
+    // This will ensure unitialized strings are not destructed
+    // Might not be super efficient, but ideally loggers
+    // won't be created and destroyed many times.s
+    m_logCache.resize(m_curInterval);
 }
 
 void FileOutputSystem::log(const rtl::string& msg)
@@ -47,18 +50,11 @@ void FileOutputSystem::flush()
     printf("flushing\n");
     for (int i = 0; i < m_curInterval; i++)
     {
-        fprintf(m_outFp, m_logCache[i].c_str());
+        m_file.write(m_logCache[i].c_str(), 1, m_logCache[i].length() - 1);
     }
 }
 
 bool FileOutputSystem::openFile(const char* name)
 {
-    FILE* fp = fopen(name, "w");
-
-    if (!fp)
-        return false;
-
-    m_outFp = fp;
-
-    return true;
+    return m_file.open(name, File::APPEND) == Status::OK;
 }

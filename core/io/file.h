@@ -52,10 +52,10 @@ public:
     Status read(void* out, size_t numBytes, size_t* bytesRead = nullptr);
 
     /// write numBytes bytes to the file
-    Status write(void* in, size_t numBytes, size_t* bytesWritten = nullptr);
+    Status write(const void* in, size_t numBytes, size_t* bytesWritten = nullptr);
 
     /// write _szof_1 * n bytes to the file
-    Status write(void* in, size_t _szof_1, size_t n, size_t* bytesWritten = nullptr);
+    Status write(const void* in, size_t _szof_1, size_t n, size_t* bytesWritten = nullptr);
 
 
 

@@ -9,17 +9,6 @@
     [-] rtl::unique_ptr
     [-] rtl::hash_map
     [-] iterators
-===========================[ RM ]===========================
-    [ ] vectors
-        [-] vec2        [ ] vec3
-        [ ] vec4
-    [ ] matrices
-        [ ] types
-            [ ] mat4x4  [ ] mat3x3
-            [ ] mat3x4  [ ] mat4x3
-        [ ] determinant
-        [ ] transposition
-        [ ] serialization
 
 ============================[ IO ]============================
     [ ] Input
@@ -28,11 +17,11 @@
         [ ] Get Mouse position      [ ] Game Pad?
     
     [ ] File I/O
-        [ ] Open    [ ] Close   [ ] Write   [ ] Read
+        [-] Open    [-] Close   [-] Write   [-] Read
         [ ] Get Permissions
-        [ ] Easy File size
+        [-] Easy File size
         [ ] '<<' '>>' overloading
-        [ ] Should be RAII
+        [-] Should be RAII
         [ ] Ansync Files
 
     [ ] Directory I/O
