@@ -3,6 +3,8 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+# include <stdio.h>
 #endif // _WIN32
 
 namespace radium
@@ -11,7 +13,8 @@ namespace radium
 #ifdef _WIN32
 
 using FileObject = HANDLE;
-
+#elif defined(__linux__) || defined(__unix__)
+using FileObject = FILE*;
 #endif // _WIN32
 
 

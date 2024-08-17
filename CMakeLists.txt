@@ -35,7 +35,11 @@ file(GLOB_RECURSE PLATFORM_SOURCES
     "${CMAKE_SOURCE_DIR}/platform/windows/*.h"
     "${CMAKE_SOURCE_DIR}/platform/windows/*.cpp"
 )
-
+elseif(UNIX)
+file(GLOB_RECURSE PLATFORM_SOURCES 
+    "${CMAKE_SOURCE_DIR}/platform/unix/*.h"
+    "${CMAKE_SOURCE_DIR}/platform/unix/*.cpp"
+)
 
 endif()
 

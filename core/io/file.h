@@ -35,7 +35,7 @@ public:
     /// Open a file with a certain mode. Returns OK on success
     Status open(const char* filename, AccessMode mode);
 
-    Status open(const rtl::string& filename, AccessMode mode) { open((const char*)filename.c_str(), mode); }
+    Status open(const rtl::string& filename, AccessMode mode) { return open((const char*)filename.c_str(), mode); }
     
     /// close the file if it is open
     void close();
