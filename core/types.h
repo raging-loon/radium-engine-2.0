@@ -2,23 +2,33 @@
 #define CORE_TYPES_H_
 
 #ifdef _WIN32
-#include <windows.h>
+# include <platform/windows/win32platformtypes.h>
+#elif defined(__linux__) || defined(__unix__)
+# include <platform/unix/unixplatformtypes.h>
 #else
-# include <stdio.h>
-#endif // _WIN32
+# error "Unknown platform!"
+#endif // _Win32
+
+#include <stdint.h>
 
 namespace radium
 {
 
-#ifdef _WIN32
+using U8  = uint8_t;
+using U16 = uint16_t;
+using U32 = uint32_t;
 
-using FileObject = HANDLE;
-#elif defined(__linux__) || defined(__unix__)
-using FileObject = FILE*;
-#endif // _WIN32
+using I8  = int8_t;
+using I16 = int16_t;
+using I32 = int32_t;
+
+#ifndef _X86_
+using U64 = uint64_t;
+using I64 = int64_t;
+#endif
 
 
-} // radium
 
+}
 
 #endif // CORE_TYPES_H_

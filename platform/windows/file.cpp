@@ -1,7 +1,8 @@
 #include "core/io/file.h"
 #include "core/error.h"
-#include <fileapi.h>
+
 #include <windows.h>
+#include <fileapi.h>
 ///
 /// @brief
 ///     Windows-Specific File operations

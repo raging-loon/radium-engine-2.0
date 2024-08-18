@@ -6,8 +6,8 @@ What will I not be writing?
 1. The Operating system
 2. The graphics API (DX11)
 3. Unit testing framework (GTEST)
-	* I will be using GLM here to ensure the correctness of my math library
 4. Parts of the STL that are handled by the compiler. e.g. `std::__is_trivially_copiable`
+5. Math stuff
 
 Other than that, everything here is 100% my own code.
 

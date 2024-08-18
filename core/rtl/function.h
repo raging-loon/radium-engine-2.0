@@ -35,10 +35,10 @@ class function <T(Args...)>
 public:
     using fn_ptr_t = T(*)(Args...);
 
-    constexpr function(T fn) 
-        : m_fn(fn) {}
-
-    constexpr function(T&& fn)
+    //constexpr function(fn_ptr_t fn) 
+    //    : m_fn(fn) {}
+    constexpr function() : m_fn(nullptr) {}
+    constexpr function(fn_ptr_t && fn)
         : m_fn(rtl::move(fn)) {}
 
     constexpr function(function& other)
@@ -49,8 +49,17 @@ public:
 
     template <class Tx>
     function(Tx&& other)
-        : m_fn(rtl::move(other))
     {
+        if constexpr (std::is_class_v<Tx>)
+            m_fn = &(rtl::move(other).operator ());
+
+    }
+
+    template<class Tx>
+    function& operator=(Tx&& other)
+    {
+        m_fn = rtl::forward<Tx>(other);
+        return *this;
     }
 
     function& operator=(function& other)
@@ -69,7 +78,10 @@ public:
     /// call the function
     constexpr T operator()(Args&&... args)
     {
-        return m_fn(rtl::forward<Args>(args)...);
+        if constexpr(std::is_same_v<T, void>)
+            m_fn(rtl::forward<Args>(args)...);
+        else
+            return m_fn(rtl::forward<Args>(args)...);
     }
 
     /// check if the function is set

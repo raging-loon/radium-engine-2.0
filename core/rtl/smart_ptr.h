@@ -34,7 +34,9 @@ class shared_ptr
 public:
 
     shared_ptr() : _int_store(nullptr) {}
-    shared_ptr(T* _new)
+    
+    template <class U>
+    shared_ptr(U* _new)
     {
         _int_store = new __ref_cnt_ptr{ ._ptr = _new, ._refcount = 1 };
     }
@@ -50,12 +52,12 @@ public:
         _int_store->_refcount++;
     }
 
-    shared_ptr(const shared_ptr&& other)
-        : _int_store(rtl::move(other._int_store))
-    {
-        _int_store->_refcount++;
+    //shared_ptr(const shared_ptr&& other)
+    //    : _int_store(rtl::move(other._int_store))
+    //{
+    //    _int_store->_refcount++;
 
-    }
+    //}
 
     shared_ptr& operator=(shared_ptr& other)
     {
@@ -89,6 +91,15 @@ public:
         assert(_int_store);
         return *_int_store->_ptr;
     }
+
+    template<class U>
+    shared_ptr(const shared_ptr<U>& other, std::enable_if_t<std::is_convertible_v<U*, T*>, int> = 0)
+        : _int_store((shared_ptr<T>&)(other)._int_store)
+    {
+        _int_store->_refcount++;
+    }
+
+
 
     void release()
     {
@@ -156,7 +167,7 @@ public:
     
     unique_ptr() : m_ptr(nullptr) {}
 
-    unique_ptr(T* _new) : m_ptr(_new) { assert(_new); }
+    explicit unique_ptr(T* _new) : m_ptr(_new) { assert(_new); }
 
     ~unique_ptr()
     {
@@ -165,10 +176,31 @@ public:
     }
 
     unique_ptr(unique_ptr&& other) 
-        : m_ptr(rtl::move(other.m_ptr))
+        : m_ptr(other.m_ptr)
     {
         other.m_ptr = nullptr;
     }
+
+    template<class U>
+    unique_ptr(const unique_ptr<U>& other, std::enable_if_t<std::is_convertible_v<U*, T*>, int> = 0)
+        :m_ptr(other.m_ptr)
+    {
+        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        // THIS IS A **HACK** REMOVE REMOVE REMOVE
+        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        const_cast<unique_ptr<U>&>(other).m_ptr = nullptr;
+    }
+    template<class U>
+    unique_ptr& operator=(const unique_ptr<U>& other)
+    {
+        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        // THIS IS A **HACK** REMOVE REMOVE REMOVE
+        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        m_ptr = other.m_ptr;
+        const_cast<unique_ptr<U>&>(other).m_ptr = nullptr;
+        return *this;
+    }
+
 
     unique_ptr& operator=(unique_ptr&& other)
     {
@@ -193,6 +225,8 @@ private:
 
     T* m_ptr;
 
+    template<class U>
+    friend class unique_ptr;
 };
 
 
@@ -200,7 +234,7 @@ private:
 template <class T, class... Args>
 unique_ptr<T> make_unique(Args... args)
 {
-    T* nt = radium::GenericAllocator::alloc_static(sizeof(T));
+    T* nt = (T*)radium::GenericAllocator::alloc_static(sizeof(T));
 
     return unique_ptr<T>(
         new (nt) T(rtl::forward<Args>(args)...)
