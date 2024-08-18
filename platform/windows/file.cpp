@@ -107,11 +107,11 @@ Status File::read(void* out, size_t numBytes, size_t* bytesRead)
     DWORD discarded = 0;
 
     BOOL stats = ReadFile(
-        m_file, out, numBytes, &discarded, NULL
+        m_file, out, static_cast<DWORD>(numBytes), &discarded, NULL
     );
 
     if (bytesRead)
-        *bytesRead = (size_t)discarded;
+        *bytesRead = static_cast<size_t>(discarded);
     return OK;
 }
 
@@ -121,7 +121,7 @@ Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
     DWORD br;
 
     BOOL writeStatus = WriteFile(
-        m_file, in, numBytes, &br, NULL
+        m_file, in, static_cast<DWORD>(numBytes), &br, NULL
     );
 
     if (bytesWritten)

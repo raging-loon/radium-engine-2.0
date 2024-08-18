@@ -1,108 +1,95 @@
-#ifndef CORE_RTL_FUNCTION_H_
-#define CORE_RTL_FUNCTION_H_
+#ifndef CORE_RTL_FUNCTION2_H_
+#define CORE_RTL_FUNCTION2_H_
 
-#include "utility.h"
+#include <core/rtl/utility.h>
+#include <core/rtl/smart_ptr.h>
 
+
+#include <memory>
 namespace rtl
 {
 
-
-/// Base function pointer template. see @ref rtl::function< T(Args...)>
-template <class T, class... Args>
-class function
+///
+/// @brief
+///     Base Callable class
+///     Used for type-erasure
+/// 
+template <class RType, class... Args>
+class Callable
 {
+public:
+    virtual ~Callable() = default;
+    virtual RType invoke(Args... args) = 0;
 };
 
 
+
 ///
-/// @brief 
-///     function pointer template
-///
-///     Generic Function Pointer wrapper
+/// @brief
+///     Wrapper around @ref Callable
 ///     
-///     This can take take ordinary functions and lambdas
-///     
-///     Constructed via 
-///     @code
-///     rtl::function<ReturnType(ParameterTypes...)> myFunction = ...;         
-///     @endcode
-/// 
-///     Called via overloaded '()' operator
-/// 
-template <class T, class... Args>
-class function <T(Args...)>
+///     Store a function pointer, used in type erasure
+template <class Fn, class RType, class... Args>
+class CallableWrapper : public Callable<RType, Args...>
 {
 public:
-    using fn_ptr_t = T(*)(Args...);
+    explicit CallableWrapper(Fn fn) : m_fn(rtl::move(fn)) {}
 
-    //constexpr function(fn_ptr_t fn) 
-    //    : m_fn(fn) {}
-    constexpr function() : m_fn(nullptr) {}
-    constexpr function(fn_ptr_t && fn)
-        : m_fn(rtl::move(fn)) {}
-
-    constexpr function(function& other)
-        : m_fn(other.m_fn)
+    RType invoke(Args... args) override
     {
-    
-    }
-
-    template <class Tx>
-    function(Tx&& other)
-    {
-        if constexpr (std::is_class_v<Tx>)
-            m_fn = &(rtl::move(other).operator ());
-
-    }
-
-    template<class Tx>
-    function& operator=(Tx&& other)
-    {
-        m_fn = rtl::forward<Tx>(other);
-        return *this;
-    }
-
-    function& operator=(function& other)
-    {
-        m_fn = other.m_fn;
-        return *this;
-    }
-
-    function& operator=(function&& other)
-    {
-        m_fn = rtl::move(other.m_fn);
-        return *this;
-
-    }
-
-    /// call the function
-    constexpr T operator()(Args&&... args)
-    {
-        if constexpr(std::is_same_v<T, void>)
+        if constexpr (std::is_same_v<RType, void>)
             m_fn(rtl::forward<Args>(args)...);
         else
-            return m_fn(rtl::forward<Args>(args)...);
-    }
-
-    /// check if the function is set
-    constexpr bool is_valid() 
-    {
-        return !!m_fn;
-    }
-
-    constexpr const fn_ptr_t get() const
-    {
-        return m_fn;
+        return m_fn(rtl::forward<Args>(args)...);
     }
 
 private:
-
-    fn_ptr_t m_fn;
-
+    Fn m_fn;
 };
+
+template <class Signature>
+class function;
+
+
+template <class Ret, class... Args>
+class function <Ret(Args...)>
+{
+
+public:
+    
+    
+    template <class Fn>
+    function(Fn fn)
+    {
+        m_functor = rtl::make_unique<CallableWrapper<Fn, Ret, Args...>>(rtl::move(fn));
+    }
+
+    function() {}
+
+    template<class Fn>
+    function& operator=(const function& other)
+    {
+        m_functor = other.m_functor;
+        return *this;
+    }
+
+    Ret operator()(Args&&...args)
+    {
+        if constexpr (std::is_same_v<Ret, void>)
+            m_functor->invoke(rtl::forward<Args>(args)...);
+        else
+            return  m_functor->invoke(rtl::forward<Args>(args)...);
+    }
+
+private:
+    rtl::unique_ptr<Callable<Ret, Args...>> m_functor;
+};
+
+
 
 
 } // rtl
 
 
-#endif // CORE_RTL_FUNCTION_H_
+
+#endif // CORE_RTL_FUNCTION2_H_

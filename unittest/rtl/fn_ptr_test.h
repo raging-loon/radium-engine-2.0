@@ -13,13 +13,14 @@ TEST(rtl_test, function_ptr_test)
 
     rtl::function<int()> test = &getSpecialNumber;
 
-    EXPECT_EQ(test.get(), getSpecialNumber);
     EXPECT_EQ(test(), 1234);
 
+    rtl::function<int(int)> test2 = [](int x) -> int{
+        return x * x;
+    };
 
-    rtl::function<int()> test2 = test;
 
-    EXPECT_EQ(test.get(), test2.get());
+    EXPECT_EQ(test2(4), 16);
 
 
 

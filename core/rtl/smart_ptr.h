@@ -181,23 +181,23 @@ public:
         other.m_ptr = nullptr;
     }
 
-    template<class U>
-    unique_ptr(const unique_ptr<U>& other, std::enable_if_t<std::is_convertible_v<U*, T*>, int> = 0)
-        :m_ptr(other.m_ptr)
+    template<class U, std::enable_if_t<std::is_convertible_v<U*, T*>, int> = 0>
+    unique_ptr(unique_ptr<U>&& other)
     {
-        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-        // THIS IS A **HACK** REMOVE REMOVE REMOVE
-        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-        const_cast<unique_ptr<U>&>(other).m_ptr = nullptr;
+        if (m_ptr == other.m_ptr)
+            return;
+
+        m_ptr = other.m_ptr;
+        other.m_ptr = nullptr;
     }
     template<class U>
-    unique_ptr& operator=(const unique_ptr<U>& other)
+    unique_ptr& operator=(unique_ptr<U>&& other)
     {
-        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
-        // THIS IS A **HACK** REMOVE REMOVE REMOVE
-        // TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO TODO 
+        if (m_ptr == other.m_ptr)
+            return *this;
+
         m_ptr = other.m_ptr;
-        const_cast<unique_ptr<U>&>(other).m_ptr = nullptr;
+        other.m_ptr = nullptr;
         return *this;
     }
 

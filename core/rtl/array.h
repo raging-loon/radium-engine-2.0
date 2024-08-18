@@ -42,6 +42,15 @@ public:
         (m_data.at_c(m_index++)) = value;
     }
 
+    void push_back(T&& value)
+    {
+        size_t idx = size() - 1;
+        if (should_resize())
+        {
+            resize(size() + 1);
+        }
+        (m_data.at_c(m_index++)) = rtl::move(value);
+    }
 
     T& operator[](size_t index)
     {

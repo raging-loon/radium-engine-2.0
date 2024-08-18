@@ -15,6 +15,10 @@
 
 namespace rtl
 {
+/// disable qualifier warning
+/// irrelavent in this case
+#pragma warning(push)
+#pragma warning(disable: 4180)
 
 ///
 /// @brief
@@ -57,6 +61,8 @@ struct remove_reference<T&&>
 template <class T>
 using remove_reference_t = typename remove_reference<T>::type;
 
+/// end warning disable
+#pragma warning(pop)
 
 /// 
 /// @brief
