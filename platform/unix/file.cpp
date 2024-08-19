@@ -105,7 +105,7 @@ Status File::read(void* out, size_t numBytes, size_t* bytesRead)
 
 Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
 {
-     assert(m_isOpen && m_amode != WRITE && m_amode != APPEND);
+     assert(m_isOpen && m_amode != READ);
 
     size_t bytes = fwrite(in, 1, numBytes, m_file);
 
@@ -114,8 +114,8 @@ Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
         *bytesWritten = 0;
         return ERR_FILE_IO;        
     }        
-
-    *bytesWritten = bytes;
+    if (bytesWritten)
+        *bytesWritten = bytes;
 
     return OK;
     
@@ -123,7 +123,8 @@ Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
 
 Status File::write(const void* in, size_t _szof_1, size_t n, size_t* bytesWritten)
 {
-     assert(m_isOpen && m_amode != WRITE && m_amode != APPEND);
+    assert(m_isOpen && m_amode != READ);
+
 
     size_t bytes = fwrite(in, _szof_1, n, m_file);
 
@@ -132,8 +133,8 @@ Status File::write(const void* in, size_t _szof_1, size_t n, size_t* bytesWritte
         *bytesWritten = 0;
         return ERR_FILE_IO;        
     }        
-
-    *bytesWritten = bytes;
+    if(bytesWritten)
+        *bytesWritten = bytes;
 
     return OK;
     

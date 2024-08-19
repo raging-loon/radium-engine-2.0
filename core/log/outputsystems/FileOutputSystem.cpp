@@ -6,12 +6,13 @@ using radium::FileOutputSystem;
 FileOutputSystem::FileOutputSystem(const rtl::string& name, int flushEveryNLogs)
     : FileOutputSystem(name.c_str(), flushEveryNLogs)
 {
-      
 }
 
 FileOutputSystem::FileOutputSystem(const char* filename, int flushEveryNLogs)
     : m_flushInterval(flushEveryNLogs), m_curInterval(0), m_outFp(nullptr)
 {
+
+    __thread_safe_mutex__.create();
     m_logCache.resize(m_flushInterval);
     // TODO: add error message and default to stderr
     openFile(filename);
@@ -19,6 +20,8 @@ FileOutputSystem::FileOutputSystem(const char* filename, int flushEveryNLogs)
 
 FileOutputSystem::~FileOutputSystem()
 {
+    THREAD_SAFE_FUNCTION
+
     if(m_file.isOpen())
         flush();
 
@@ -31,7 +34,8 @@ FileOutputSystem::~FileOutputSystem()
 
 void FileOutputSystem::log(const rtl::string& msg)
 {
-    
+    THREAD_SAFE_FUNCTION
+
     m_logCache[m_curInterval] = msg;
 
     ++m_curInterval;

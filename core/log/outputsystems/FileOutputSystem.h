@@ -7,6 +7,8 @@
 #include "core/rtl/array.h"
 #include "core/io/file.h"
 
+#include <core/thread/thread.h>
+
 namespace radium
 {
 
@@ -23,6 +25,7 @@ namespace radium
 /// 
 class FileOutputSystem : public OutputSystem
 {
+    THREAD_SAFE_CLASS
 public:
 
     FileOutputSystem(const rtl::string& name, int flushEveryNLogs);
