@@ -3,10 +3,9 @@
 
 #include <core/types.h>
 #include <core/rtl/utility.h>
-#include <Windows.h> // TEMPL CODE: TODO REMOVE
-#include <stdio.h>
-
 #include <core/rtl/function.h>
+#include <core/thread/mutex.h>
+
 namespace radium
 {
 
@@ -62,7 +61,7 @@ public:
         dummy = [=]() mutable {
             rtl::forward<T>(t)(rtl::forward<Args>(args)...);
         };
-        start(dummy_thread_runner::run, (void*)&dummy);
+        start((void*)(&dummy_thread_runner::run), (void*)&dummy);
     }
 
     thread& operator=(thread&& other)
@@ -104,5 +103,14 @@ private:
 
 } // radium
 
+
+///
+/// @brief
+///     These macros are designed
+///     to make creating threadsafe classes/functions
+///     easier.
+/// 
+#define THREAD_SAFE_CLASS       radium::Mutex __thread_safe_mutex__;
+#define THREAD_SAFE_FUNCTION    radium::ScopedMutexLocker __mutex_locker__(__thread_safe_mutex__);
 
 #endif // CORE_THREAD_H_

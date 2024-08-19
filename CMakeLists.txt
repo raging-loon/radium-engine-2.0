@@ -58,7 +58,7 @@ add_executable(radium-engine
  "core/log/outputsystems/StdOutSystem.h"  "core/log/outputsystems/StdoutSystem.cpp" 
  "core/log/outputsystems/FileOutputSystem.h" "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp"
 "core/rtl/hash.h" "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h" "core/io/file.h" 
-"core/debug/backtrace.h" "core/debug/globlog.h" "core/debug/globlog.cpp"  "core/debug/seh.h"  "core/thread/thread.h" "core/rtl/function.h")
+"core/debug/backtrace.h" "core/debug/globlog.h" "core/debug/globlog.cpp"  "core/debug/seh.h"  "core/thread/thread.h" "core/rtl/function.h" "core/thread/mutex.h")
 
 
 

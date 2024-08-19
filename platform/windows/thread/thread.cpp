@@ -12,7 +12,7 @@ void thread::start(void* function, void* args)
     m_thread = CreateThread(
         NULL,
         0,
-        reinterpret_cast<LPTHREAD_START_ROUTINE>(function),
+        static_cast<LPTHREAD_START_ROUTINE>(function),
         args,
         0,
         &tid
