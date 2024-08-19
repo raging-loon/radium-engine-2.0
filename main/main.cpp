@@ -36,7 +36,8 @@ int main(int argc, char** argv)
     GlobLoggers::init();
     GlobLoggers::getEngineLogger()->info("hello from engine logger");
     GlobLoggers::getClientLogger()->info("hello from client logger");
-    mtx.create();
+    
+    assert(mtx.create() == OK);
     printf("%s\n", teststr.c_str());
     rtl::array<radium::thread*> threadpool;
 

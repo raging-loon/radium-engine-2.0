@@ -17,7 +17,7 @@ enum class LogLevel : int
     DEBUG,
     INFO,
     WARNING,
-    ERROR,
+    ERROR_,
     CRITICAL
 };
 
@@ -115,7 +115,7 @@ public:
     template <class... Args>
     constexpr void error(const char* message, Args&&... args)
     {
-        log(LogLevel::ERROR, message, rtl::forward<Args>(args)...);
+        log(LogLevel::ERROR_, message, rtl::forward<Args>(args)...);
     }
 
     /// fwds to Log with LogLevel::CRITICAL

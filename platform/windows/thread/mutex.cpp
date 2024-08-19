@@ -27,13 +27,22 @@ Status Mutex::create()
         NULL
     );
 
-    if (m_mtx == NULL)
-    {
-        printf("Mutex  creation error: %d\n", GetLastError());
-        return ERR_INVALID_VALUE;
-    }
+    if (m_mtx != NULL)
+        return OK;
 
-    return OK;
+    auto err = GetLastError();
+
+    switch (err)
+    {
+        case ERROR_ACCESS_DENIED:
+            return ERR_ACCESS_DENIED;
+        case ERROR_INVALID_HANDLE:
+            return ERR_INVALID_PARAMETER;
+        case ERROR_NOT_ENOUGH_MEMORY:
+            return ERR_OUT_OF_MEMORY;
+        default:
+            return ERR_UNSPECIFIED;
+    }
 }
 
 void Mutex::destroy()

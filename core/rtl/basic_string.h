@@ -5,10 +5,9 @@
 #include "core/radium.h"
 #include "core/error.h"
 #include "core/rtl/utility.h"
-#include <stdio.h>
 #include <limits.h>
-
 #include <type_traits>
+#include <core/thread/thread.h>
 
 namespace rtl
 {
@@ -43,6 +42,7 @@ public:
 
     basic_string& operator=(const basic_string& other)
     {
+
         m_chars = other.m_chars;
         m_length = other.length();
         return *this;
@@ -51,6 +51,8 @@ public:
 
     basic_string& operator=(const basic_string&& other)
     {
+        
+
         m_length = rtl::move(other.length());
         m_chars = rtl::move(other.m_chars);
 
@@ -61,6 +63,7 @@ public:
     template <size_t N>
     basic_string& operator=(const T(&other)[N])
     {
+        
         resize(N);
         m_length = N;
         assign(other);
@@ -69,6 +72,8 @@ public:
 
     basic_string& operator=(const T* other)
     {
+        
+
         // todo: this  is temporary code
         size_t size = strlen(other);
         size += 1;
@@ -83,6 +88,8 @@ public:
 
     basic_string& operator+=(const T* other)
     {
+        
+
         size_t olen = strlen(other) + 1;
         size_t newsize = length() + (olen) - 1;
         size_t oldlen = length();
@@ -98,6 +105,8 @@ public:
 
     basic_string& operator+=(const basic_string& other)
     {
+        
+
         size_t newsize = length() + (other.length() - 1);
         size_t oldlen = length();
         m_length = newsize;
@@ -115,12 +124,16 @@ public:
 
     inline void resize(size_t n)
     {
+        
+
         m_chars.resize(n);
     }
 
     /// copy these characters
     inline void assign(const T* chars)
     {
+        
+
         m_chars.memcpy(chars, strlen(chars) + 1);
     }
 
@@ -174,6 +187,7 @@ private:
 
     constexpr bool should_resize()
     {
+        
         return m_length >= m_chars.get_data_size() - 1;
     }
 };
@@ -183,6 +197,8 @@ private:
 template<class T>
 basic_string<T> basic_string<T>::substr(size_t pos, size_t count)
 {
+    
+
     if (count > length())
         count = length();
 
