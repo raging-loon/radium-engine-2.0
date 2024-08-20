@@ -24,7 +24,14 @@ public:
     array() : m_index(0)
     {
     }
-
+    ~array()
+    {
+        if constexpr (!std::is_trivially_destructible_v<T>)
+        {
+            for (size_t i = 0; i < m_index; i++)
+                operator[](i).~T();
+        }
+    }
     void resize(size_t n)
     {
         m_data.resize(n );
@@ -80,7 +87,7 @@ public:
 
     T& operator[](size_t index)
     {
-        return *m_data.at_pc(index);
+        return m_data.at_c(index);
     }
 
     const T& operator[](size_t index) const
@@ -89,12 +96,14 @@ public:
     }
 
     constexpr size_t size() const { return m_index; }
+    constexpr size_t max_size() const { return m_data.get_num_data(); }
 
-    constexpr const T& front() const { return *m_data.at_p(0); }
-    constexpr const T& back() const { return *m_data.at_p(m_index - 1); }
 
-    constexpr T& front() { return *m_data.at_pc(0); }
-    constexpr T& back() { return *m_data.at_pc(m_index - 1); }
+    constexpr const T& front() const { return m_data.at(0); }
+    constexpr const T& back() const { return  m_data.at(m_index - 1); }
+
+    constexpr T& front() { return m_data.at_c(0); }
+    constexpr T& back() { return m_data.at_c(m_index - 1); }
 
 
 private:

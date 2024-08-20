@@ -23,7 +23,7 @@ public:
     basic_string() : m_length(1) { }
     ~basic_string()
     {
-
+    
     }
     basic_string(const basic_string& other)
         : m_chars(other.m_chars), m_length (other.m_length)
@@ -179,10 +179,10 @@ public:
     /// get a reference to the last character
     constexpr T& back() { return m_chars.at_c(length() - 2); }
 
+    copy_on_write<T> m_chars;
 
 private:
     /// Our buffer. COW happens implicitly
-    copy_on_write<T> m_chars;
     size_t m_length;
 
     constexpr bool should_resize()

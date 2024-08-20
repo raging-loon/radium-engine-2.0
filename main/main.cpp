@@ -9,9 +9,50 @@
 #include <core/rtl/array.h>
 
 #include <scene/ecs/sparse_set.h>
+#include <scene/ecs/componentPool.h>
 using namespace radium;
 
+struct test
+{
+    int x; 
+    int y;
+    rtl::string me;
+    test(int _x, int _y) : x(_x), y(_y) 
+    {
+        static int num = 0;
+        me = "hello";
+        char t[2] = { '0' + num++, 0 };
+        me += t;
+    }
 
+    int add() { return x + y; }
+
+    test& operator=(const test& other)
+    {
+        x = other.x;
+        y = other.y;
+        me = other.me;
+        return *this;
+    }
+    
+    test(const test& other)
+        : x(other.x), y(other.y), me(other.me)
+    {
+
+    }
+
+    test& operator=(const test&& other)
+    {
+        x = rtl::move(other.x);
+        y = rtl::move(other.y);
+        me = rtl::move(other.me);
+        return *this;
+    }
+    ~test()
+    {
+    }
+
+};
 
 int main(int argc, char** argv)
 {
@@ -19,39 +60,8 @@ int main(int argc, char** argv)
 
     GlobLoggers::init();
     ENGINE_INFO("hello");
- 
-    rtl::array<int> test;
-    test.resize(10);
-    test.fill(-1);
 
-    int x = 1;
-    int y = 2;
-    printf("%d | %d\n", x, y);
-
-    rtl::swap(x, y);
-    printf("%d | %d\n", x, y);
-
-    for (int i = 0; i <= 6; i++)
-        test.push_back(i);
-
-    printf("%d | %d\n",test.front(), test.back());
-    
-    printf("%d\n", test[6]);
-    sparse_set test2;
-    test2.add(5);
-    test2.add(6);
-
-    if (test2.contains(5))
-        printf("yes\n");
-
-    test2.remove(5);
-    if (test2.contains(5))
-        printf("yes\n");
-    if (test2.contains(6))
-        printf("yes6\n");    
-    if (test2.contains(3))
-        printf("yes3\n");
-}
+} 
   
 
 

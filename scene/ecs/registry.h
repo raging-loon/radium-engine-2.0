@@ -3,19 +3,21 @@
 
 #include <core/rtl/array.h>
 #include <typeindex>
-
-
+#include <scene/ecs/entity.h>
+#include <scene/ecs/componentPool.h>
+#include <core/types.h>
 namespace radium
 {
 
-template <class Entity>
+constexpr static U64 TOTAL_NUM_VIABLE_COMPONENTS = 1;
+
 class registry
 {
-    using entity_t = Entity;
 public:
 
 private:
     rtl::array<entity_t> m_entityIdList;
+    
     
 
 };

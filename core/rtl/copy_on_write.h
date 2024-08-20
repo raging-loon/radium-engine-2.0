@@ -245,11 +245,6 @@ void copy_on_write<T>::unref()
 
         if (get_reference_count() == 1)
         {
-            if constexpr (!std::is_trivially_destructible_v<T>)
-            {
-                for (size_t i = 0; i < get_num_data(); i++)
-                    at_c(i).~T();
-            }
             radium::GenericAllocator::free_static(m_ptr);
             m_ptr = nullptr;
         }

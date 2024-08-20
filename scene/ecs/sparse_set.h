@@ -37,15 +37,16 @@ public:
     void add(index_t id)
     {
 
-        if (id > m_sparse_array.size())
+        if (id > m_sparse_array.max_size())
         {
             m_sparse_array.resize(m_sparse_array.size() + id + 1);
-            m_dense_array.fill_remaining(EMPTY_SLOT);
+            m_sparse_array.fill_remaining(EMPTY_SLOT);
 
         }
 
         m_dense_array.push_back(id);
-        m_sparse_array[id] = m_dense_array.size();
+        m_sparse_array[id] = m_dense_array.size() - 1;
+        //printf("Added %d at index %d\n",id, m_sparse_array[id]);
     }
 
     ///
@@ -72,6 +73,11 @@ public:
         return m_sparse_array[id] != EMPTY_SLOT;
     }
 
+    index_t get_position(index_t pos)
+    {
+        size_t index = m_sparse_array[pos];
+        return m_dense_array[index];
+    }
 
 
 
