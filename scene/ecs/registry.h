@@ -9,15 +9,26 @@
 namespace radium
 {
 
-constexpr static U64 TOTAL_NUM_VIABLE_COMPONENTS = 1;
 
 class registry
 {
 public:
 
+    entity_t create();
+    void release();
+    bool isValid(entity_t t);
+    bool isOrphaned(entity_t t);
+
+    template <class T, class...Args>
+    void emplace(entity_t, Args&&...args)
+    {
+
+    }
+
+    
 private:
     rtl::array<entity_t> m_entityIdList;
-    
+    rtl::array<entity_t> m_entityGraveyard;
     
 
 };

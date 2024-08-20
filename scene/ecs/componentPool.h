@@ -7,6 +7,10 @@
 namespace radium
 {
 
+///
+/// @brief
+///     A sparsely indexed pool of types
+/// 
 template <class CType>
 class ComponentPool
 {
@@ -28,15 +32,15 @@ public:
     }
 
     template <class...Args>
-    void updateComponent(entity_t eid, Args&&... args)
+    CType* updateComponent(entity_t eid, Args&&... args)
     {
         I32 position = m_idMap.get_position(eid);
         if (position == -1)
-            return;
+            return nullptr;
         // add destructor support if necessary
         
         m_pool[position] = { rtl::forward<Args>(args)... };
-
+        return &m_pool[position];
     }
 
     CType* getComponent(entity_t eid)

@@ -10,49 +10,10 @@
 
 #include <scene/ecs/sparse_set.h>
 #include <scene/ecs/componentPool.h>
+#include <scene/component/Sprite2D.h>
+#include <typeindex>
 using namespace radium;
 
-struct test
-{
-    int x; 
-    int y;
-    rtl::string me;
-    test(int _x, int _y) : x(_x), y(_y) 
-    {
-        static int num = 0;
-        me = "hello";
-        char t[2] = { '0' + num++, 0 };
-        me += t;
-    }
-
-    int add() { return x + y; }
-
-    test& operator=(const test& other)
-    {
-        x = other.x;
-        y = other.y;
-        me = other.me;
-        return *this;
-    }
-    
-    test(const test& other)
-        : x(other.x), y(other.y), me(other.me)
-    {
-
-    }
-
-    test& operator=(const test&& other)
-    {
-        x = rtl::move(other.x);
-        y = rtl::move(other.y);
-        me = rtl::move(other.me);
-        return *this;
-    }
-    ~test()
-    {
-    }
-
-};
 
 int main(int argc, char** argv)
 {
@@ -60,7 +21,6 @@ int main(int argc, char** argv)
 
     GlobLoggers::init();
     ENGINE_INFO("hello");
-
 } 
   
 
