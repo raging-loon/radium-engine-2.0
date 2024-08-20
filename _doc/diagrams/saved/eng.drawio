@@ -1,0 +1,144 @@
+<mxfile host="Electron" modified="2024-08-19T18:20:03.264Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="m_8s0_kd1cXqdhaOgEtc" version="22.1.2" type="device">
+  <diagram name="Page-1" id="1lEP1IIEI1IEOt1SSv0U">
+    <mxGraphModel dx="1434" dy="884" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fLiRGyFaS-s6evqgUXRu-2" value="Radium Template Library" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" parent="1" vertex="1">
+          <mxGeometry x="760" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-1" value="Input System" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-2" value="Loggers" style="rounded=1;whiteSpace=wrap;html=1;glass=0;shadow=0;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" vertex="1" parent="1">
+          <mxGeometry x="460" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-3" value="Threading Library" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#647687;fontColor=#ffffff;strokeColor=#314354;" vertex="1" parent="1">
+          <mxGeometry x="610" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-4" value="Resource Manager" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-5" value="Scene Graph" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-6" value="Component System" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-25" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="VTi5xKe-jF08ThzHPc5B-7" target="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="670" y="760" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-7" value="Graphics Subsystem" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-8" value="Scheduler" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-12" value="Configuration Manager" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-13" value="Resource Compression" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-14" value="Script Executor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-49" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="VTi5xKe-jF08ThzHPc5B-15" target="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-15" value="Editor" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-16" value="" style="endArrow=none;dashed=1;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="960" y="700" as="sourcePoint" />
+            <mxPoint x="960" y="280" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-17" value="Engine" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="610" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-18" value="Client" style="shape=process;whiteSpace=wrap;html=1;backgroundOutline=1;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="190" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-19" value="Scripting Language" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-20" value="Resource Conditioner" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-21" value="Client Event System" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-22" value="Game Flow Planner" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-23" value="Client Side Components" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1190" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-26" value="Graphics" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="750" width="460" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-27" value="Renderer" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="20" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-28" value="Immediate Mode Rendering" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="170" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-29" value="Primitive Rendering" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="320" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-30" value="Shader Mgr/Factory" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="20" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-31" value="Buffer Management" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="170" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-33" value="Command Queue Management" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="320" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-34" value="PostFX" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="20" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-35" value="2D Lighting" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="170" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-36" value="Texture Loading" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-26">
+          <mxGeometry x="320" y="210" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-39" value="Editor" style="swimlane;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1020" y="750" width="460" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-50" value="Friendly Resource Management" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry x="20" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-51" value="Command Objects" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry x="170" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-52" value="Shader Hot Reloading" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry x="320" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-53" value="Project Manager" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry x="20" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-54" value="Thirdparty Integration" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="VTi5xKe-jF08ThzHPc5B-39">
+          <mxGeometry x="170" y="130" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-55" value="VFS" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-56" value="Audio Subsystem" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="430" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-57" value="AI (GOAP?)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="310" y="520" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="VTi5xKe-jF08ThzHPc5B-58" value="Bob" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;" vertex="1" parent="1">
+          <mxGeometry x="1410" y="420" width="30" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -7,8 +7,9 @@
 #include <core/rtl/function.h>
 #include <core/memory/PoolAllocator.h>
 #include <core/rtl/array.h>
-
 using namespace radium;
+
+
 
 int main(int argc, char** argv)
 {
@@ -17,6 +18,7 @@ int main(int argc, char** argv)
     GlobLoggers::init();
     ENGINE_INFO("hello");
 
+ 
 }
   
 
