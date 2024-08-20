@@ -94,6 +94,13 @@ constexpr typename remove_reference<T>::type&& move(T&& arg)
     //return static_cast<remove_reference<T>&&>(arg);
 }
 
+template <class T>
+constexpr void swap(T& l, T& r)
+{
+    T temp = l;
+    l = r;
+    r = temp;
+}
 
 } // rtl
 

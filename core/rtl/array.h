@@ -28,13 +28,33 @@ public:
     void resize(size_t n)
     {
         m_data.resize(n );
-
     }
+
+    /// Fill with T
+    void fill(T value)
+    {
+        auto _end = m_data.get_num_data();
+        for (size_t i = 0; i < _end; i++)
+        {
+            *m_data.at_pc(i) = value;
+        }
+    }
+
+    void fill_remaining(T value)
+    {
+        auto _end = m_data.get_num_data();
+
+        for (size_t i = m_index; i < _end; i++)
+        {
+            *m_data.at_pc(i) = value;
+        }
+    }
+
 
     // TODO: this might need to be optimzied in the future
     void push_back(const T& value)
     {
-        size_t idx = size() - 1;
+        size_t idx = size();
         if (should_resize())
         {
             resize(size() + 1);
@@ -44,17 +64,23 @@ public:
 
     void push_back(T&& value)
     {
-        size_t idx = size() - 1;
+        size_t idx = size();
         if (should_resize())
         {
             resize(size() + 1);
         }
         (m_data.at_c(m_index++)) = rtl::move(value);
     }
+    
+
+    void pop_back()
+    {
+        m_index--;
+    }
 
     T& operator[](size_t index)
     {
-        return m_data.at_c(index);
+        return *m_data.at_pc(index);
     }
 
     const T& operator[](size_t index) const
@@ -62,10 +88,15 @@ public:
         return m_data.at(index);
     }
 
-    constexpr size_t size()
-    {
-        return m_index;
-    }
+    constexpr size_t size() const { return m_index; }
+
+    constexpr const T& front() const { return *m_data.at_p(0); }
+    constexpr const T& back() const { return *m_data.at_p(m_index - 1); }
+
+    constexpr T& front() { return *m_data.at_pc(0); }
+    constexpr T& back() { return *m_data.at_pc(m_index - 1); }
+
+
 private:
     /// Holds our data. 
     copy_on_write<T> m_data;

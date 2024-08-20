@@ -20,3 +20,4 @@ build
 thirdparty/glm-1.0.1/*
 !thirdparty/glm-1.0.1/glm/
 !thirdparty/glm-1.0.1/copying.txt
+*.bkp
