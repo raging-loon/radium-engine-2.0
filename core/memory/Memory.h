@@ -63,23 +63,6 @@ public:
     }
 
 
-    static constexpr void* get_pointer_base_unsafe(void* ptr)
-    {
-        assert(ptr);
-        return ((void**)ptr)[-1];
-    }
-
-    static constexpr uintptr_t get_aligned_address_unsafe(size_t alignment, void* ptr)
-    {
-        return ((uintptr_t)(ptr)+(sizeof(void*)) + alignment - 1) & ~(alignment - 1);
-    }
-
-    static constexpr uintptr_t get_num_bytes_aligned_unsafe(void* ptr)
-    {
-        return (uintptr_t)(ptr) - (uintptr_t)(get_pointer_base_unsafe(ptr)) ;
-
-    }
-
 };
 
 
