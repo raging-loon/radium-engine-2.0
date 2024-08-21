@@ -122,6 +122,21 @@ public:
     }
 
 
+    ///
+    /// @brief
+    ///     Get pool storing T. The pool will be created if it does not exist
+    ///     
+    template<class T>
+    ComponentPool<T>* getIfExists()
+    {
+        auto pool = m_cpools.find(std::type_index(typeid(T)).hash_code());
+        if (pool == m_cpools.end())
+        {
+            return nullptr;
+        }
+        return static_cast<ComponentPool<T>*>(pool->second.compool);
+    }
+
 private:
      
     rtl::unordered_map<

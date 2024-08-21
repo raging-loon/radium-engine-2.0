@@ -3,6 +3,9 @@
 
 #include "copy_on_write.h"
 #include "core/rtl/utility.h"
+
+#include <core/rtl/iterator.h>
+
 namespace rtl
 {
 
@@ -20,6 +23,11 @@ template <class T>
 class array
 {
 public:
+
+    using const_iterator = rtl::generic_const_iterator<T>;
+    using iterator = rtl::generic_iterator<T>;
+
+
 
     array() : m_index(0)
     {
@@ -95,6 +103,19 @@ public:
         return m_data.at(index);
     }
 
+    // @todo: see if this can be optimized
+    bool contains(const T& value) const
+    {
+        for (size_t i = 0; i < m_index; i++)
+        {
+            if (m_data.at(i) == value)
+                return true;
+        }
+
+        return false;
+    }
+
+
     constexpr size_t size() const { return m_index; }
     constexpr size_t max_size() const { return m_data.get_num_data(); }
 
@@ -105,6 +126,12 @@ public:
     constexpr T& front() { return m_data.at_c(0); }
     constexpr T& back() { return m_data.at_c(m_index - 1); }
 
+
+    inline iterator begin() { return iterator(&operator[](0)); }
+    inline iterator end()   { return iterator(&operator[](m_index)); }
+
+    inline const_iterator cbegin() const { return const_iterator(&operator[](0)); }
+    inline const_iterator cend()   const { return const_iterator(&operator[](m_index)); }
 
 private:
     /// Holds our data. 

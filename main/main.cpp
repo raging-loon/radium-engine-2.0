@@ -14,6 +14,7 @@
 #include <typeindex>
 
 #include <scene/ecs/ComponentPoolFactory.h>
+#include <scene/ecs/registry.h>
 using namespace radium; 
 
 struct test
@@ -37,30 +38,42 @@ int main(int argc, char** argv)
     GlobLoggers::init();
     ENGINE_INFO("hello");
 
-    ComponentPoolFactory cpf;
+    registry reg;
 
-    auto* np = cpf.addNewPool<test>();
+    entity_t bob = reg.create();
+    auto *i = reg.emplace<Sprite2D>(bob, "hello");
+    i->printName();
+    reg.update<Sprite2D>(bob, "bob");
+    i->printName();
 
-    
-    np->addComponent(1, 1, 2);
+
+    printf("%d\n", reg.has<Sprite2D>(bob));
+    printf("%d\n", reg.anyof<double, int>(bob));
+
+    //ComponentPoolFactory cpf;
+
+    //auto* np = cpf.addNewPool<test>();
+
+    //
+    //np->addComponent(1, 1, 2);
 
 
-    auto* sp = cpf.addNewPool<Sprite2D>();
+    //auto* sp = cpf.addNewPool<Sprite2D>();
 
-    sp->addComponent(1, "skamtebord2");
-    sp->addComponent(2, "lobster");
-    sp->addComponent(3, "lobster1");
-    sp->addComponent(4, "lobster2");
-    sp->addComponent(20, "lobster4");
+    //sp->addComponent(1, "skamtebord2");
+    //sp->addComponent(2, "lobster");
+    //sp->addComponent(3, "lobster1");
+    //sp->addComponent(4, "lobster2");
+    //sp->addComponent(20, "lobster4");
 
-    printf("old: %p\n", sp->getComponent(1));
-    sp->removeComponent(1);
-    sp->addComponent(1, "skamtebord");
-    sp->getComponent(20)->printName();
-    printf("old: %p\n", sp->getComponent(1));
-    sp->getComponent(1)->printName();
+    //printf("old: %p\n", sp->getComponent(1));
+    //sp->removeComponent(1);
+    //sp->addComponent(1, "skamtebord");
+    //sp->getComponent(20)->printName();
+    //printf("old: %p\n", sp->getComponent(1));
+    //sp->getComponent(1)->printName();
 
-    printf("%d\n", cpf.get<test>()->getComponent(1)->the_add());
+    //printf("%d\n", cpf.get<test>()->getComponent(1)->the_add());
 } 
   
 
