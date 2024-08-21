@@ -17,18 +17,21 @@ namespace radium
 
 ///
 /// @brief
-///     Holds a ptr to a ComponentPool + a lambda to delete it
+///     Holds a ptr to a ComponentPool + a lambda to delete/remove it
 struct ComponentPoolContainer
 {
     void* compool;
     void(*deleter)(void*);
+    bool(*remover)(entity_t, void* );
 
-    ComponentPoolContainer() : compool(nullptr), deleter(nullptr) { }
+
+    ComponentPoolContainer() : compool(nullptr), deleter(nullptr), remover(nullptr) { }
     
     ComponentPoolContainer(const ComponentPoolContainer& o)
     {
         compool = o.compool;
         deleter = o.deleter;
+        remover = o.remover;
     }
 
 };
@@ -61,7 +64,13 @@ struct ComponentPoolContainer
 ///     ComponentPool<T> and delete it. This is needed because once a pool
 ///     is stored, all associated type information is lost.
 ///     
+///     In debug builds, this will contain a map of typeid => type names
+///     Use @ref getEntityComponentAssociation to get all associateed 
+///     Components for any given entity.
 /// 
+/// 
+///     @todo: look at other alternative storage methods. 
+///            rtl::array will check for copy on write every access
 class ComponentPoolFactory
 {
 public:
@@ -96,13 +105,18 @@ public:
         cpc.compool = static_cast<void*>(newpool),
         
         cpc.deleter = [](void* cpcptr) {
-            delete static_cast<T*>(cpcptr);
+            delete static_cast<ComponentPool<T>*>(cpcptr);
         };
         
+        cpc.remover = [](entity_t eid, void* ptr) {
+            return static_cast<ComponentPool<T>*>(ptr)->removeComponent(eid);
+        };
         m_cpools.insert({
             tid, cpc
         });
-        
+#ifdef _DEBUG
+        m_debugTypeAssoc.insert({ tid,  std::type_index(typeid(T)).name() });
+#endif
         return newpool;
     }
 
@@ -137,13 +151,49 @@ public:
         return static_cast<ComponentPool<T>*>(pool->second.compool);
     }
 
+    void removeAll(entity_t eid)
+    {
+
+        for (auto& i : m_cpools)
+            i.second.remover(eid, i.second.compool);
+    }
+
+    ///
+    /// @brief
+    ///     get a map containing the ID/typename of 
+    ///     each component an entity is associated with
+    /// 
+    ///     In release mode, this will be empty
+    ///     
+    rtl::unordered_map<U64, rtl::string>
+    getEntityComponentAssociation(entity_t eid)
+    {
+        rtl::unordered_map<U64, rtl::string> map;
+#ifdef _DEBUG
+        for (auto& i : m_cpools)
+        {
+            ComponentPool<void*>* pool = static_cast<ComponentPool<void*>*>(i.second.compool);
+            if (pool->exists(eid))
+            {
+                map.insert({
+                    i.first,
+                    m_debugTypeAssoc[i.first]
+                });
+            }
+        }
+#endif // _DEBUG
+        return map;
+    }
+
 private:
      
     rtl::unordered_map<
         U64, 
         ComponentPoolContainer
     > m_cpools;
-
+#ifdef _DEBUG
+    rtl::unordered_map<U64, rtl::string> m_debugTypeAssoc;
+#endif
 
 };
 

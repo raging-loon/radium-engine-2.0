@@ -41,15 +41,22 @@ int main(int argc, char** argv)
     registry reg;
 
     entity_t bob = reg.create();
-    auto *i = reg.emplace<Sprite2D>(bob, "hello");
-    i->printName();
-    reg.update<Sprite2D>(bob, "bob");
-    i->printName();
+    
+    reg.emplace<Sprite2D>(bob, "hello");
+    reg.emplace<test>(bob, 1, 2);
+    reg.emplace<int>(bob, 10);
 
+    printf("\nComponents for entity 0x%0x: \n", bob);
 
-    printf("%d\n", reg.has<Sprite2D>(bob));
-    printf("%d\n", reg.anyof<double, int>(bob));
+    auto map = reg.debugGetAssociations(bob);
+    
+    int idx = 0;
+    for (auto& i : map)
+    {
+        printf("%d| %s\n",idx++, i.second.c_str());
+    }
 
+    reg.release(bob);
     //ComponentPoolFactory cpf;
 
     //auto* np = cpf.addNewPool<test>();
@@ -74,6 +81,8 @@ int main(int argc, char** argv)
     //sp->getComponent(1)->printName();
 
     //printf("%d\n", cpf.get<test>()->getComponent(1)->the_add());
+
+
 } 
   
 

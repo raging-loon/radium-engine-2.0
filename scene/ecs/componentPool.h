@@ -4,6 +4,9 @@
 #include <scene/ecs/sparse_set.h>
 #include <core/rtl/array.h>
 #include <scene/ecs/entity.h>
+
+
+
 namespace radium
 {
 
@@ -54,7 +57,7 @@ public:
         if (--position < 0)
             return nullptr;
 
-        printf("Found %d at index %d\n", eid, position);
+        //printf("Found %d at index %d\n", eid, position);
         return &m_pool[position];
     }
 
@@ -64,7 +67,7 @@ public:
         if (position == -1)
             return false;
 
-        CType* targetCom = &m_pool[position];
+        CType* targetCom = &m_pool[position-1];
         
         if constexpr (!std::is_trivially_destructible_v<CType>)
             targetCom->~CType();
@@ -73,6 +76,11 @@ public:
 
         return true;
 
+    }
+
+    bool exists(entity_t eid)
+    {
+        return m_idMap.contains(eid);
     }
 
 private:
