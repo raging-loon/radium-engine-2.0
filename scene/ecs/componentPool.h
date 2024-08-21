@@ -54,11 +54,11 @@ public:
     CType* getComponent(entity_t eid)
     {
         I32 position = m_idMap.get_position(eid);
-        if (--position < 0)
+        if (position < 0)
             return nullptr;
 
         //printf("Found %d at index %d\n", eid, position);
-        return &m_pool[position];
+        return &m_pool[position-1];
     }
 
     bool removeComponent(entity_t eid)

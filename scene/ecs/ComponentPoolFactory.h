@@ -71,6 +71,7 @@ struct ComponentPoolContainer
 /// 
 ///     @todo: look at other alternative storage methods. 
 ///            rtl::array will check for copy on write every access
+/// 
 class ComponentPoolFactory
 {
 public:
