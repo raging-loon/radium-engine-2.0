@@ -30,9 +30,11 @@ public:
     {
         if (m_idMap.contains(eid))
             return getComponent(eid);
-        m_pool.push_back(CType{ rtl::forward<Args>(args)... });
-        m_idMap.add(eid);
-        return &m_pool.back();
+        //m_pool.push_back(CType{ rtl::forward<Args>(args)... });
+        I32 pos = m_idMap.add(eid);
+        m_pool[--pos] = { rtl::forward<Args>(args)... };
+
+        return &m_pool[pos];
     }
 
     template <class...Args>
@@ -54,6 +56,23 @@ public:
 
         printf("Found %d at index %d\n", eid, position);
         return &m_pool[position];
+    }
+
+    bool removeComponent(entity_t eid)
+    {
+        I32 position = m_idMap.get_position(eid);
+        if (position == -1)
+            return false;
+
+        CType* targetCom = &m_pool[position];
+        
+        if constexpr (!std::is_trivially_destructible_v<CType>)
+            targetCom->~CType();
+
+        m_idMap.remove(eid);
+
+        return true;
+
     }
 
 private:

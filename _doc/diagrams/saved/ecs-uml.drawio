@@ -1,0 +1,34 @@
+<mxfile host="Electron" modified="2024-08-21T14:35:21.694Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="IITLmWiGGCuMBXV0Mlkz" version="22.1.2" type="device">
+  <diagram name="Page-1" id="1lEP1IIEI1IEOt1SSv0U">
+    <mxGraphModel dx="1195" dy="737" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-2" value="sparse_set" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="750" width="220" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-3" value="- m_dense_array: rtl::array&amp;lt;int&amp;gt;&lt;br&gt;- m_sparse_array: rtl::array&amp;lt;int&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-2">
+          <mxGeometry y="26" width="220" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-2">
+          <mxGeometry y="70" width="220" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-5" value="+ add(index_t): void&lt;br&gt;+ remove(index_t): void&lt;br&gt;+ contains(index_t): bool&lt;br&gt;+ get_position(index_t): index_t" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-2">
+          <mxGeometry y="78" width="220" height="72" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-6" value="ComponentPool&amp;lt;CType&amp;gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="850" y="548" width="280" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-7" value="- m_idMap: sparse_set&lt;br&gt;- m_pool: rtl::array&amp;lt;CType&amp;gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-6">
+          <mxGeometry y="26" width="280" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-6">
+          <mxGeometry y="70" width="280" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="jTr48M4v2wAg8jn8oSZq-9" value="+ addComponent(entity_t, Args): CType*&lt;br&gt;+ updateComponent(entity_t, Args): CType*&lt;br&gt;+ getComponent(entity_t, Args): CType*" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="jTr48M4v2wAg8jn8oSZq-6">
+          <mxGeometry y="78" width="280" height="72" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

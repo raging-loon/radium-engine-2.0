@@ -4,7 +4,7 @@
 #include <typeindex>
 
 #include <core/rtl/hash_map.h>
-#include <scene/ecs/componentPool.h>
+#include <scene/ecs/ComponentPool.h>
 
 #include <core/debug/globlog.h>
 #include <core/rtl/smart_ptr.h>

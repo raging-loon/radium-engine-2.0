@@ -34,7 +34,7 @@ public:
     ///     Add ID to the dense array and associate
     ///     its position with the sparse array
     /// 
-    void add(index_t id)
+    index_t add(index_t id)
     {
 
         if (id > m_sparse_array.max_size())
@@ -47,6 +47,7 @@ public:
         m_dense_array.push_back(id);
         m_sparse_array[id] = (index_t)(m_dense_array.size()) - 1;
         printf("Added %d at index %d\n",id, m_sparse_array[id]);
+        return get_position(id);
     }
 
     ///
@@ -76,6 +77,8 @@ public:
     index_t get_position(index_t pos)
     {
         size_t index = m_sparse_array[pos];
+        if (index == -1)
+            return -1;
         return m_dense_array[index];
     }
 

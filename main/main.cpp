@@ -9,7 +9,7 @@
 #include <core/rtl/array.h>
 
 #include <scene/ecs/sparse_set.h>
-#include <scene/ecs/componentPool.h>
+#include <scene/ecs/ComponentPool.h>
 #include <scene/component/Sprite2D.h>
 #include <typeindex>
 
@@ -47,11 +47,19 @@ int main(int argc, char** argv)
 
     auto* sp = cpf.addNewPool<Sprite2D>();
 
-    sp->addComponent(1, "skamtebord");
+    sp->addComponent(1, "skamtebord2");
     sp->addComponent(2, "lobster");
+    sp->addComponent(3, "lobster1");
+    sp->addComponent(4, "lobster2");
+    sp->addComponent(20, "lobster4");
 
-    cpf.get<Sprite2D>()->getComponent(1)->printName();
-    cpf.get<Sprite2D>()->getComponent(2)->printName();
+    printf("old: %p\n", sp->getComponent(1));
+    sp->removeComponent(1);
+    sp->addComponent(1, "skamtebord");
+    sp->getComponent(20)->printName();
+    printf("old: %p\n", sp->getComponent(1));
+    sp->getComponent(1)->printName();
+
     printf("%d\n", cpf.get<test>()->getComponent(1)->the_add());
 } 
   
