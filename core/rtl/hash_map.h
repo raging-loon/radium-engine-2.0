@@ -11,7 +11,6 @@
 
 namespace rtl 
 {
-
 template <class U, class T, class H>
 class unordered_map;
 

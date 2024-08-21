@@ -4,13 +4,15 @@
 #include <stdint.h>
 #include "string.h"
 #include "core/error.h"
+
+#include <core/types.h>
+
 namespace rtl
 {
 
 static constexpr uint32_t HASH_PRIME = 0x01000193;
 static constexpr uint32_t HASH_SEED  = 0x811C9DC5;
 
-    
 template <class T>
 class hash
 {
@@ -22,6 +24,7 @@ public:
     }
 };
 
+/// @cond TURN_OFF_DOXYGEN
 template<>
 class hash<const char*>
 {
@@ -37,7 +40,6 @@ public:
         return (c ^ hash) * HASH_PRIME;
     }
 };
-
 template<>
 class hash<string>
 {
@@ -47,7 +49,6 @@ public:
         return rtl::hash<const char*>::run(str.c_str(), hash);
     }
 };
-
 template<>
 class hash<uint32_t>
 {
@@ -62,7 +63,24 @@ public:
         return hash;
     }
 };
-
+template<>
+class hash<radium::U64>
+{
+public:
+    static uint32_t run(radium::U64 v, uint32_t hash = HASH_SEED)
+    {
+        uint8_t* ptr = (uint8_t*)&v;
+        hash = (ptr[7] ^ hash) * HASH_PRIME;
+        hash = (ptr[6] ^ hash) * HASH_PRIME;
+        hash = (ptr[5] ^ hash) * HASH_PRIME;
+        hash = (ptr[4] ^ hash) * HASH_PRIME; 
+        hash = (ptr[3] ^ hash) * HASH_PRIME;
+        hash = (ptr[2] ^ hash) * HASH_PRIME;
+        hash = (ptr[1] ^ hash) * HASH_PRIME;
+        hash = (ptr[0] ^ hash) * HASH_PRIME;
+        return hash;
+    }
+};
 template<>
 class hash<int>
 {
@@ -73,6 +91,7 @@ public:
     }
 };
 
+/// @endcond
 
 } // rtl
 

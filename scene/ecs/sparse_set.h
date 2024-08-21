@@ -45,8 +45,8 @@ public:
         }
 
         m_dense_array.push_back(id);
-        m_sparse_array[id] = (index_t)(m_dense_array.size() - 1);
-        //printf("Added %d at index %d\n",id, m_sparse_array[id]);
+        m_sparse_array[id] = (index_t)(m_dense_array.size()) - 1;
+        printf("Added %d at index %d\n",id, m_sparse_array[id]);
     }
 
     ///

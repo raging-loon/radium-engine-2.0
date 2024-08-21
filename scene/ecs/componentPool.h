@@ -11,6 +11,8 @@ namespace radium
 /// @brief
 ///     A sparsely indexed pool of types
 /// 
+/// @todo: look into caching
+/// 
 template <class CType>
 class ComponentPool
 {
@@ -26,6 +28,8 @@ public:
     template<class... Args>
     CType* addComponent(entity_t eid, Args&&... args)
     {
+        if (m_idMap.contains(eid))
+            return getComponent(eid);
         m_pool.push_back(CType{ rtl::forward<Args>(args)... });
         m_idMap.add(eid);
         return &m_pool.back();
@@ -35,10 +39,9 @@ public:
     CType* updateComponent(entity_t eid, Args&&... args)
     {
         I32 position = m_idMap.get_position(eid);
-        if (position == -1)
+        if (--position < 0)
             return nullptr;
         // add destructor support if necessary
-        
         m_pool[position] = { rtl::forward<Args>(args)... };
         return &m_pool[position];
     }
@@ -46,9 +49,10 @@ public:
     CType* getComponent(entity_t eid)
     {
         I32 position = m_idMap.get_position(eid);
-        if (position == -1)
+        if (--position < 0)
             return nullptr;
-        //printf("Found %d at index %d\n", eid, position);
+
+        printf("Found %d at index %d\n", eid, position);
         return &m_pool[position];
     }
 

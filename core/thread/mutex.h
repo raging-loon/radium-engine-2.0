@@ -63,7 +63,7 @@ public:
     }
 
 private:
-    Mutex m_mutex;
+    Mutex& m_mutex;
 };
 
 } // radium
