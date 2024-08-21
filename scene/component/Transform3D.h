@@ -1,0 +1,8 @@
+#ifndef SCENE_COMPONENT_TRANSFORM_3D_H_
+#define SCENE_COMPONENT_TRANSFORM_3D_H_
+
+#include <glm/vec3.hpp>
+
+
+
+#endif // SCENE_COMPONENT_TRANSFORM_3D_H_

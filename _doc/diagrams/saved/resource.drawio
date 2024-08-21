@@ -1,0 +1,67 @@
+<mxfile host="Electron" modified="2024-08-21T20:09:22.445Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="Xru2pKorcri0dRJD_K1g" version="22.1.2" type="device">
+  <diagram name="Page-1" id="QG2LZh59R40W2oj1zUkq">
+    <mxGraphModel dx="1500" dy="956" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="5O69CP5yOZuiq9XrorWV-1" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="5O69CP5yOZuiq9XrorWV-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="770" y="600" as="sourcePoint" />
+            <mxPoint x="1310" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-2" value="Client Components" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="465" y="540" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-3" value="Engine Components" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="465" y="640" width="130" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-5" value="Panel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="380" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-6" value="Texture2D" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-7" value="Mesh Componen&lt;br&gt;-t" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-8" value="Camera" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-9" value="Light Source" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="700" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-10" value="Shader" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="790" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-11" value="Sprite2D" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="380" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-12" value="Sprite Sheet" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="380" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-13" value="Audio Clip" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="760" y="790" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-14" value="Audio Source" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="1000" y="380" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-17" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" target="5O69CP5yOZuiq9XrorWV-16">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="600" as="sourcePoint" />
+            <mxPoint x="1310" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-16" value="Transform 3D" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="700" y="570" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-18" value="Script" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="640" y="480" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5O69CP5yOZuiq9XrorWV-19" value="Particles" style="rounded=1;whiteSpace=wrap;html=1;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" vertex="1" parent="1">
+          <mxGeometry x="820" y="570" width="60" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
