@@ -23,6 +23,7 @@ namespace radium
 enum Status
 {
     OK,
+    FAILED,
     ERR_FILE_OPEN,
     ERR_FILE_NOT_EXIST,
     ERR_FILE_IO,
