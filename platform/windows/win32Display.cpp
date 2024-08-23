@@ -90,7 +90,7 @@ void win32Display::processEvents()
 
 RenderDeviceInitCfg win32Display::generateRDConfig()
 {
-#ifdef RADIUM_API_DX12
+#if  defined(RADIUM_API_DX12) || defined(RADIUM_API_DX11)
     return { m_hwnd, m_instance };
 #endif // API
 }

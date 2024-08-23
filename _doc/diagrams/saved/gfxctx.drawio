@@ -1,0 +1,28 @@
+<mxfile host="Electron" modified="2024-08-23T18:13:11.317Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="E-S035c2IG9psbRQVyeQ" version="22.1.2" type="device">
+  <diagram name="Page-1" id="5t1clMd16v7R4lqFn5Er">
+    <mxGraphModel dx="523" dy="413" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="MidtZh28Y9T1Phyc58fS-8" value="ID3D12CommandAllocator" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="500" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MidtZh28Y9T1Phyc58fS-3" value="Handle" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="330" y="420" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MidtZh28Y9T1Phyc58fS-2" value="ID3D12Resorce" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="420" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MidtZh28Y9T1Phyc58fS-1" value="Buffer" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="400" width="200" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MidtZh28Y9T1Phyc58fS-6" value="ID3D12CommandQueue" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="480" width="180" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="MidtZh28Y9T1Phyc58fS-7" value="Command Queue" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" vertex="1" parent="1">
+          <mxGeometry x="240" y="460" width="330" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

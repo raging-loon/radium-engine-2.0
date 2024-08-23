@@ -6,7 +6,7 @@
 
 #include <core/error.h>
 #include <renderer/dx12/dx12Common.h>
-
+#include <renderer/dx12/dx12Config.h>
 namespace radium    
 {
 ///
@@ -15,18 +15,22 @@ class dx12Device
 {
 public:
 
-    Status init();
+    Status init(RenderDeviceInitCfg cfg);
     Status terminate();
 
 
 
 private:
+    /// Internal DirectX 12 Device
     ComPtr<ID3D12Device> m_device;
 
 #ifdef _DEBUG
+    /// Prints debug info to the console
     ComPtr<ID3D12Debug> m_dbgController;
 #endif // _DEBUG
+    
 
+    RenderDeviceInitCfg m_cfg;
 
 };
 

@@ -3,11 +3,9 @@
 This is an engine I am writing almost completely from scratch.
 
 What will I not be writing?
-1. The Operating system
-2. The graphics API (DX11)
-3. Unit testing framework (GTEST)
-4. Parts of the STL that are handled by the compiler. e.g. `std::__is_trivially_copiable`
-5. Math stuff
+1. DirectX 11 + the error helper
+2. Math
+3. Things that the C++ compiler handles (namely `type_traits`)
 
 Other than that, everything here is 100% my own code.
 

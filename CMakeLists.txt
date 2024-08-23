@@ -13,6 +13,9 @@ project(radium-engine VERSION 2.0)
 
 option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
 
+set(API_DX11 "Use DirectX 11" ON)
+set(API_DX12 "Use DirectX 12" OFF)
+
 if(ENABLE_UNIT_TESTS)
 
     add_subdirectory("unittest")
@@ -34,15 +37,28 @@ if(WIN32)
     file(GLOB_RECURSE PLATFORM_SOURCES 
         "${CMAKE_SOURCE_DIR}/platform/windows/*.h"
         "${CMAKE_SOURCE_DIR}/platform/windows/*.cpp")
+    if(API_DX11)
+        set(GRAPHICS_API_LIBS d3dcompiler.lib D3D11.lib dxgi.lib dxguid.lib)
+        file(GLOB_RECURSE GRAPHICS_API_SOURCES
+            "${CMAKE_SOURCE_DIR}/renderer/dx11/*.h"
+            "${CMAKE_SOURCE_DIR}/renderer/dx11/*.cpp"
+        )
 
-    set(GRAPHICS_API_LIBS d3dcompiler.lib D3D12.lib dxgi.lib dxguid.lib)
-    file(GLOB_RECURSE GRAPHICS_API_SOURCES
-        "${CMAKE_SOURCE_DIR}/renderer/dx12/*.h"
-        "${CMAKE_SOURCE_DIR}/renderer/dx12/*.cpp"
-    )
+        set(GRAPHICS_API_SOURCES ${GRAPHICS_API_SOURCES} "${CMAKE_SOURCE_DIR}/thirdparty/dx11error/dxerr.cpp")
+        add_compile_definitions(RADIUM_API_DX11=1)
 
-    add_compile_definitions(RADIUM_API_DX12=1)
+        set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} "${CMAKE_SOURCE_DIR}/thirdparty/dx11error/")
 
+    elseif(API_DX12)
+        set(GRAPHICS_API_LIBS d3dcompiler.lib D3D12.lib dxgi.lib dxguid.lib)
+        file(GLOB_RECURSE GRAPHICS_API_SOURCES
+            "${CMAKE_SOURCE_DIR}/renderer/dx12/*.h"
+            "${CMAKE_SOURCE_DIR}/renderer/dx12/*.cpp"
+        )
+
+        add_compile_definitions(RADIUM_API_DX12=1)
+    endif()
+ 
 elseif(UNIX)
     message(FATAL_ERROR "Lazy developers forgot to port")
     file(GLOB_RECURSE PLATFORM_SOURCES 
@@ -82,20 +98,20 @@ add_executable(radium-engine
     "scene/component/Sprite2D.h" 
     "scene/ecs/ComponentPoolFactory.h"  "scene/ecs/registry.cpp" "scene/component/Transform3D.h" 
     "renderer/interface/RenderDevice.h"
-    "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h" "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h")
+    "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
+    "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
+    )
 
 
 ##########################
 ###### Graphics API ######
 ##########################
 
+target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/" ${ADDITIONAL_INCLUDES})
 if(WIN32)
-    message("Compiling for win32 with dx12")
     target_link_libraries(radium-engine ${GRAPHICS_API_LIBS})
-
 endif()
 
-target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/")
 
 ##########################
 ###### UNIT TESTING ######
