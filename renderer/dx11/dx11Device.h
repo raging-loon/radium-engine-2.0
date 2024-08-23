@@ -9,6 +9,7 @@
 #include <renderer/dx11/dx11Common.h>
 #include <renderer/dx11/dx11Config.h>
 
+#include <renderer/interface/DisplayInfo.h>
 
 namespace radium    
 {
@@ -18,7 +19,7 @@ class dx11Device
 {
 public:
 
-    Status init(RenderDeviceInitCfg cfg);
+    Status init(DisplayInfo& cfg);
     Status terminate();
 
 
@@ -41,7 +42,7 @@ private:
     /// Prints debug info to the console
     ComPtr<ID3D11Debug> m_dbgController;
 #endif // _DEBUG
-    RenderDeviceInitCfg m_cfg;
+    DisplayInfo* m_cfg;
 
 
 

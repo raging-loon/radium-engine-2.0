@@ -4,6 +4,7 @@
 
 #include <windows.h>
 #include <renderer/interface/RenderDevice.h>
+#include <renderer/interface/DisplayInfo.h>
 #include <core/error.h>
 
 namespace radium
@@ -43,7 +44,7 @@ public:
     /// @brief
     ///     Generate a device config so each respective
     ///     Graphics API can initialize itself
-    RenderDeviceInitCfg generateRDConfig();
+    DisplayInfo& getDisplayInfo();
 
     /// Show the window
     void show();
@@ -54,9 +55,7 @@ private:
     static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
 
 private:
-
-    HINSTANCE m_instance;
-    HWND      m_hwnd;
+    DisplayInfo m_dispInfo;
     WNDCLASSEX m_winfo;
 
 };

@@ -1,4 +1,8 @@
 #include <renderer/dx11/dx11Device.h>
+#include <renderer/dx11/dx11Common.h>
+
+#include <renderer/interface/DisplayInfo.h>
+
 #include <core/error.h>
 #include <core/types.h>
 
@@ -7,11 +11,11 @@
 
 using radium::dx11Device;
 using radium::Status;
-using radium::RenderDeviceInitCfg;
+using radium::DisplayInfo;
 
-Status dx11Device::init(RenderDeviceInitCfg cfg)
+Status dx11Device::init(DisplayInfo& cfg)
 {
-    assert(cfg.instance && cfg.windowHandle);
+    assert(cfg.hInstance && cfg.windowHandle);
     U32 createFlags = 0;
 
 #ifdef _DEBUG
@@ -43,10 +47,13 @@ Status dx11Device::init(RenderDeviceInitCfg cfg)
         MessageBoxA(0, "Direct3D Feature Level 11 Unsupported. Try updating your drivers. (or getting a modern os...)", 0, 0);
         return ERR_INVALID_VALUE;
     }
-
-    m_device->CheckMultisampleQualityLevels(
-        DXGI_FORMAT_R8G8_B8G8_UNORM, 4, &m_msaaQuality
+    DX_CHK(
+        m_device->CheckMultisampleQualityLevels(
+            DXGI_FORMAT_R8G8_B8G8_UNORM, 4, &m_msaaQuality
+        )
     );
+
+    m_cfg = static_cast<DisplayInfo*>(&cfg);
 
     m_mainDXGIFactory = createDXGIFactory();
 
@@ -55,7 +62,7 @@ Status dx11Device::init(RenderDeviceInitCfg cfg)
         return ERR_INVALID_VALUE;
     }
 
-    return Status();
+    return OK;
 }
 
 Status dx11Device::terminate()
@@ -83,16 +90,16 @@ bool dx11Device::createSwapChain()
         scd.SampleDesc = { .Count = 1, .Quality = 0 };
 
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-    scd.BufferCount = 1;
-    scd.OutputWindow = m_cfg.windowHandle;
+    scd.BufferCount = 2;
+    scd.OutputWindow = m_cfg->windowHandle;
     // @todo: add windowed support to config
-    scd.Windowed = false;
+    scd.Windowed = true;
     scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     scd.Flags = 0;
 
+    DX_CHK(m_mainDXGIFactory->CreateSwapChain(m_device.Get(), &scd, &m_swapChain));
 
-
-    return false;
+    return true;
 }
 
 ComPtr<IDXGIFactory> dx11Device::createDXGIFactory()
@@ -101,9 +108,9 @@ ComPtr<IDXGIFactory> dx11Device::createDXGIFactory()
     IDXGIAdapter* dxgiAdapter = nullptr;
     ComPtr<IDXGIFactory> dxgiFactory = nullptr;
 
-    m_device->QueryInterface(IID_PPV_ARGS(&dxgiDev));
-    dxgiDev->GetParent(IID_PPV_ARGS(&dxgiAdapter));
-    dxgiAdapter->GetParent(IID_PPV_ARGS(dxgiFactory.GetAddressOf()));
+    DX_CHK(m_device->QueryInterface(IID_PPV_ARGS(&dxgiDev)));
+    DX_CHK(dxgiDev->GetParent(IID_PPV_ARGS(&dxgiAdapter)));
+    DX_CHK(dxgiAdapter->GetParent(IID_PPV_ARGS(&dxgiFactory)));
 
     dxgiDev->Release();
     dxgiAdapter->Release();

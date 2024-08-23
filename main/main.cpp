@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     test.create(800, 600, 0, 0, "hello");
     
     RenderDevice t;
-    t.init(test.generateRDConfig());
+    t.init(test.getDisplayInfo());
    
 } 
   

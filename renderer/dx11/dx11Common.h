@@ -11,13 +11,15 @@ template <class T>
 using ComPtr = Microsoft::WRL::ComPtr<T>;
 
 #ifdef _DEBUG
-
+// wchar converter for macros
+#define __WCC2__(x) L##x
+#define __WCC__(x) __WCC2__(x)
 #define DX_CHK(x)\
 {                                                          \
 	HRESULT hr = (x);                                      \
 	if(FAILED(hr))                                         \
 	{                                                      \
-		DXTrace(__FILE__, (DWORD)__LINE__, hr, L#x, true); \
+		DXTrace(__WCC__(__FILE__), (DWORD)__LINE__, hr, L#x, true); \
 	}                                                      \
 }
 #else

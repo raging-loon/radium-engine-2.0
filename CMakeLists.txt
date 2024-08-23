@@ -100,7 +100,7 @@ add_executable(radium-engine
     "renderer/interface/RenderDevice.h"
     "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
     "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
-    )
+     "renderer/interface/DisplayInfo.h")
 
 
 ##########################

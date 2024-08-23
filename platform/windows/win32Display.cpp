@@ -5,7 +5,7 @@
 
 using radium::win32Display;
 using radium::Status;
-using radium::RenderDeviceInitCfg;
+using radium::DisplayInfo;
 
 
 
@@ -17,8 +17,9 @@ LRESULT win32Display::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lPa
 
 
 win32Display::win32Display()
-    : m_instance(nullptr), m_hwnd(nullptr)
 {
+    m_dispInfo.windowHandle = nullptr;
+    m_dispInfo.hInstance = nullptr;
     ZeroMemory(&m_winfo, sizeof(WNDCLASSEX));
 }
 
@@ -29,14 +30,14 @@ win32Display::~win32Display()
 
 Status win32Display::create(int w, int h, int x, int y, const char* title)
 {
-    m_instance = (HINSTANCE)GetModuleHandle(NULL);
+    m_dispInfo.hInstance = (HINSTANCE)GetModuleHandle(NULL);
 
     m_winfo =
     {
         .cbSize         = sizeof(WNDCLASSEX),
         .style          = CS_HREDRAW | CS_VREDRAW,
         .lpfnWndProc    = win32Display::WndProc,
-        .hInstance      = m_instance,
+        .hInstance      = m_dispInfo.hInstance,
         .hCursor        = LoadCursor(NULL, IDC_ARROW),
         .hbrBackground  = (HBRUSH)COLOR_WINDOW,
         .lpszClassName  = "Win32Window"
@@ -45,7 +46,7 @@ Status win32Display::create(int w, int h, int x, int y, const char* title)
     if (!RegisterClassEx(&m_winfo))
         return FAILED;
 
-    m_hwnd = CreateWindowExA(
+    m_dispInfo.windowHandle = CreateWindowExA(
         NULL,
         "Win32Window",
         title,
@@ -54,56 +55,56 @@ Status win32Display::create(int w, int h, int x, int y, const char* title)
         w, h,
         NULL,
         NULL,
-        m_instance,
+        m_dispInfo.hInstance,
         NULL
     );
 
-    if (!m_hwnd)
-    {
+    if (!m_dispInfo.windowHandle)
         return FAILED;
-    }
+    
+    UpdateWindow(m_dispInfo.windowHandle);
 
-    UpdateWindow(m_hwnd);
+    m_dispInfo.wwidth = w;
+    m_dispInfo.wheight = h;
 
     return OK;
 }
 
 void win32Display::destroy()
 {
-    if (m_hwnd)
+    if (m_dispInfo.windowHandle)
     {
-        DestroyWindow(m_hwnd);
-        UnregisterClassA("Win32Window", m_instance);
-        m_hwnd = nullptr;
+        DestroyWindow(m_dispInfo.windowHandle);
+        UnregisterClassA("Win32Window", m_dispInfo.hInstance);
+        m_dispInfo.windowHandle = nullptr;
     }
 }
 
 void win32Display::processEvents()
 {
     MSG msg;
-    while (PeekMessage(&msg, m_hwnd, 0, 0, PM_REMOVE))
+    while (PeekMessage(&msg, m_dispInfo.windowHandle, 0, 0, PM_REMOVE))
     {
         TranslateMessage(&msg);
         DispatchMessage(&msg);
     }
 }
 
-RenderDeviceInitCfg win32Display::generateRDConfig()
+
+DisplayInfo& win32Display::getDisplayInfo()
 {
-#if  defined(RADIUM_API_DX12) || defined(RADIUM_API_DX11)
-    return { m_hwnd, m_instance };
-#endif // API
+    return m_dispInfo;
 }
 
 void win32Display::show()
 {
-    assert(m_hwnd);
-    ShowWindow(m_hwnd, SW_SHOW);
+    assert(m_dispInfo.windowHandle);
+    ShowWindow(m_dispInfo.windowHandle, SW_SHOW);
 }
 
 void win32Display::hide()
 {
-    assert(m_hwnd);
-    ShowWindow(m_hwnd, SW_HIDE);
+    assert(m_dispInfo.windowHandle);
+    ShowWindow(m_dispInfo.windowHandle, SW_HIDE);
 }
 
