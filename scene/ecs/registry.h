@@ -16,7 +16,7 @@ namespace radium
 /// 
 ///     This is heavily based off EnTT by @skypjack
 /// 
-///     
+/// 
 class registry
 {
 public:

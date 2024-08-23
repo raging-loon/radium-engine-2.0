@@ -10,11 +10,11 @@ int main(int argc, char** argv)
     GlobLoggers::init();
     ENGINE_INFO("hello");
 
-    Display t;
-    t.create(100, 100, 0, 0, "niga");
-    t.show();
-    while (true) t.processEvents();
-    t.destroy();
+    //Display t;
+    //t.create(100, 100, 0, 0, "niga");
+    //t.show();
+    //while (true) t.processEvents();
+    //t.destroy();
 
 
 } 

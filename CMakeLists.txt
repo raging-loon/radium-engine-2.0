@@ -82,7 +82,7 @@ add_executable(radium-engine
     "scene/component/Sprite2D.h" 
     "scene/ecs/ComponentPoolFactory.h"  "scene/ecs/registry.cpp" "scene/component/Transform3D.h" 
     "renderer/interface/RenderDevice.h"
-    "renderer/interface/Display.h")
+    "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h" "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h")
 
 
 ##########################
