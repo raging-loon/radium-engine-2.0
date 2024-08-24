@@ -33,10 +33,13 @@ endif()
 
 
 if(WIN32)
+    add_compile_definitions(RADIUM_PLATFORM_WIN32=1)
 
     file(GLOB_RECURSE PLATFORM_SOURCES 
         "${CMAKE_SOURCE_DIR}/platform/windows/*.h"
         "${CMAKE_SOURCE_DIR}/platform/windows/*.cpp")
+
+
     if(API_DX11)
         set(GRAPHICS_API_LIBS d3dcompiler.lib D3D11.lib dxgi.lib dxguid.lib)
         file(GLOB_RECURSE GRAPHICS_API_SOURCES
@@ -100,7 +103,7 @@ add_executable(radium-engine
     "renderer/interface/RenderDevice.h"
     "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
     "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
-     "renderer/interface/DisplayInfo.h")
+     "renderer/interface/DisplayInfo.h" "core/system/timer.h")
 
 
 ##########################

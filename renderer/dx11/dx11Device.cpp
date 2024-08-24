@@ -3,6 +3,8 @@
 
 #include <renderer/interface/DisplayInfo.h>
 
+#include <core/debug/globlog.h>
+
 #include <core/error.h>
 #include <core/types.h>
 
@@ -58,9 +60,17 @@ Status dx11Device::init(DisplayInfo& cfg)
     m_mainDXGIFactory = createDXGIFactory();
 
     if (!createSwapChain())
-    {
         return ERR_INVALID_VALUE;
-    }
+
+
+    createRenderTargetView();
+    createDepthStencilBuffer();
+
+    m_devCtx->OMSetRenderTargets(1, &m_renderTargetView, m_depthStencilView.Get());
+
+    setViewport();
+
+    ENGINE_INFO("Initialized Direct3D11");
 
     return OK;
 }
@@ -75,7 +85,6 @@ bool dx11Device::createSwapChain()
     DXGI_SWAP_CHAIN_DESC scd;
     
     scd.BufferDesc = {
-        // @todo: add w/h/vsync info to rdc
         .Width =   800,
         .Height = 600,
         .RefreshRate = {60,1},
@@ -92,7 +101,6 @@ bool dx11Device::createSwapChain()
     scd.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
     scd.BufferCount = 2;
     scd.OutputWindow = m_cfg->windowHandle;
-    // @todo: add windowed support to config
     scd.Windowed = true;
     scd.SwapEffect = DXGI_SWAP_EFFECT_DISCARD;
     scd.Flags = 0;
@@ -100,6 +108,68 @@ bool dx11Device::createSwapChain()
     DX_CHK(m_mainDXGIFactory->CreateSwapChain(m_device.Get(), &scd, &m_swapChain));
 
     return true;
+}
+
+void dx11Device::createRenderTargetView()
+{
+    ID3D11Texture2D* backBuffer;
+    
+    m_swapChain->GetBuffer(0, IID_PPV_ARGS(&backBuffer));
+    m_device->CreateRenderTargetView(backBuffer, nullptr, m_renderTargetView.GetAddressOf());
+    
+    if(backBuffer)
+        backBuffer->Release();
+
+}
+
+void dx11Device::createDepthStencilBuffer()
+{
+    D3D11_TEXTURE2D_DESC dsd =
+    {
+        .Width = m_cfg->wwidth,
+        .Height = m_cfg->wheight,
+        .MipLevels = 1,
+        .ArraySize = 1,
+        .Format = DXGI_FORMAT_D24_UNORM_S8_UINT,
+
+        .Usage = D3D11_USAGE_DEFAULT,
+        .BindFlags = D3D11_BIND_DEPTH_STENCIL,
+        .CPUAccessFlags = 0,
+        .MiscFlags = 0
+    };
+
+    if (m_msaaQuality > 0)
+        dsd.SampleDesc = { .Count = 4, .Quality = m_msaaQuality - 1 };
+    else
+        dsd.SampleDesc = { .Count = 1, .Quality = 0 };
+
+    ID3D11Texture2D* m_dsBuffer = nullptr;
+    DX_CHK(m_device->CreateTexture2D(
+        &dsd, 
+        nullptr, 
+        &m_depthStencilBuffer
+    ));
+    
+    DX_CHK(m_device->CreateDepthStencilView(
+        m_depthStencilBuffer.Get(), 
+        nullptr, 
+        m_depthStencilView.GetAddressOf()
+    ));
+}
+
+void dx11Device::setViewport()
+{
+    m_viewPort =
+    {
+        .TopLeftX = 0.0f,
+        .TopLeftY = 0.0f,
+        .Width = (float)m_cfg->wwidth,
+        .Height = (float)m_cfg->wheight,
+        .MinDepth = 0.0f,
+        .MaxDepth = 1.0f
+    };
+
+    m_devCtx->RSSetViewports(1, &m_viewPort);
 }
 
 ComPtr<IDXGIFactory> dx11Device::createDXGIFactory()

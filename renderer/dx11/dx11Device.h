@@ -27,17 +27,28 @@ public:
 private:
 
     bool createSwapChain();
+    void createRenderTargetView();
+    void createDepthStencilBuffer();
+    void setViewport();
+
 
     ComPtr<IDXGIFactory> createDXGIFactory(); 
 
+
+
 private:
     U32 m_msaaQuality;
+    
     /// Internal DirectX 12 Device
-    ComPtr<ID3D11Device> m_device;
-    ComPtr<ID3D11DeviceContext> m_devCtx;
-    ComPtr<IDXGIFactory> m_mainDXGIFactory;
-    ComPtr<IDXGISwapChain> m_swapChain;
-
+    ComPtr<ID3D11Device>            m_device;
+    ComPtr<ID3D11DeviceContext>     m_devCtx;
+    ComPtr<IDXGIFactory>            m_mainDXGIFactory;
+    ComPtr<IDXGISwapChain>          m_swapChain;
+    ComPtr<ID3D11RenderTargetView>  m_renderTargetView;
+    ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
+    ComPtr<ID3D11Texture2D>         m_depthStencilBuffer;
+    
+    D3D11_VIEWPORT                  m_viewPort;
 #ifdef _DEBUG
     /// Prints debug info to the console
     ComPtr<ID3D11Debug> m_dbgController;

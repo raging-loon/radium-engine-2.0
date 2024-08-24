@@ -24,8 +24,6 @@ namespace rtl
 ///    use copy-on-write. Use @ref copy() to create 
 ///    your own copy
 ///
-///     ** inspired by Godot Engine's CowData **
-///     
 ///    Provide a Copy on Write buffer for clients
 ///     
 ///    m_dataPtr holds a pointer to a heap allocated 
