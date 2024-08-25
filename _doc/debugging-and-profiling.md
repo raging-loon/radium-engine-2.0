@@ -105,5 +105,6 @@ void myFunction()
     PROFILED_FUNCTION
 
     ... work ...
+
 }
 ```

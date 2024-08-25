@@ -2,6 +2,7 @@
 #include <core/debug/seh.h>
 #include <renderer/interface/RenderDevice.h>
 #include <renderer/interface/Display.h>
+#include <renderer/interface/Buffer.h>
 #include <core/system/timer.h>
 #include <core/rtl/variant.h>
 #include <core/engine/Config.h>
@@ -38,7 +39,7 @@ int main(int argc, char** argv)
     timer.tick();
 
     ENGINE_INFO("Took %f seconds to start up    ", timer.getTotal());
-
+    Buffer buffer;
 } 
   
 

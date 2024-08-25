@@ -2,6 +2,7 @@
 #include <renderer/dx11/dx11Common.h>
 
 #include <renderer/interface/DisplayInfo.h>
+#include <renderer/interface/Buffer.h>
 
 #include <core/debug/globlog.h>
 
@@ -13,6 +14,8 @@
 
 using radium::dx11Device;
 using radium::Status;
+using radium::Buffer;
+using radium::BufferDescription;
 using radium::DisplayInfo;
 
 Status dx11Device::init(DisplayInfo& cfg)
@@ -76,6 +79,14 @@ Status dx11Device::init(DisplayInfo& cfg)
 Status dx11Device::terminate()
 {
     return Status();
+}
+
+Buffer* dx11Device::createBuffer(BufferDescription bufferDesc)
+{
+    assert(m_device.Get());
+
+
+    return nullptr;
 }
 
 bool dx11Device::createSwapChain()
@@ -167,6 +178,12 @@ void dx11Device::setViewport()
     };
 
     m_devCtx->RSSetViewports(1, &m_viewPort);
+}
+
+void dx11Device::createGlobalVertexLayout()
+{
+
+
 }
 
 ComPtr<IDXGIFactory> dx11Device::createDXGIFactory()

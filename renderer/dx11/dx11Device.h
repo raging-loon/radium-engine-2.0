@@ -10,7 +10,7 @@
 #include <renderer/dx11/dx11Config.h>
 
 #include <renderer/interface/DisplayInfo.h>
-
+#include <renderer/interface/Buffer.h>
 namespace radium    
 {
 ///
@@ -22,7 +22,8 @@ public:
     Status init(DisplayInfo& cfg);
     Status terminate();
 
-
+    // @todo: might need to use a pool allocator for buffers etc for locality
+    Buffer* createBuffer(BufferDescription bufferDesc);
 
 private:
 
@@ -30,6 +31,8 @@ private:
     void createRenderTargetView();
     void createDepthStencilBuffer();
     void setViewport();
+
+    void createGlobalVertexLayout();
 
 
     ComPtr<IDXGIFactory> createDXGIFactory(); 
@@ -47,7 +50,8 @@ private:
     ComPtr<ID3D11RenderTargetView>  m_renderTargetView;
     ComPtr<ID3D11DepthStencilView>  m_depthStencilView;
     ComPtr<ID3D11Texture2D>         m_depthStencilBuffer;
-    
+    ComPtr<ID3D11InputLayout>       m_inputLayout;
+
     D3D11_VIEWPORT                  m_viewPort;
 #ifdef _DEBUG
     /// Prints debug info to the console

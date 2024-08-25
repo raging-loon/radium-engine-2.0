@@ -110,7 +110,7 @@ add_executable(radium-engine
     "renderer/interface/RenderDevice.h"
     "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
     "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
-     "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h" "core/rtl/variant.h" "core/engine/Config.cpp" "core/system/profiler.h" "core/system/profiler.cpp")
+     "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h" "core/rtl/variant.h" "core/engine/Config.cpp" "core/system/profiler.h" "core/system/profiler.cpp" "renderer/interface/Buffer.h" "renderer/interface/ShaderProgram.h")
 
 
 ##########################
