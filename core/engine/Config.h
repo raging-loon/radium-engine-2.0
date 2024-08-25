@@ -9,7 +9,7 @@
 namespace radium
 {
 
-using ConfigVar = rtl::variant< rtl::typelist<int, double, rtl::string> >;
+using ConfigVar = rtl::variant< rtl::typelist<int, double, bool, rtl::string> >;
 
 
 ///
@@ -35,7 +35,9 @@ public:
     Status writeConfigToString(rtl::string& output);
 
 private:
-
+    Status parseConfig(const rtl::string& cfg);
+    Status parseSingleLine(const rtl::string& line);
+private:
     rtl::string m_filename;
 
     rtl::unordered_map<rtl::string, ConfigVar > m_cfgMap;

@@ -84,7 +84,14 @@ public:
         return *this;
     }
 
+    basic_string& operator+=(T other)
+    {
+        if (should_resize()) resize(m_length + 1);
+        m_chars.at_c(m_length-1 ) = other;
+        m_length++;
 
+        return *this;
+    }
 
     basic_string& operator+=(const T* other)
     {
@@ -123,7 +130,7 @@ public:
 
     void setPos(size_t pos)
     {
-        if (pos > m_length) pos = m_length;
+        if (m_chars.get_num_data() < pos) pos = m_chars.get_num_data();
         m_length = pos;
     }
     inline void resize(size_t n)

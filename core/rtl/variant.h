@@ -9,6 +9,19 @@ namespace rtl
 template <typename... Types>
 struct typelist {};
 
+
+template <typename T, typename Type>
+struct contains {};
+
+template <typename T, typename...Types>
+struct contains <T, typelist<Types...> >
+{
+    static constexpr bool value = (std::is_same_v<T, Types> || ...);
+};
+
+template <typename T, typename TypesList>
+constexpr bool contains_v = contains<T, TypesList>::value;
+
 template <typename... Types>
 class variant;
 
@@ -24,11 +37,22 @@ public:
 
     variant() : m_idx(0) {}
     
-    template <typename T>
+    template <typename T,
+    std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
     void set(T&& val)
     {
         new (&m_varStorage.data) T(rtl::forward<T>(val));
         m_idx = find < T, 0, Types...>();
+    }
+
+
+    template <typename T,
+        std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
+    void operator=(T&& val)
+    {
+        new (&m_varStorage.data) T(rtl::forward<T>(val));
+        m_idx = find < T, 0, Types...>();
+        //return *this;
     }
 
     template <typename T>
@@ -36,6 +60,16 @@ public:
     {
         return *reinterpret_cast<T*>(&m_varStorage.data);
     }
+
+    template <typename T,
+        std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
+    operator T()
+    {
+        return as<T>();
+    }
+
+
+
 
 private:
     

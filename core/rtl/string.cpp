@@ -44,7 +44,12 @@ rtl::string rtl::operator+(const rtl::string& str1, const rtl::string& str2)
 
 bool rtl::is_integer(const rtl::string& str)
 {
-    const char* rawStr = str.c_str();
+    return is_integer(str.c_str());
+}
+
+bool rtl::is_integer(const char* str)
+{
+    const char* rawStr = str;
 
     while (*rawStr)
     {
@@ -58,8 +63,13 @@ bool rtl::is_integer(const rtl::string& str)
 
 bool rtl::is_float(const rtl::string& str)
 {
-    const char* rawStr = str.c_str();
-    
+    return is_float(str.c_str());
+}
+
+bool rtl::is_float(const char* str)
+{
+    const char* rawStr = str;
+
     while (*rawStr)
     {
         if (!((*rawStr >= 0x30 && *rawStr <= 0x39) || *rawStr == '-' || *rawStr == '.'))

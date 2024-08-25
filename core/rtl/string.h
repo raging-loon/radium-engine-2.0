@@ -23,8 +23,11 @@ string operator+(const char* str1, const string& str2);
 string operator+(const string& str1, const string& str2);
 
 
+
 bool is_integer(const rtl::string& str);
+bool is_integer(const char* str);
 bool is_float(const rtl::string& str);
+bool is_float(const char* str);
 
 
 

@@ -9,33 +9,35 @@ using namespace radium;
 
 int main(int argc, char** argv)
 {
+    
+    radium::setSEHHandlers();
+
+    GlobLoggers::init();
+
+    Timer ct;
+    ct.reset();
+    ct.tick();
+    Config engineConfig;
+    if (engineConfig.readConfigFromFile("engine.ini") != OK)
+        printf("an errror occured\n");
+    ct.tick();
+    
+    ENGINE_INFO("Took %f seconds to parse config", ct.getTotal());
+
+
+    Display test;
+    test.create(800, 600, 0, 0, engineConfig["title"]);
     Timer timer;
     timer.reset();
     timer.tick();
 
-    radium::setSEHHandlers();
+    RenderDevice t;
+    t.init(test.getDisplayInfo());
+    timer.tick();
 
-    GlobLoggers::init();
-    ENGINE_INFO("hello");
-
-    Config engineConfig;
-    if (engineConfig.readConfigFromFile("engine.ini") != OK)
-        printf("an errror occured\n");
+    ENGINE_INFO("Took %f seconds to start up    ", timer.getTotal());
 
 
-    //Display test;
-    //test.create(800, 600, 0, 0, "hello");
-
-    //RenderDevice t;
-    //t.init(test.getDisplayInfo());
-
-    //ENGINE_INFO("Took %f seconds to start up    ", timer.getTotal());
-
-    //rtl::variant < rtl::typelist<int, double, rtl::string> > m_cfgVar;
-
-    //m_cfgVar.set<rtl::string>((const char*)"hello");
-
-    //printf("%s\n", m_cfgVar.as < rtl::string>().c_str());
 } 
   
 

@@ -6,7 +6,7 @@
 #include <renderer/interface/RenderDevice.h>
 #include <renderer/interface/DisplayInfo.h>
 #include <core/error.h>
-
+#include <core/rtl/string.h>
 namespace radium
 {
 
@@ -30,6 +30,10 @@ public:
     ///            could not be created
     /// 
     Status create(int w, int h, int x, int y, const char* title);
+    Status create(int w, int h, int x, int y, const rtl::string& title)
+    {
+        return create(w, h, x, y, title.c_str());
+    }
 
     /// Destroy a window if there is one
     void destroy();
