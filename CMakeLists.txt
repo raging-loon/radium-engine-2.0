@@ -76,6 +76,8 @@ elseif(UNIX)
 
 endif()
 
+
+
 add_executable(radium-engine
     ${CONFIG_SOURCES}
     ${PLATFORM_SOURCES}
@@ -118,6 +120,10 @@ add_executable(radium-engine
 target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/" ${ADDITIONAL_INCLUDES})
 if(WIN32)
     target_link_libraries(radium-engine ${GRAPHICS_API_LIBS})
+    if(MSVC)
+    string(REGEX REPLACE "/W[1-3]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")    
+    endif()
+
 endif()
 
 

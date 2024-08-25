@@ -68,7 +68,6 @@ public:
 
     void push_back(const T& value)
     {
-        size_t idx = size();
         if (should_resize())
         {
             resize(size() + 1);
@@ -78,7 +77,6 @@ public:
 
     void push_back(T&& value)
     {
-        size_t idx = size();
         if (should_resize())
         {
             resize(size() + 1);

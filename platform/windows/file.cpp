@@ -112,6 +112,10 @@ Status File::read(void* out, size_t numBytes, size_t* bytesRead)
 
     if (bytesRead)
         *bytesRead = static_cast<size_t>(discarded);
+
+    if (stats != ERROR_SUCCESS)
+        return ERR_UNSPECIFIED;
+
     return OK;
 }
 
@@ -126,6 +130,9 @@ Status File::write(const void* in, size_t numBytes, size_t* bytesWritten)
 
     if (bytesWritten)
         *bytesWritten = (size_t)br;
+
+    if (writeStatus != ERROR_SUCCESS)
+        return ERR_UNSPECIFIED;
 
     return OK;
     

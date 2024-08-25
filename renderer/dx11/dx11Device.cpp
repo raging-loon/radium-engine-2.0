@@ -25,24 +25,22 @@ Status dx11Device::init(DisplayInfo& cfg)
 #endif // _DEBUG
     D3D_FEATURE_LEVEL featureLevel;
 
-    HRESULT hr = D3D11CreateDevice(
-        nullptr,
-        D3D_DRIVER_TYPE_HARDWARE,
-        nullptr,
-        createFlags,
-        nullptr,
-        0,
-        D3D11_SDK_VERSION,
-        m_device.GetAddressOf(),
-        &featureLevel,
-        &m_devCtx
+    DX_CHK(
+        D3D11CreateDevice(
+            nullptr,
+            D3D_DRIVER_TYPE_HARDWARE,
+            nullptr,
+            createFlags,
+            nullptr,
+            0,
+            D3D11_SDK_VERSION,
+            m_device.GetAddressOf(),
+            &featureLevel,
+            &m_devCtx
+        )
     );
 
-    if (FAILED(hr))
-    {
-        MessageBoxA(nullptr, "Failed to create DirectX11 Device. Add more dbeug info pls.", nullptr, 0);
-        return ERR_INVALID_VALUE;
-    }
+
 
     if (featureLevel != D3D_FEATURE_LEVEL_11_0)
     {
@@ -143,7 +141,6 @@ void dx11Device::createDepthStencilBuffer()
     else
         dsd.SampleDesc = { .Count = 1, .Quality = 0 };
 
-    ID3D11Texture2D* m_dsBuffer = nullptr;
     DX_CHK(m_device->CreateTexture2D(
         &dsd, 
         nullptr, 

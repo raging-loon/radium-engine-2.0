@@ -28,7 +28,7 @@ win32Display::~win32Display()
 
 }
 
-Status win32Display::create(int w, int h, int x, int y, const char* title)
+Status win32Display::create(int w, int h, const char* title)
 {
     m_dispInfo.hInstance = (HINSTANCE)GetModuleHandle(NULL);
 

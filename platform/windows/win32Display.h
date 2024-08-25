@@ -29,10 +29,10 @@ public:
     ///     FAILED if the window class failed to register or the window
     ///            could not be created
     /// 
-    Status create(int w, int h, int x, int y, const char* title);
-    Status create(int w, int h, int x, int y, const rtl::string& title)
+    Status create(int w, int h, const char* title);
+    Status create(int w, int h, const rtl::string& title)
     {
-        return create(w, h, x, y, title.c_str());
+        return create(w, h, title.c_str());
     }
 
     /// Destroy a window if there is one

@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 
 
     Display test;
-    test.create(800, 600, 0, 0, engineConfig["title"]);
+    test.create(800, 600, engineConfig["title"]);
     Timer timer;
     timer.reset();
     timer.tick();
