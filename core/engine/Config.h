@@ -26,16 +26,27 @@ public:
     ConfigVar& operator[](const rtl::string& key);
     const ConfigVar& operator[](const rtl::string& key) const;
     
+
     Status readConfigFromFile(const char* filename);
 
     Status readConfigFromString(const rtl::string& source);
+
 
     Status writeConfigToFile(const char* filename = nullptr);
 
     Status writeConfigToString(rtl::string& output);
 
 private:
+    ///
+    /// @brief
+    ///     Turn the cfg into a bunch of key=value strings
+    ///     Then call parseSingleLine
     Status parseConfig(const rtl::string& cfg);
+
+    ///
+    /// @brief
+    ///     Turn key=value stirngs into a key, value pair
+    ///     This will parse types
     Status parseSingleLine(const rtl::string& line);
 private:
     rtl::string m_filename;

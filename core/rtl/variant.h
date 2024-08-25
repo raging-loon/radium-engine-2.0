@@ -13,6 +13,7 @@ struct typelist {};
 template <typename T, typename Type>
 struct contains {};
 
+/// @brief test if a typelist contains a type
 template <typename T, typename...Types>
 struct contains <T, typelist<Types...> >
 {
@@ -22,6 +23,17 @@ struct contains <T, typelist<Types...> >
 template <typename T, typename TypesList>
 constexpr bool contains_v = contains<T, TypesList>::value;
 
+///
+/// @brief 
+///     template parameter to determine whether a typelist contains a type or not
+///     This is mainly here to improve readability 
+template <class T, typename Types>
+constexpr std::enable_if_t<contains_v<T, Types>, bool> typelist_contains()
+{
+    return true;
+}
+
+
 template <typename... Types>
 class variant;
 
@@ -29,25 +41,32 @@ class variant;
 ///
 /// @brief 
 ///     Variant, holds @Types types in a union
-///     
+///     Each of these functions is only enabled if the 
+///     type passed to it is contained in the typelist.
+///     see @ref typelist_contains
+/// 
 template <typename... Types>
 class variant<typelist<Types...> >
 {
 public:
 
     variant() : m_idx(0) {}
-    
+    ///
+    /// @brief 
+    ///     Set the value to 'val'
     template <typename T,
-    std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
+        bool = typelist_contains<T, typelist<Types...> >() >
     void set(T&& val)
     {
         new (&m_varStorage.data) T(rtl::forward<T>(val));
         m_idx = find < T, 0, Types...>();
     }
 
-
+    ///
+    /// @brief 
+    ///     Set the value to 'val'
     template <typename T,
-        std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
+        bool = typelist_contains<T, typelist<Types...> >() >
     void operator=(T&& val)
     {
         new (&m_varStorage.data) T(rtl::forward<T>(val));
@@ -55,21 +74,24 @@ public:
         //return *this;
     }
 
-    template <typename T>
-    T& as()
+    ///
+    /// @brief get the value of T in the typelist
+    template <typename T,
+        bool = typelist_contains<T, typelist<Types...> >() >
+    constexpr T& as()
     {
         return *reinterpret_cast<T*>(&m_varStorage.data);
     }
 
+    ///
+    /// @brief
+    ///     Type conversion operator for any type in the union
     template <typename T,
-        std::enable_if_t<contains_v<T, typelist<Types...> >, bool > = true >
-    operator T()
+        bool = typelist_contains<T, typelist<Types...> >() >
+    constexpr operator T()
     {
         return as<T>();
     }
-
-
-
 
 private:
     
