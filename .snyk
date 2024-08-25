@@ -5,4 +5,5 @@ patch: {}
 exclude:
   global:
     - thirdparty
-    - tests
+    - unittest
+    - _doc

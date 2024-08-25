@@ -66,7 +66,6 @@ public:
     }
 
 
-    // TODO: this might need to be optimzied in the future
     void push_back(const T& value)
     {
         size_t idx = size();

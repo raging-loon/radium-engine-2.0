@@ -121,11 +121,13 @@ public:
     /// return a substring
     basic_string<T> substr(size_t pos = 0, size_t count = npos);
 
-
+    void setPos(size_t pos)
+    {
+        if (pos > m_length) pos = m_length;
+        m_length = pos;
+    }
     inline void resize(size_t n)
     {
-        
-
         m_chars.resize(n);
     }
 

@@ -65,10 +65,10 @@ Status File::open(const char* filename, AccessMode mode)
     DWORD err = GetLastError();
     Status retStat = OK;
 
-    if (err == ERROR_FILE_NOT_FOUND)
+    if (err == ERROR_FILE_NOT_FOUND || err == ERROR_PATH_NOT_FOUND)
         retStat = ERR_FILE_NOT_EXIST;
 
-    else if (err == ERROR_FILE_EXISTS || err == ERROR_ALREADY_EXISTS)
+    else if (err == ERROR_FILE_EXISTS || err == ERROR_ALREADY_EXISTS || err == ERROR_SUCCESS)
     {
         m_isOpen = true;
         retStat = OK;

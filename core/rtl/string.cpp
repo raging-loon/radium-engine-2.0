@@ -41,3 +41,31 @@ rtl::string rtl::operator+(const rtl::string& str1, const rtl::string& str2)
     return temp;
 
 }
+
+bool rtl::is_integer(const rtl::string& str)
+{
+    const char* rawStr = str.c_str();
+
+    while (*rawStr)
+    {
+        if (!((*rawStr >= 0x30 && *rawStr <= 0x39) || *rawStr == '-'))
+            return false;
+        rawStr++;
+    }
+
+    return true;
+}
+
+bool rtl::is_float(const rtl::string& str)
+{
+    const char* rawStr = str.c_str();
+    
+    while (*rawStr)
+    {
+        if (!((*rawStr >= 0x30 && *rawStr <= 0x39) || *rawStr == '-' || *rawStr == '.'))
+            return false;
+        rawStr++;
+    }
+
+    return true;
+}
