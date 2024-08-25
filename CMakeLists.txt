@@ -12,6 +12,8 @@ set(CMAKE_CXX_STANDARD 20)
 project(radium-engine VERSION 2.0)
 
 option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
+option(ENABLE_PROFILER "Enable Profiling" OFF)
+
 
 set(API_DX11 "Use DirectX 11" ON)
 set(API_DX12 "Use DirectX 12" OFF)
@@ -29,6 +31,9 @@ else()
      )
 endif()
 
+if(ENABLE_PROFILER)
+    add_compile_definitions(PROFILING_ENABLED=1)
+endif()
 
 
 
@@ -103,7 +108,7 @@ add_executable(radium-engine
     "renderer/interface/RenderDevice.h"
     "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
     "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
-     "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h" "core/rtl/variant.h" "core/engine/Config.cpp")
+     "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h" "core/rtl/variant.h" "core/engine/Config.cpp" "core/system/profiler.h" "core/system/profiler.cpp")
 
 
 ##########################

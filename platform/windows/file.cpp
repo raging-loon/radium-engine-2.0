@@ -36,17 +36,17 @@ Status File::open(const char* filename, AccessMode mode)
             break;
         case WRITE:
             access          = GENERIC_WRITE;
-            createPolicy    = OPEN_ALWAYS;
+            createPolicy    = CREATE_ALWAYS;
             break;
         case READ_WRITE:
         case WRITE_READ:
             access          = GENERIC_READ | GENERIC_WRITE;
-            createPolicy    = OPEN_ALWAYS;
+            createPolicy    = CREATE_ALWAYS;
             break;
         case APPEND:
         case READ_APPEND:
             access          = FILE_APPEND_DATA;
-            createPolicy = OPEN_ALWAYS;
+            createPolicy = CREATE_ALWAYS;
             break;
         default:
             return ERR_INVALID_PARAMETER;

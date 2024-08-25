@@ -5,11 +5,13 @@
 #include <core/system/timer.h>
 #include <core/rtl/variant.h>
 #include <core/engine/Config.h>
+
+#include <core/system/profiler.h>
+
 using namespace radium; 
 
 int main(int argc, char** argv)
 {
-    
     radium::setSEHHandlers();
 
     GlobLoggers::init();
@@ -36,7 +38,6 @@ int main(int argc, char** argv)
     timer.tick();
 
     ENGINE_INFO("Took %f seconds to start up    ", timer.getTotal());
-
 
 } 
   

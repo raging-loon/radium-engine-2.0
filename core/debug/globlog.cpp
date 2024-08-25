@@ -1,6 +1,7 @@
 #include "globlog.h"
 
 #include <core/log/outputsystems/StdOutSystem.h>
+#include <core/system/profiler.h>
 
 using radium::Logger;
 using radium::GlobLoggers;

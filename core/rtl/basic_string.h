@@ -116,9 +116,9 @@ public:
 
         size_t newsize = length() + (other.length() - 1);
         size_t oldlen = length();
-        m_length = newsize;
         if (should_resize())
-            resize(newsize);
+            resize(newsize + 1);
+        m_length = newsize;
 
         m_chars.memcpy(other.c_str(), other.length() + 1, oldlen - 1);
         return *this;
