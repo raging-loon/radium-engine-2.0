@@ -17,29 +17,24 @@ int main(int argc, char** argv)
 
     GlobLoggers::init();
 
-    Timer ct;
-    ct.reset();
-    ct.tick();
     Config engineConfig;
     if (engineConfig.readConfigFromFile("engine.ini") != OK)
         printf("an errror occured\n");
-    ct.tick();
-    
-    ENGINE_INFO("Took %f seconds to parse config", ct.getTotal());
 
 
     Display test;
     test.create(800, 600, engineConfig["title"]);
-    Timer timer;
-    timer.reset();
-    timer.tick();
-
+    
     RenderDevice t;
     t.init(test.getDisplayInfo());
-    timer.tick();
 
-    ENGINE_INFO("Took %f seconds to start up    ", timer.getTotal());
-    Buffer buffer;
+
+    test.show();
+    while (true)
+    {
+        test.processEvents();
+
+    }
 } 
   
 

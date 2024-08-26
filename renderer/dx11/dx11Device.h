@@ -10,7 +10,8 @@
 #include <renderer/dx11/dx11Config.h>
 
 #include <renderer/interface/DisplayInfo.h>
-#include <renderer/interface/Buffer.h>
+#include <renderer/interface/Interface.h>
+#include <renderer/interface/ShaderProgram.h>
 namespace radium    
 {
 ///
@@ -24,7 +25,7 @@ public:
 
     // @todo: might need to use a pool allocator for buffers etc for locality
     Buffer* createBuffer(BufferDescription bufferDesc);
-
+    Shader* createShader(ShaderDescription shaderDesc);
 private:
 
     bool createSwapChain();

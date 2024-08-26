@@ -1,11 +1,6 @@
 #ifndef RENDERER_INTERFACE_BUFFER_H_
 #define RENDERER_INTERFACE_BUFFER_H_
 
-#if RADIUM_API_DX11 
-#   include <renderer/dx11/dx11Buffer.h>
-    namespace radium { using Buffer = radium::dx11Buffer; }
-#endif
-
 #include <core/types.h>
 
 namespace radium
@@ -27,6 +22,7 @@ struct BufferDescription
     size_t size;
     size_t count;
 };
+
 
 } // radium
 
