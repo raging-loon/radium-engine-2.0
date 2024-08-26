@@ -86,23 +86,25 @@ Buffer* dx11Device::createBuffer(BufferDescription bufferDesc)
     return nullptr;
 }
 
+
 Shader* radium::dx11Device::createShader(ShaderDescription shaderDesc)
 {
     dx11ShaderFactory sf;
 
-    ID3DBlob* vtxblob = nullptr, *psblob = nullptr;
+    ID3DBlob* vtxblob = nullptr, * psblob = nullptr;
 
     Status stat = sf.compileShader(shaderDesc.psSource, shaderDesc.psEntryPoint, dx11ShaderFactory::PIXEL, psblob);
     if (stat != OK)
         return nullptr;
-    
-    Status stat = sf.compileShader(shaderDesc.vtxSource, shaderDesc.vtxEntryPoint, dx11ShaderFactory::VERTEX, vtxblob);
+
+    stat = sf.compileShader(shaderDesc.vtxSource, shaderDesc.vtxEntryPoint, dx11ShaderFactory::VERTEX, vtxblob);
     if (stat != OK)
         return nullptr;
 
     Shader* s = new Shader;
-    
+
 }
+
 
 bool dx11Device::createSwapChain()
 {

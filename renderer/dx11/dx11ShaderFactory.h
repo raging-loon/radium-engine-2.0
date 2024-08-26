@@ -31,12 +31,6 @@ public:
 private:
 
     static const char s_shaderVersionList[6][7];
-    /*
-    {
-	"vs_5_0", "ps_5_0", "ds_5_0",
-	"hs_5_0", "gs_5_0", "cs_5_0"
-};
-    */
 
 
 
