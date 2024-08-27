@@ -2,11 +2,34 @@
 #define RENDERER_INTERFACE_DISPLAY_INFO_H_
 
 #include <core/types.h>
+
+#ifdef RADIUM_PLATFORM_WIN32
+
+#include <Windows.h>
+
 namespace radium
 {
-
-#ifdef _WIN32
-
+///
+/// @brief
+///     Configuration for Graphics API on windows
+///     Most graphics APIs will need a window handle/instance
+/// 
+///     OpenGL requires a special device/gl context
+/// 
+///     This form should be filled out by the dispaly class (e.g. win32Display)
+///     upon request.
+///     Typically, this will be when initializing the Graphics API device.
+///     e.g. 
+/// @code
+///     Display myDisplay;
+///     myDisplay.create(100, 100, "clever, whimsical title");
+///     
+///     RenderDevice dev;
+///     dev.init(myDisplay.getDisplayInfo());
+/// @endcode
+///     
+/// @todo: see if (x,y) pos needs to be here too
+/// 
 struct DisplayInfo
 {
     HWND windowHandle;
@@ -15,10 +38,16 @@ struct DisplayInfo
     U32 wwidth;
     U32 wheight;
     bool windowed;
+
+#ifdef RADIUM_API_OPENGL
+    HDC hDevCtx;
+    HGLRC hGlCtx;
+#endif // RADIUM_API_OPENGL
+
 };
 
+} // radium
 #endif // _WIN32
 
 
-} // radium
 #endif // RENDERER_INTERFACE_DISPLAY_INFO_H_

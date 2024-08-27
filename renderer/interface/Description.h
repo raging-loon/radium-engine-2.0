@@ -1,9 +1,0 @@
-#ifndef RENDERER_INTERFACE_DESCRIPTION_H_
-#define RENDERER_INTERFACE_DESCRIPTION_H_
-
-namespace radium
-{
-
-} // radium
-
-#endif // RENDERER_INTERFACE_DESCRIPTION_H_

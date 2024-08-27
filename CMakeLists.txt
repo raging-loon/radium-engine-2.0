@@ -14,9 +14,16 @@ project(radium-engine VERSION 2.0)
 option(ENABLE_UNIT_TESTS "Enable unit tests" OFF)
 option(ENABLE_PROFILER "Enable Profiling" OFF)
 
-
-set(API_DX11 "Use DirectX 11" ON)
+#set(API_DX11 "Use DirectX 11" OFF)
 set(API_DX12 "Use DirectX 12" OFF)
+set(API_OPENGL "Use OpenGL" ON)
+
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    add_compile_definitions(RADIUM_DEBUG_BUILD=1)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    add_compile_definitions(RADIUM_RELEASE_BUILD=1)
+endif()
+
 
 if(ENABLE_UNIT_TESTS)
 
@@ -57,14 +64,24 @@ if(WIN32)
 
         set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} "${CMAKE_SOURCE_DIR}/thirdparty/dx11error/")
 
-    elseif(API_DX12)
-        set(GRAPHICS_API_LIBS d3dcompiler.lib D3D12.lib dxgi.lib dxguid.lib)
+    elseif(API_OPENGL)
+        message("opengl")
+        set(GRAPHICS_API_LIBS opengl32.lib)
+        
         file(GLOB_RECURSE GRAPHICS_API_SOURCES
-            "${CMAKE_SOURCE_DIR}/renderer/dx12/*.h"
-            "${CMAKE_SOURCE_DIR}/renderer/dx12/*.cpp"
+            "${CMAKE_SOURCE_DIR}/renderer/opengl/*.h"
+            "${CMAKE_SOURCE_DIR}/renderer/opengl/*.cpp"
         )
 
-        add_compile_definitions(RADIUM_API_DX12=1)
+        set(GRAPHICS_API_SOURCES ${GRAPHICS_API_SOURCES} 
+            "${CMAKE_SOURCE_DIR}/thirdparty/glew/src/glew.c"
+            
+        )
+        
+        add_compile_definitions(RADIUM_API_OPENGL=1)
+        add_compile_definitions(GLEW_STATIC=1)
+        set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} "${CMAKE_SOURCE_DIR}/thirdparty/glew/include/")
+
     endif()
  
 elseif(UNIX)
@@ -86,23 +103,31 @@ add_executable(radium-engine
     "core/rtl/copy_on_write.h"
     "core/rtl/string.h"
     "core/rtl/basic_string.h"
+    "core/rtl/array.h" 
+    "core/rtl/hash.h" 
+    "core/rtl/hash_map.h" 
+    "core/rtl/iterator.h" 
+    "core/rtl/variant.h" 
+    "core/rtl/string.cpp"
+    "core/rtl/function.h" 
+    "core/rtl/smart_ptr.h"
+    "core/rtl/utility.h" 
+
     "core/radium.h"
     "core/memory/Memory.h" 
-    "core/memory/Memory.cpp" "core/rtl/smart_ptr.h" "core/rtl/utility.h" 
-    "core/rtl/array.h" 
+    "core/memory/Memory.cpp" 
     "core/error.h"
     "core/debug/globlog.h"
     "core/log/colors.h" 
     "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
     "core/log/outputsystems/StdOutSystem.h"  "core/log/outputsystems/StdoutSystem.cpp" 
     "core/log/outputsystems/FileOutputSystem.h" 
-    "core/log/outputsystems/FileOutputSystem.cpp" "core/rtl/string.cpp"
-    "core/rtl/hash.h" 
-    "core/rtl/hash_map.h" "core/rtl/iterator.h" "core/types.h" "core/engine/Application.h" "core/io/file.h" 
+    "core/log/outputsystems/FileOutputSystem.cpp"
+    "core/types.h" "core/engine/Application.h" "core/io/file.h" 
     "core/debug/backtrace.h" 
     "core/debug/globlog.h" "core/debug/globlog.cpp"  "core/debug/seh.h"  
     "core/thread/thread.h" 
-    "core/rtl/function.h" "core/thread/mutex.h"
+    "core/thread/mutex.h"
     "core/memory/PoolAllocator.h" 
     "scene/ecs/registry.h" "scene/ecs/ComponentPool.h" "scene/ecs/sparse_set.h" "scene/ecs/entity.h"
     "scene/component/Sprite2D.h" 
@@ -111,10 +136,10 @@ add_executable(radium-engine
     "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
     "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
      "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h"
-     "core/rtl/variant.h" "core/engine/Config.cpp" "core/system/profiler.h" 
+     "core/engine/Config.cpp" "core/system/profiler.h" 
      "core/system/profiler.cpp" "renderer/interface/Buffer.h" 
      "renderer/interface/ShaderProgram.h" "renderer/interface/Interface.h" 
-     "renderer/interface/Description.h" 
+      
      )
 
 

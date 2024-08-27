@@ -98,7 +98,7 @@ public:
         return pool->getComponent(eid) != nullptr;
     }
 
-
+     
     ///
     /// @brief
     ///     Are there pools for each T that contains eid?

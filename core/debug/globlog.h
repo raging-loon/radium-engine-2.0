@@ -27,7 +27,7 @@ private:
 #define ENGINE_DEBUG(...)      radium::GlobLoggers::getEngineLogger()->debug(__VA_ARGS__) 
 #define ENGINE_WARNING(...)    radium::GlobLoggers::getEngineLogger()->warning(__VA_ARGS__)     
 #define ENGINE_ERROR(...)      radium::GlobLoggers::getEngineLogger()->error(__VA_ARGS__) 
-#define ENGINE_CRITICAL(...)   radium::GlobLoggers::getEngineLogger()->critcal(__VA_ARGS__)     
+#define ENGINE_CRITICAL(...)   radium::GlobLoggers::getEngineLogger()->critical(__VA_ARGS__)     
 
 
 #endif // CORE_DEBUG_LOG_H_
