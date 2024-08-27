@@ -23,7 +23,7 @@ public:
 	///     				OpenGL - Platform Specific Implementations
 	///     ┌────────────────────────────────────────────────────────────────────┐
 	///     ├───────────────────────── Initialization ───────────────────────────┤
-	///     │ init is defined in platform/<platform>/gl/glContext.cpp			 │
+	///     │ init is defined in platform/<platform>/gl/glPlatformInit.cpp	     │
 	///     │ _platform_init is defined here.								     │
 	///     │																	 │
 	///     │ _platform_init takes care of platform specific initialization,     │
@@ -37,12 +37,13 @@ public:
 	///     ├─────────────────────────── Termination ────────────────────────────┤
 	///     │																	 │
 	///     │ `_platform_terminate` is defined in								 │
-	///     │			platform/<platform>/gl/glContext.cpp				     │
+	///     │			platform/<platform>/gl/glPlatformInit.cpp				 │
 	///     │ `terminate` calls _platform_terminate								 │
 	///     │																	 │
 	///     ├─────────────────────────── SwapBuffers ────────────────────────────┤
 	///     │																	 │
-	///     │ `swapBuffers` is defined in platform/<platform>/gl/glContext.cpp	 │
+	///     │ `swapBuffers` is defined in										 │		
+	///		│			platform/<platform>/gl/glPlatformInit.cpp	             │
 	///     │																	 │
 	///     └────────────────────────────────────────────────────────────────────┘
 	///     
@@ -68,7 +69,10 @@ private:
 private:
 	DisplayInfo m_displayinfo;
 
-
+#ifdef RADIUM_PLATFORM_WIN32
+	HDC		m_hDevCtx;
+	HGLRC	m_hGlCtx;
+#endif // RADIUM_PLATFORM_WIN32
 };
 
 

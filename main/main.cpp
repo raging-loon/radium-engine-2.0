@@ -8,7 +8,6 @@
 #include <core/engine/Config.h>
 
 #include <core/system/profiler.h>
-#include <GL/glew.h>
 using namespace radium; 
 
 int main(int argc, char** argv)
@@ -21,19 +20,13 @@ int main(int argc, char** argv)
     if (engineConfig.readConfigFromFile("engine.ini") != OK)
         printf("an errror occured\n");
 
-    //Display test;
-    //test.create(800, 600, engineConfig["title"]);
-    //
-    //RenderDevice t;
-    //t.init(test.getDisplayInfo());
+    Display test;
+    test.create(800, 600, engineConfig["title"]);
+    
+    RenderDevice t;
+    t.init(test.getDisplayInfo());
 
 
-    //test.show();
-    //while (true)
-    //{
-    //    test.processEvents();
-
-    //}
 } 
   
 

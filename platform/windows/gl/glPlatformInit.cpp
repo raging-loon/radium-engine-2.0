@@ -42,7 +42,7 @@ Status oglDevice::_platform_init()
 
 	HDC hdDevCtx = GetDC(m_displayinfo.windowHandle);
 
-	m_displayinfo.hDevCtx = hdDevCtx;
+	m_hDevCtx = hdDevCtx;
 
 	int pixelFormat = ChoosePixelFormat(hdDevCtx, &pfd);
 
@@ -91,9 +91,9 @@ Status oglDevice::_platform_init()
 		return ERR_DEVICE_OR_OBJECT_FAILED_TO_CREATE;
 	}
 	// make a new debug context
-	m_displayinfo.hGlCtx = wglCreateContextAttribsARB(hdDevCtx, 0, debugAttribs);
+	m_hGlCtx = wglCreateContextAttribsARB(hdDevCtx, 0, debugAttribs);
 
-	if (!m_displayinfo.hGlCtx)
+	if (!m_hGlCtx)
 	{
 		ENGINE_CRITICAL("[WGL]: Failed to create OpenGL Debug Context");
 		return ERR_DEVICE_OR_OBJECT_FAILED_TO_CREATE;
@@ -103,17 +103,31 @@ Status oglDevice::_platform_init()
 	wglDeleteContext(tempContext);
 
 	// use the new debug context
-	wglMakeCurrent(hdDevCtx, m_displayinfo.hGlCtx);
+	wglMakeCurrent(hdDevCtx, m_hGlCtx);
 
-	ENGINE_INFO("[WGL]: Created OpenGL Debug Context: {}", (char*)(glGetString(GL_VERSION)));
+	ENGINE_INFO("[WGL]: Created OpenGL Debug Context: %s", (char*)(glGetString(GL_VERSION)));
 
 #else
 	// otherwise do nothing
-	m_displayinfo.hGlCtx = tempContext;
-	ENGINE_INFO("[WGL]: Created OpenGL context: {}", (char*)(glGetString(GL_VERSION)));
+	m_hGlCtx = tempContext;
+	ENGINE_INFO("[WGL]: Created OpenGL context: %s", (char*)(glGetString(GL_VERSION)));
 #endif // RADIUM_DEBUG_BUILD
 	
 	return OK;
+
+}
+
+void oglDevice::_platform_terminate()
+{
+	wglMakeCurrent(nullptr, nullptr);
+
+	if (m_hGlCtx)
+	{
+		wglDeleteContext(m_hGlCtx);
+		m_hGlCtx = nullptr;
+	}
+
+	ReleaseDC(m_displayinfo.windowHandle, m_hDevCtx);
 
 }
 

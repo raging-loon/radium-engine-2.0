@@ -5,17 +5,13 @@
 
 #ifdef RADIUM_PLATFORM_WIN32
 
-#include <Windows.h>
-
 namespace radium
 {
 ///
 /// @brief
 ///     Configuration for Graphics API on windows
 ///     Most graphics APIs will need a window handle/instance
-/// 
-///     OpenGL requires a special device/gl context
-/// 
+///
 ///     This form should be filled out by the dispaly class (e.g. win32Display)
 ///     upon request.
 ///     Typically, this will be when initializing the Graphics API device.
@@ -38,12 +34,6 @@ struct DisplayInfo
     U32 wwidth;
     U32 wheight;
     bool windowed;
-
-#ifdef RADIUM_API_OPENGL
-    HDC hDevCtx;
-    HGLRC hGlCtx;
-#endif // RADIUM_API_OPENGL
-
 };
 
 } // radium
