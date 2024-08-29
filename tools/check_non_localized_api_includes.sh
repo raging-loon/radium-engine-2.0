@@ -1,0 +1,1 @@
+grep "\#include.[\"\|<]renderer/" ./ -riIn --exclude-dir={thirdparty,.git,.vs,_deps,renderer} --include=*.{cpp,h} | grep -v "interface\|common"

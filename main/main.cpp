@@ -27,16 +27,7 @@ int main(int argc, char** argv)
     RenderDevice t;
     t.init(test.getDisplayInfo());
 
-    oglBufferFactory d;
-    auto size = sizeof(Vertex);
-    BufferDescription bd =
-    {
-        .type = BUFFER_TYPE_VERTEX,
-        .size = size,
-        .count = 4,
-        .binding = 0,
-    };
-    d.createBuffer(bd);
+
 } 
   
 

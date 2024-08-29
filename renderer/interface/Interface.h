@@ -10,6 +10,11 @@ namespace radium
 }
 
 #elif defined(RADIUM_API_OPENGL)
+#   include <renderer/opengl/oglBuffer.h>
+namespace radium
+{
+using Buffer = radium::oglBuffer;
+}
 #endif
 
 #endif // RENDER_INTERFACE_INTERFACE_H_

@@ -9,6 +9,7 @@ oglDevice::oglDevice()
 #ifdef RADIUM_PLATFORM_WIN32
     : m_hDevCtx(nullptr), m_hGlCtx(nullptr)
 #endif // RADIUM_PLATFORM_WIN32
+    , m_bufferFactory{}
 
 {
 }
@@ -54,4 +55,9 @@ Status oglDevice::init(DisplayInfo& dspi)
 void oglDevice::terminate()
 {
     _platform_terminate();
+}
+
+rtl::shared_ptr<Buffer> oglDevice::createBuffer(BufferDescription& bd)
+{
+    return m_bufferFactory.createBuffer(bd);
 }

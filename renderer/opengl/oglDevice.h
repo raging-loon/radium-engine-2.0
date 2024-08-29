@@ -3,9 +3,11 @@
 
 #include <core/debug/globlog.h>
 #include <core/error.h>
-
+#include <renderer/interface/Buffer.h>
+#include <renderer/interface/Interface.h>
 #include <renderer/interface/DisplayInfo.h>
-
+#include <renderer/opengl/oglBufferFactory.h>
+#include <core/rtl/smart_ptr.h>
 namespace radium
 {
 
@@ -58,6 +60,14 @@ public:
 
     void terminate();
 
+
+public:
+	/// 
+	/// API OBJECT CREATORS
+	/// 
+
+	rtl::shared_ptr<Buffer> createBuffer(BufferDescription& bd);
+
 private:
 	/// platform specific initialization
 	Status _platform_init();
@@ -68,6 +78,8 @@ private:
 
 private:
 	DisplayInfo m_displayinfo;
+
+	oglBufferFactory m_bufferFactory;
 
 #ifdef RADIUM_PLATFORM_WIN32
 	HDC		m_hDevCtx;
