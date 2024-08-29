@@ -10,12 +10,9 @@ static GLenum descType2GLenum[3] =
     GL_UNIFORM_BUFFER, // BUFFER_TYPE_UNIFORM/CONSTANT
 };
 
-oglBufferFactory::oglBufferFactory()
+oglBufferFactory::oglBufferFactory() : m_vao(-1), layoutSet(false)
 {
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-    layoutSet = false;
-    glBindVertexArray(0);
+ 
 }
 
 rtl::shared_ptr<oglBuffer> oglBufferFactory::createBuffer(BufferDescription& desc)
@@ -47,6 +44,14 @@ rtl::shared_ptr<oglBuffer> oglBufferFactory::createBuffer(BufferDescription& des
 
     return buffer;
 
+}
+
+void oglBufferFactory::init()
+{
+    glGenVertexArrays(1, &m_vao);
+    glBindVertexArray(m_vao);
+    layoutSet = false;
+    glBindVertexArray(0);
 }
 
 void oglBufferFactory::bindLayout()

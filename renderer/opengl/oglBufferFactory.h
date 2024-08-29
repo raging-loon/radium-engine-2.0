@@ -14,7 +14,7 @@ class oglBufferFactory
 public:
     oglBufferFactory();
     rtl::shared_ptr<oglBuffer> createBuffer(BufferDescription& desc);
-
+    void init();
 private:
 
     void bindLayout();

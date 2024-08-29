@@ -48,7 +48,7 @@ Status oglDevice::init(DisplayInfo& dspi)
 #endif // RADIUM_DEBUG_BUILD
 
     glEnable(GL_DEPTH_TEST);
-
+    m_bufferFactory.init();
     return OK;
 }
 

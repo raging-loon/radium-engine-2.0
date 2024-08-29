@@ -1,3 +1,3 @@
 #!/bin/bash
 
-cloc --exclude-dir="CMakeFiles,_deps,thirdparty" ./ --include-ext=cpp,h,c --by-file
+cloc --exclude-dir="CMakeFiles,_deps,thirdparty,.vs" ./ --include-ext=cpp,h,c --by-file
