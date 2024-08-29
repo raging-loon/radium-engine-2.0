@@ -47,20 +47,23 @@ rtl::string oglShaderPreprocessor::extractSection(const char* name)
             }
             // initiate parsing. strncmp so we don't have to add a zero to the end
             else if (strncmp(line.c_str(), sectionName.c_str(), sectionNameLength) == 0)
-            {
                 parsingSection = true;
-            }
+         
             line.setPos(1);
 
         }
         else
-        {
             line += *source;
-        }
+
         ++source;
     }
-
-    extractedSection += '\0';
+    
+    if (!parsingSection)
+        extractedSection.setPos(0);
+    else
+        extractedSection += '\0';
+    
+    
     return extractedSection;
 
 

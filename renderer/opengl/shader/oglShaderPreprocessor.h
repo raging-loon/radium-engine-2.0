@@ -54,10 +54,14 @@ class oglShaderPreprocessor
 {
 public:
 
-    oglShaderPreprocessor(const rtl::string& source) : m_position(0) 
+    oglShaderPreprocessor(const rtl::string& source) : m_position(0)
     {
         m_source = source;
     }
+
+    oglShaderPreprocessor() : m_position(0) {}
+
+    void setSource(const rtl::string& source) { m_source = source; }
 
     rtl::string extractSection(const char* name);
 
