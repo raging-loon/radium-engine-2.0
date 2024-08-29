@@ -1,4 +1,4 @@
-![radium logo](https://github.com/raging-loon/radium-engine-2.0/tree/main/logo.png "Logo")
+![radium logo](https://github.com/raging-loon/radium-engine-2.0/blob/main/logo.png)
 # Radium Engine
 
 This is a game engine oriented towards 2D games. In the future I plan on adding 3D support.
