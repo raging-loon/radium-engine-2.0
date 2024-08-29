@@ -6,8 +6,9 @@
 #include <core/system/timer.h>
 #include <core/rtl/variant.h>
 #include <core/engine/Config.h>
-
 #include <core/system/profiler.h>
+#include <renderer/opengl/oglBufferFactory.h>
+
 using namespace radium; 
 
 int main(int argc, char** argv)
@@ -26,7 +27,16 @@ int main(int argc, char** argv)
     RenderDevice t;
     t.init(test.getDisplayInfo());
 
-
+    oglBufferFactory d;
+    auto size = sizeof(Vertex);
+    BufferDescription bd =
+    {
+        .type = BUFFER_TYPE_VERTEX,
+        .size = size,
+        .count = 4,
+        .binding = 0,
+    };
+    d.createBuffer(bd);
 } 
   
 

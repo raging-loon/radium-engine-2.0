@@ -22,7 +22,7 @@ void radium::oglErrorCallback(
 	static const char* fmtstr = "[GL] Source: %s; Type: %s; Message: %s";
 	switch (severity)
 	{
-		case GL_DEBUG_SEVERITY_HIGH:            ENGINE_CRITICAL(fmtstr, sourceStr, typeStr, message); return;
+		case GL_DEBUG_SEVERITY_HIGH:            ENGINE_CRITICAL(fmtstr, sourceStr, typeStr, message); __debugbreak(); return;
 		case GL_DEBUG_SEVERITY_MEDIUM:          ENGINE_ERROR   (fmtstr, sourceStr, typeStr, message); return;
 		case GL_DEBUG_SEVERITY_LOW:             ENGINE_WARNING (fmtstr, sourceStr, typeStr, message); return;
 		case GL_DEBUG_SEVERITY_NOTIFICATION:    ENGINE_INFO	   (fmtstr, sourceStr, typeStr, message); return;
