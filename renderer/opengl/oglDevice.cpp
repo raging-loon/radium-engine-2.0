@@ -2,6 +2,10 @@
 
 #include <GL/glew.h>
 #include <renderer/opengl/oglDebug.h>
+#include <core/debug/globlog.h>
+#include <renderer/interface/Buffer.h>
+#include <renderer/interface/Interface.h>
+#include <renderer/opengl/shader/oglShaderFactory.h>
 
 using namespace radium;
 
@@ -61,3 +65,13 @@ rtl::shared_ptr<Buffer> oglDevice::createBuffer(BufferDescription& bd)
 {
     return m_bufferFactory.createBuffer(bd);
 }
+
+Shader* oglDevice::createShader(ShaderDescription& sd)
+{
+    oglShaderFactory osf;
+    GLuint spid = osf.createShaderProgram(sd);
+    if (spid == GL_INVALID_VALUE)
+        return nullptr;
+    return new Shader(spid);
+}
+

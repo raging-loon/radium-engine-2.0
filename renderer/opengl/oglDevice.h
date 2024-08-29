@@ -6,6 +6,7 @@
 #include <renderer/interface/Buffer.h>
 #include <renderer/interface/Interface.h>
 #include <renderer/interface/DisplayInfo.h>
+#include <renderer/interface/ShaderProgram.h>
 #include <renderer/opengl/oglBufferFactory.h>
 #include <core/rtl/smart_ptr.h>
 namespace radium
@@ -67,7 +68,7 @@ public:
 	/// 
 
 	rtl::shared_ptr<Buffer> createBuffer(BufferDescription& bd);
-
+	Shader* createShader(ShaderDescription& sd);
 private:
 	/// platform specific initialization
 	Status _platform_init();

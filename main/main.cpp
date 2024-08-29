@@ -28,7 +28,6 @@ int main(int argc, char** argv)
     RenderDevice t;
     t.init(test.getDisplayInfo());
 
-    oglShaderFactory osf;
     ShaderDescription sd
     {
         .vtxEntryPoint = "VS",
@@ -36,11 +35,16 @@ int main(int argc, char** argv)
         .sourceFile = "D:/dev/radium-engine-2.0/renderer/common/default.glsl",
         .shaderFlags = sd.SHADER_IN_FILE,
     };
-    GLuint s = osf.compileShaderFromFile(sd);
-    if (s == GL_INVALID_VALUE)
-        printf("Failed\n");
-    // "D:/dev/radium-engine-2.0/renderer/common/default.glsl"
-} 
+
+    Shader* s = t.createShader(sd);
+    if (s == nullptr)
+    {
+        printf("failed\n");
+    } else {
+        delete s;
+    }
+}
+
   
 
 

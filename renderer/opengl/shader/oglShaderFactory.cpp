@@ -3,6 +3,7 @@
 #include <core/error.h>
 #include <core/io/file.h>
 #include <core/debug/globlog.h>
+#include <core/system/profiler.h>
 using radium::Status;
 using radium::ShaderDescription;
 using radium::oglShaderFactory;
@@ -16,6 +17,7 @@ GLuint oglShaderFactory::createShaderProgram(ShaderDescription& sd)
 
 GLuint oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
 {
+    PROFILED_FUNCTION("Compile Shader From File");
     rtl::string source;
     rtl::string vertexSource;
     rtl::string pixelSource;
