@@ -9,10 +9,6 @@ namespace radium
 class Sprite2D
 {
 public:
-    Sprite2D(const char* str) : m_name(str) {}
-    void printName() { printf("%s\n", m_name.c_str()); }
-private:
-    rtl::string m_name;
 
 };
 

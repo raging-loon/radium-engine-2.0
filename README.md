@@ -1,33 +1,21 @@
+![radium logo](https://github.com/raging-loon/radium-engine-2.0/tree/main/logo.png "Logo")
 # Radium Engine
 
-This is an engine I am writing almost completely from scratch.
-
-What will I not be writing?
-1. DirectX 11 + the error helper
-2. Math
-3. Things that the C++ compiler handles (namely `type_traits`)
-
-Other than that, everything here is 100% my own code.
-
-Why? 
-1. It will *totally* be fun
-1. I enjoy making things from the ground up
-1. I want to learn about things like STL, compression algorithms, file formats, etc
-
-What will I be building?
-- [ ] Radium Template Library (`rtl`)
-- [ ] Radium Math libary (`rm`)
-- [ ] A 2D renderer geared towards isometric graphics
-- [ ] Component-System akin to Unity's GameObject + MonoBehaviour system
-- [ ] Scene Graph
-- [ ] Resource Management/Loading/Conditioning
-- [ ] UI Library
-- [ ] Audio Library (prob. WASAPI/ALSA)
-- [ ] Small self-contained VM language
+This is a game engine oriented towards 2D games. In the future I plan on adding 3D support.
 
 ## Directory Structure
-
-
+- `core`
+  -   Core engine. Template library, threading, logging, etc
+- `scene`
+  -   ECS, scene manager, high level components (e.g. Sprite2D)
+- `renderer`
+  -   Graphics API interface, low-level components (e.g. Texture2D)
+- `game`
+  -   The game
+- `platform`
+    - Platform dependent code 
+- `unitest`
+  -   Unit Tests
 ## Coding Style
 I am using Allman Style bracing.
 
