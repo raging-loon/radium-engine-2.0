@@ -140,7 +140,7 @@ add_executable(radium-engine
      "core/system/profiler.cpp" "renderer/interface/Buffer.h" 
      "renderer/interface/ShaderProgram.h" "renderer/interface/Interface.h" 
       
-      "renderer/common/vertex.h" "renderer/common/vertex.cpp" "renderer/component/MeshComponent.h")
+      "renderer/common/vertex.h" "renderer/common/vertex.cpp" "renderer/component/MeshComponent.h" "thirdparty/stb_image/stb_image.cpp")
 
 
 ##########################
