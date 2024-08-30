@@ -16,7 +16,7 @@ option(ENABLE_PROFILER "Enable Profiling" OFF)
 
 #set(API_DX11 "Use DirectX 11" OFF)
 set(API_DX12 "Use DirectX 12" OFF)
-set(API_OPENGL "Use OpenGL" ON)
+set(API_OPENGL ON CACHE BOOL "Use OpenGL")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")
     add_compile_definitions(RADIUM_DEBUG_BUILD=1)
@@ -24,125 +24,46 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     add_compile_definitions(RADIUM_RELEASE_BUILD=1)
 endif()
 
-
 if(ENABLE_UNIT_TESTS)
-
     add_subdirectory("unittest")
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build/unit-test")
-
 else()
-
     set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/build")
     set(CONFIG_SOURCES
         "main/main.cpp"
      )
 endif()
 
+if(WIN32)
+    add_compile_definitions(RADIUM_PLATFORM_WIN32=1)
+endif()
+
+if(API_OPENGL)
+    add_compile_definitions(RADIUM_API_OPENGL=1)
+endif()
+
 if(ENABLE_PROFILER)
     add_compile_definitions(PROFILING_ENABLED=1)
 endif()
 
-
-
-if(WIN32)
-    add_compile_definitions(RADIUM_PLATFORM_WIN32=1)
-
-    file(GLOB_RECURSE PLATFORM_SOURCES 
-        "${CMAKE_SOURCE_DIR}/platform/windows/*.h"
-        "${CMAKE_SOURCE_DIR}/platform/windows/*.cpp")
-
-
-    if(API_DX11)
-        set(GRAPHICS_API_LIBS d3dcompiler.lib D3D11.lib dxgi.lib dxguid.lib)
-        file(GLOB_RECURSE GRAPHICS_API_SOURCES
-            "${CMAKE_SOURCE_DIR}/renderer/dx11/*.h"
-            "${CMAKE_SOURCE_DIR}/renderer/dx11/*.cpp"
-        )
-
-        set(GRAPHICS_API_SOURCES ${GRAPHICS_API_SOURCES} "${CMAKE_SOURCE_DIR}/thirdparty/dx11error/dxerr.cpp")
-        add_compile_definitions(RADIUM_API_DX11=1)
-
-        set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} "${CMAKE_SOURCE_DIR}/thirdparty/dx11error/")
-
-    elseif(API_OPENGL)
-        message("opengl")
-        set(GRAPHICS_API_LIBS opengl32.lib)
-        
-        file(GLOB_RECURSE GRAPHICS_API_SOURCES
-            "${CMAKE_SOURCE_DIR}/renderer/opengl/*.h"
-            "${CMAKE_SOURCE_DIR}/renderer/opengl/*.cpp"
-        )
-
-        set(GRAPHICS_API_SOURCES ${GRAPHICS_API_SOURCES} 
-            "${CMAKE_SOURCE_DIR}/thirdparty/glew/src/glew.c"
-            
-        )
-        
-        add_compile_definitions(RADIUM_API_OPENGL=1)
-        add_compile_definitions(GLEW_STATIC=1)
-        set(ADDITIONAL_INCLUDES ${ADDITIONAL_INCLUDES} "${CMAKE_SOURCE_DIR}/thirdparty/glew/include/")
-
-    endif()
- 
-elseif(UNIX)
-    message(FATAL_ERROR "Lazy developers forgot to port")
-    file(GLOB_RECURSE PLATFORM_SOURCES 
-        "${CMAKE_SOURCE_DIR}/platform/unix/*.h"
-        "${CMAKE_SOURCE_DIR}/platform/unix/*.cpp"
-)
-
-endif()
-
+# add our subdirectories
+add_subdirectory(core)
+add_subdirectory(scene)
+add_subdirectory(platform)
+add_subdirectory(renderer)
 
 
 add_executable(radium-engine
     ${CONFIG_SOURCES}
     ${PLATFORM_SOURCES}
-    ${GRAPHICS_API_SOURCES}
-    #"core/rtl/__copy_on_write.h"
-    "core/rtl/copy_on_write.h"
-    "core/rtl/string.h"
-    "core/rtl/basic_string.h"
-    "core/rtl/array.h" 
-    "core/rtl/hash.h" 
-    "core/rtl/hash_map.h" 
-    "core/rtl/iterator.h" 
-    "core/rtl/variant.h" 
-    "core/rtl/string.cpp"
-    "core/rtl/function.h" 
-    "core/rtl/smart_ptr.h"
-    "core/rtl/utility.h" 
-
-    "core/radium.h"
-    "core/memory/Memory.h" 
-    "core/memory/Memory.cpp" 
-    "core/error.h"
-    "core/debug/globlog.h"
-    "core/log/colors.h" 
-    "core/log/colors.cpp" "core/log/outputsystems/OutputSystem.h" "core/log/log.cpp"
-    "core/log/outputsystems/StdOutSystem.h"  "core/log/outputsystems/StdoutSystem.cpp" 
-    "core/log/outputsystems/FileOutputSystem.h" 
-    "core/log/outputsystems/FileOutputSystem.cpp"
-    "core/types.h" "core/engine/Application.h" "core/io/file.h" 
-    "core/debug/backtrace.h" 
-    "core/debug/globlog.h" "core/debug/globlog.cpp"  "core/debug/seh.h"  
-    "core/thread/thread.h" 
-    "core/thread/mutex.h"
-    "core/memory/PoolAllocator.h" 
-    "scene/ecs/registry.h" "scene/ecs/ComponentPool.h" "scene/ecs/sparse_set.h" "scene/ecs/entity.h"
-    "scene/component/Sprite2D.h" 
-    "scene/ecs/ComponentPoolFactory.h"  "scene/ecs/registry.cpp" "scene/component/Transform3D.h" 
-    "renderer/interface/RenderDevice.h"
-    "renderer/interface/Display.h" "scene/quadtree/QuadTree.h" "scene/component/Box2D.h"
-    "scene/quadtree/QuadTree.cpp" "scene/SceneManager.h" "scene/Scene.h" 
-     "renderer/interface/DisplayInfo.h" "core/system/timer.h" "core/engine/Config.h"
-     "core/engine/Config.cpp" "core/system/profiler.h" 
-     "core/system/profiler.cpp" "renderer/interface/Buffer.h" 
-     "renderer/interface/ShaderProgram.h" "renderer/interface/Interface.h" 
+    ${GRAPHICS_SOURCES}
+    ${CORE_SOURCES}
+    ${SCENE_SOURCES}
+    "scene/quadtree/QuadTree.cpp" 
+     "renderer/common/vertex.cpp"
+     "thirdparty/stb_image/stb_image.cpp" 
       
-      "renderer/common/vertex.h" "renderer/common/vertex.cpp"
-      "renderer/component/MeshComponent.h" 
-      "thirdparty/stb_image/stb_image.cpp" "resmgr/ResourceManager.h" "resmgr/Resource.h" "resmgr/types/Image.h" "resmgr/ResourceError.h" "resmgr/types/Image.cpp")
+      "resmgr/types/Image.cpp")
 
 
 ##########################
@@ -154,11 +75,14 @@ target_include_directories(radium-engine PUBLIC
     "./thirdparty/glm-1.0.1/" 
     "./thirdparty/stb_image/" 
     ${ADDITIONAL_INCLUDES})
+
+
 if(WIN32)
     target_link_libraries(radium-engine ${GRAPHICS_API_LIBS})
     if(MSVC)
-    string(REGEX REPLACE "/W[1-3]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")    
+        string(REGEX REPLACE "/W[1-3]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")    
     endif()
+    add_compile_definitions(GLEW_STATIC=1)
 
 endif()
 
