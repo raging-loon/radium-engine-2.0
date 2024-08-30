@@ -51,6 +51,7 @@ add_subdirectory(core)
 add_subdirectory(scene)
 add_subdirectory(platform)
 add_subdirectory(renderer)
+add_subdirectory(resmgr)
 
 
 add_executable(radium-engine
@@ -59,11 +60,13 @@ add_executable(radium-engine
     ${GRAPHICS_SOURCES}
     ${CORE_SOURCES}
     ${SCENE_SOURCES}
+    ${RESMGR_SOURCES}
     "scene/quadtree/QuadTree.cpp" 
      "renderer/common/vertex.cpp"
      "thirdparty/stb_image/stb_image.cpp" 
       
-      "resmgr/types/Image.cpp")
+
+)
 
 
 ##########################

@@ -22,11 +22,10 @@ using I8  = int8_t;
 using I16 = int16_t;
 using I32 = int32_t;
 
-#ifndef _X86_
 using U64 = uint64_t;
 using I64 = int64_t;
-#endif
 
+using byte = unsigned char;
 
 
 }

@@ -1,8 +1,8 @@
 #ifndef RESMGR_TYPES_IMAGE_H_
 #define RESMGR_TYPES_IMAGE_H_
 
-#include <stb_image.h>
 #include <resmgr/Resource.h>
+#include <core/types.h>
 namespace radium
 {
 
@@ -11,14 +11,19 @@ class Image : public Resource
 public:
     Image();
 
-    RsStatus load(const unsigned char* data, U32 size) override;
+    RsStatus load(const byte* data, U32 size) override;
     
+    I32 getHeight() const { return m_height; }
+    I32 getWidth() const { return m_width;  }
+    I32 getNumChannels() const { return m_channelCount;  }
+
+
 private:
-    const unsigned char* m_imageData;
+    const byte* m_imageData;
     
-    U32 m_height;
-    U32 m_width;
-    U32 m_channelCount;
+    I32 m_height;
+    I32 m_width;
+    I32 m_channelCount;
 
 };
 

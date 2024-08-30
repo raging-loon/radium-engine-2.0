@@ -6,8 +6,6 @@
 namespace radium
 {
 
-using RID = ResourceID;
-
 struct ResourceID
 {
     U8 pakID;
@@ -22,7 +20,7 @@ class Resource
 {
 public:
     
-    virtual RsStatus load(const unsigned char* data, U32 size) = 0;
+    virtual RsStatus load(const byte* data, U32 size) = 0;
 
 };
 
