@@ -12,6 +12,8 @@ This is a game engine oriented towards 2D games. In the future I plan on adding 
   -   Graphics API interface, low-level components (e.g. Texture2D)
 - `game`
   -   The game
+- `resmgr`
+    - Resource Manager and core resource types (e.g. image)
 - `platform`
     - Platform dependent code 
 - `unitest`
@@ -31,3 +33,17 @@ Private member variables are preceded with `m_`
 Constants and Macros are in SCREAMING_SNAKE_CASE
 
 Please, *please* ensure your IDE/editor is using 4 spaces and NOT tabs.
+
+
+## Thirdparty Software In Use
+
+- [OpenGL Extension Wrangler (GLEW)](https://glew.sourceforge.net/)
+- [OpenGL Math Library (GLM)](https://github.com/g-truc/glm)
+- [STB Image](https://github.com/nothings/stb)
+
+## Special Thanks
+
+- [Godot Engine](https://godotengine.org/) for writing a darn good engine that I could study.
+- [The Cherno](https://www.youtube.com/user/TheChernoProject) - for the awesome OpenGL + game engine series
+- Joey de Vries - for [learnopengl.com](https://learnopengl.com/) 
+- Andrei Alexandrescu - for teaching me how to verbally abuse the compiler
