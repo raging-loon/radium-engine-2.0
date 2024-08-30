@@ -1,0 +1,33 @@
+<mxfile host="Electron" modified="2024-08-30T19:01:50.919Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/22.1.2 Chrome/114.0.5735.289 Electron/25.9.4 Safari/537.36" etag="DCiOUuECkRWUYqHjZqN0" version="22.1.2" type="device">
+  <diagram name="Page-1" id="W4Mv7R9SDFY3MhowHSOM">
+    <mxGraphModel dx="714" dy="451" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1920" pageHeight="1200" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-1" value="Resource Manager" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" parent="1" vertex="1">
+          <mxGeometry x="590" y="330" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-2" value="Resource" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" parent="1" vertex="1">
+          <mxGeometry x="590" y="400" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-3" value="Resource Pool" style="shape=datastore;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="830" y="315" width="60" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-4" value="Client" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" parent="1" vertex="1">
+          <mxGeometry x="590" y="470" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" parent="1" source="AGSzFUcWkCVBXkIQYS0M-5" edge="1">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="860" y="510" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-5" value="VFS Database" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" parent="1" vertex="1">
+          <mxGeometry x="800" y="430" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="AGSzFUcWkCVBXkIQYS0M-7" value="B-Tree" style="shape=cube;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;darkOpacity=0.05;darkOpacity2=0.1;size=10;" parent="1" vertex="1">
+          <mxGeometry x="800" y="510" width="120" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

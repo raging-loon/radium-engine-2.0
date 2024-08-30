@@ -140,14 +140,20 @@ add_executable(radium-engine
      "core/system/profiler.cpp" "renderer/interface/Buffer.h" 
      "renderer/interface/ShaderProgram.h" "renderer/interface/Interface.h" 
       
-      "renderer/common/vertex.h" "renderer/common/vertex.cpp" "renderer/component/MeshComponent.h" "thirdparty/stb_image/stb_image.cpp")
+      "renderer/common/vertex.h" "renderer/common/vertex.cpp"
+      "renderer/component/MeshComponent.h" 
+      "thirdparty/stb_image/stb_image.cpp" "resmgr/ResourceManager.h" "resmgr/Resource.h" "resmgr/types/Image.h" "resmgr/ResourceError.h" "resmgr/types/Image.cpp")
 
 
 ##########################
 ###### Graphics API ######
 ##########################
 
-target_include_directories(radium-engine PUBLIC "./" "./thirdparty/glm-1.0.1/" ${ADDITIONAL_INCLUDES})
+target_include_directories(radium-engine PUBLIC 
+    "./" 
+    "./thirdparty/glm-1.0.1/" 
+    "./thirdparty/stb_image/" 
+    ${ADDITIONAL_INCLUDES})
 if(WIN32)
     target_link_libraries(radium-engine ${GRAPHICS_API_LIBS})
     if(MSVC)
