@@ -25,6 +25,7 @@ int main(int argc, char** argv)
     t.init(test.getDisplayInfo());
     auto s = ResourceManager::get().loadResource<Image>("../logo.png");
     ENGINE_INFO("Loaded image : %dx%d nc: %d",s->getHeight(), s->getWidth(), s->getNumChannels());
+
 }
 
   
