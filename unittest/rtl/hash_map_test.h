@@ -45,4 +45,40 @@ TEST(rtl_test, hash_map_adt)
 
 }
 
+TEST(rtl_test, hash_map_remove_primitive)
+{
+    rtl::unordered_map<int, double> test;
+
+    for (int i = 0; i < 10; i++)
+        test.insert({ i, (double)(i / 3 )});
+
+    EXPECT_TRUE(test.at(1) == 1 / 3);
+
+    EXPECT_TRUE(test.find(5) != test.end());
+    test.erase(5);
+    EXPECT_TRUE(test.find(5) == test.end());
+
+}
+
+
+TEST(rtl_test, hash_map_remove_adt)
+{
+    rtl::unordered_map<rtl::string, rtl::string> test;
+    test["bob"] = "person";
+    test["name"] = "a";
+    test["cat_name"] = "cat";
+
+    EXPECT_STREQ(test["bob"].c_str(), "person");
+    EXPECT_STREQ(test["name"].c_str(), "a");
+    EXPECT_STREQ(test["cat_name"].c_str(), "cat");
+
+    test.erase("bob");
+
+    EXPECT_TRUE(test.find("bob") == test.end());
+    // testing to make sure our ADTs don't get corrupted during moves
+    EXPECT_STREQ(test["name"].c_str(), "a");
+    EXPECT_STREQ(test["cat_name"].c_str(), "cat");
+
+
+}
 #endif // RTL_HASH_MAP_TEST_H_

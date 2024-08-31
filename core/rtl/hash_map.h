@@ -102,6 +102,20 @@ public:
         return const_iterator(m_data.at_p(idx));
     }
 
+    ///
+    /// @brief
+    ///     Erase elements with Key k
+    /// 
+    size_t erase(const K& k);
+
+    size_t erase(iterator i)
+    {
+        if (i != end())
+            return erase((i->first));
+
+        return 0;
+    }
+
     /// get total number of elements allowed before
     /// a resize will occur
     size_t max_size() const { return m_size;  }
@@ -254,6 +268,37 @@ V& unordered_map<K, V, Hash>::operator[](K&& key)
 }
 
 template<class K, class V, class Hash>
+size_t unordered_map<K, V, Hash>::erase(const K& k)
+{
+    int idx = index_of(k);
+    // no keys to delete
+    if (idx == -1) 
+        return 0;
+
+    /// TODO: test code
+    kv_map_t* target = m_data.at_pc((size_t)idx);
+    int curpsl = target->displacement;
+    int iters = 0;
+
+    // shift every item with a displacement higher than ours 1 index lower
+    while(m_data.at_pc(++idx)->displacement > curpsl && (iters < m_element_count))
+    {
+        auto* old = m_data.at_pc(idx);
+        old->displacement--;
+        memmove(target, old, sizeof(kv_map_t));
+        
+        target = m_data.at_pc(idx);
+
+        idx = (idx + 1) % m_size;
+        ++iters;
+    }
+
+    target->displacement = -1;
+    --m_element_count;
+    return 1;
+}
+
+template<class K, class V, class Hash>
 void unordered_map<K, V, Hash>::resize(size_t n)
 {
     // get a copy of the data, this will increase the ref count
@@ -320,7 +365,7 @@ void unordered_map<K, V, Hash>::swap(uint32_t old_index, uint32_t new_index, uin
 
     old->first = _new->first;
     old->second = _new->second;
-    old->displacement = _new->displacement == -1 ? 0 : _new->displacement;
+    old->displacement = _new->displacement == -1 ? -1 : _new->displacement;
 
     _new->first = temp.first;
     _new->second = temp.second;
