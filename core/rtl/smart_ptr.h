@@ -99,7 +99,7 @@ public:
         _int_store->_refcount++;
     }
 
-
+    bool isValid() { return _int_store != nullptr; }
 
     void release()
     {

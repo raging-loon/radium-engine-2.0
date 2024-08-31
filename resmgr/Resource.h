@@ -6,14 +6,16 @@
 namespace radium
 {
 
+constexpr U8 RID_PID_FILE_IS_ON_DISK = 0xff;
+
 struct ResourceID
 {
+    // what resource pack this came from
     U8 pakID;
-    U8 index;
-    U8 type;
-    U8 depPoolId;
-    U32 name;
+    U32 name{ 0xff };
 };
+
+using RID = ResourceID; 
 
 
 class Resource
@@ -22,6 +24,16 @@ public:
     
     virtual RsStatus load(const byte* data, U32 size) = 0;
 
+    void setRID(RID id) 
+    {
+        if (m_rid.name == 0xff)
+            m_rid = id;
+    }
+
+    virtual ~Resource();
+private:
+
+    RID m_rid{};
 };
 
 } // radium
