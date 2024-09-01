@@ -1,7 +1,8 @@
+// TODO: optimize: ~25ms for loading an image is too much
 template <class T >
 rtl::shared_ptr<T> radium::ResourceManager::loadResource(const rtl::string & str)
 {
-    PROFILED_FUNCTION("load resource");
+    //PROFILED_FUNCTION("load resource");
     static_assert(std::is_base_of_v<Resource, T>, "T must inherit from radium::Resource");
 
     RID id = createResourceID(str);
@@ -24,12 +25,12 @@ rtl::shared_ptr<T> radium::ResourceManager::loadResource(const rtl::string & str
         return rtl::shared_ptr<T>();
     }
 
-
     resPtr->setRID(id);
 
     m_ridDataMap.insert({ id, resData });
 
     m_ridPtrMap.insert({ id, resPtr });
-
+    //resPtr.release();
+    //printf("%d\n",resPtr.reference_count());
     return resPtr;
 }

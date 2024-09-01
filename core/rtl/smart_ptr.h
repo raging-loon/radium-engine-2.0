@@ -114,7 +114,9 @@ public:
     shared_ptr<U> static_pointer_cast()
     {
         auto x = shared_ptr<U>();
+        _int_store->_refcount++;
         x._int_store = _int_store;
+        
         return x;
     }
 
@@ -135,9 +137,9 @@ public:
     /// 
     void release()
     {
-        if (!_int_store)
+        if (_int_store == nullptr || _int_store->_ptr == nullptr)
             return;
-        if (_int_store->_refcount == 1)
+        if (_int_store->_refcount <= 1)
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
             {
@@ -146,6 +148,7 @@ public:
             }
             radium::GenericAllocator::free_static(_int_store->_ptr);
             delete _int_store;
+            _int_store = nullptr;
         }
         else
             _int_store->_refcount--;

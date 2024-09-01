@@ -3,7 +3,8 @@
 
 radium::Resource::~Resource()
 {
-    radium::ResMgr::get().releaseResource(m_rid);
+    if(radium::ResMgr::isActive())
+        radium::ResMgr::releaseResource(m_rid);
 }
 
 bool radium::operator==(RID l, RID r)

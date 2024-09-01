@@ -86,7 +86,7 @@ if(WIN32)
         string(REGEX REPLACE "/W[1-3]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")    
     endif()
     add_compile_definitions(GLEW_STATIC=1)
-
+    add_compile_options("/fsanitize=address")
 endif()
 
 

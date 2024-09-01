@@ -158,17 +158,16 @@ private:
 template<class K, class V, class Hash>
 unordered_map<K, V, Hash>::~unordered_map()
 {
-    if (m_data.get_reference_count() != 1)
-        return;
-
-    for (int i = 0; i < m_element_count; i++)
+  /*  for (int i = 0; i < m_element_count; i++)
     {
         auto* p = m_data.at_pc(i);
+        if (p->displacement == -1)
+            continue;
         if constexpr (!std::is_trivially_destructible_v<V>)
             p->second.~V();
         if constexpr (!std::is_trivially_destructible_v<K>)
             p->first.~K();
-    }
+    }*/
 }
 
 template<class K, class V, class Hash>
@@ -292,7 +291,6 @@ size_t unordered_map<K, V, Hash>::erase(const K& k)
         idx = (idx + 1) % m_size;
         ++iters;
     }
-
     target->displacement = -1;
     --m_element_count;
     return 1;

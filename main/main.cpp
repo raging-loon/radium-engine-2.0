@@ -14,33 +14,27 @@ int main(int argc, char** argv)
 {
     radium::setSEHHandlers();
 
-    GlobLoggers::init();
+    //GlobLoggers::init();
 
 
-    Config engineConfig;
-    if (engineConfig.readConfigFromFile("engine.ini") != OK)
-        printf("an errror occured\n");
+    //Config engineConfig;
+    //if (engineConfig.readConfigFromFile("engine.ini") != OK)
+    //    printf("an errror occured\n");
 
-    Display test;
-    test.create(800, 600, engineConfig["title"]);
-    
-    RenderDevice t;
-    t.init(test.getDisplayInfo());
+    //Display test;
+    //test.create(800, 600, engineConfig["title"]);
+    //
+    //RenderDevice t;
+    //t.init(test.getDisplayInfo());
     ResMgr::get().init();
-    
-    auto s = ResourceManager::get().loadResource<Image>("../logo.png");
-    ResMgr::get().isValidResource(s->getResourceID());
-    auto v = ResourceManager::get().loadResource<Image>("../logo.png");
-    ENGINE_INFO("Loaded image : %dx%d nc: %d",s->getHeight(), s->getWidth(), s->getNumChannels());
 
-    RID id = s->getResourceID();
+    auto s = ResourceManager::get().loadResource<Image>("../logo.png"); 
+    auto v = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (2).jpg");
+    auto d = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (3).jpg");
+    auto x = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1.jpg");
+    ////printf("%zd\n", ResMgr::get().getRIDRefCount(s->getResourceID()));
 
-    if (ResMgr::get().isValidResource(id))
-        printf("valid\n");
-    if (v.isSame(s))
-        printf("yte\n");
-
-
+    ResMgr::get().terminate();
 }
 
   
