@@ -8,7 +8,7 @@
 #include <core/rtl/hash_map.h>
 #include <core/rtl/smart_ptr.h>
 #include <core/rtl/string.h>
-
+#include <core/system/profiler.h>
 namespace radium
 {
 ///
@@ -71,8 +71,12 @@ public:
     template <class T >
     rtl::shared_ptr<T> loadResource(const rtl::string& str)
     {
+        PROFILED_FUNCTION("load resource");
         static_assert(std::is_base_of_v<Resource, T>, "T must inherit from radium::Resource");
     
+        RID id = createResourceID(str);
+        id.pakID = RID_PID_FILE_IS_ON_DISK;
+
         byte* resData = nullptr;
         U32 resSize = 0;
         Status loadStatus = loadResourceFromDisk(str, &resData, &resSize);
@@ -87,17 +91,15 @@ public:
             return rtl::shared_ptr<T>();
         }
 
-        RID id = createResourceID(str);
-        id.pakID = RID_PID_FILE_IS_ON_DISK;
-
+        
         resPtr->setRID(id);
 
-        //m_ridDataMap.insert({ id, resData });
+        m_ridDataMap.insert({ id, resData });
 
         return resPtr;
     }
 
-
+    bool isValidResource(RID rid);
     void releaseResource(RID rid);
 
 public:

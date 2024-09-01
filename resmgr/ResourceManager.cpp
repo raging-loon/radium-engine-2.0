@@ -24,11 +24,23 @@ void ResourceManager::terminate()
 {
 }
 
+bool ResourceManager::isValidResource(RID rid)
+{
+    return m_ridDataMap.find(rid) != m_ridDataMap.end();
+}
+
 void ResourceManager::releaseResource(RID rid)
 {
 
     printf("0x%llx would be delted but unordered_map has no delete functoin...\n", *reinterpret_cast<U64*>(&rid));
     printf("Its hash it 0x%0x btw\n", rtl::hash<RID>::run(rid));
+
+    byte* data = m_ridDataMap[rid];
+    if (data)
+        delete[] data;
+
+    m_ridDataMap.erase(rid);
+
 }
 
 Status ResourceManager::loadResourceFromDisk(const rtl::string& location, byte** out, U32* outSize)

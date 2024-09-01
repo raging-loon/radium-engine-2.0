@@ -19,9 +19,12 @@ struct ResourceID
     U8 _pad1{0};
     U8 _pad2{0};
     U8 _pad3{0};
+
 };
 /// friendlier alias
 using RID = ResourceID; 
+bool operator==(RID l, RID r);
+
 
 ///
 /// @brief
