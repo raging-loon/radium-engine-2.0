@@ -31,11 +31,14 @@ bool ResourceManager::isValidResource(RID rid)
 
 void ResourceManager::releaseResource(RID rid)
 {
+    if (!m_ridDataMap.contains(rid))
+        return;
     byte* data = m_ridDataMap[rid];
     if (data)
         delete[] data;
 
     m_ridDataMap.erase(rid);
+    m_ridPtrMap.erase(rid);
 
 }
 

@@ -118,6 +118,10 @@ struct pair
         : first(x), second(y) 
     {}
 
+    pair(const pair& other)
+        : first(other.first), second(other.second)
+    {}
+
 };
 
 

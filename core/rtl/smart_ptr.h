@@ -5,10 +5,23 @@
 #include "utility.h"
 #include "core/memory/Memory.h"
 #include <utility>
-
+#include <type_traits>
 namespace rtl
 {
 
+/// @brief
+///    A simple container for holding a pointer and  
+///    the number of shared_ptrs referencing it
+/// 
+///     void* is for type erasure such that this structure 
+///     can be shared between shared_ptrs with convertable types or
+///     base-derived types
+/// 
+struct __ref_cnt_ptr
+{
+    void* _ptr;
+    uint32_t _refcount;
+};
 
 ///
 /// @brief
@@ -30,11 +43,10 @@ namespace rtl
 template <class T >
 class shared_ptr
 {
-
 public:
 
     shared_ptr() : _int_store(nullptr) {}
-    
+
     template <class U>
     shared_ptr(U* _new)
     {
@@ -52,14 +64,7 @@ public:
         _int_store->_refcount++;
     }
 
-    //shared_ptr(const shared_ptr&& other)
-    //    : _int_store(rtl::move(other._int_store))
-    //{
-    //    _int_store->_refcount++;
-
-    //}
-
-    shared_ptr& operator=(shared_ptr& other)
+    shared_ptr& operator=(const shared_ptr& other)
     {
         _int_store = other._int_store;
         other._int_store->_refcount++;
@@ -74,13 +79,12 @@ public:
         return *this;
 
     }
-    
 
     /// get the pointer
     T* operator->()
     {
         if (_int_store)
-            return _int_store->_ptr;
+            return static_cast<T*>(_int_store->_ptr);
         else
             return nullptr;
     }
@@ -89,18 +93,46 @@ public:
     T& operator*()
     {
         assert(_int_store);
-        return *_int_store->_ptr;
+        return static_cast<T>(*_int_store->_ptr);
     }
 
+    /// 
+    /// @brief
+    ///     Convert between a convertable type
+    /// 
     template<class U>
     shared_ptr(const shared_ptr<U>& other, std::enable_if_t<std::is_convertible_v<U*, T*>, int> = 0)
-        : _int_store((shared_ptr<T>&)(other)._int_store)
+        : _int_store(((shared_ptr<T>&)other)._int_store)
     {
         _int_store->_refcount++;
     }
 
+    ///
+    /// @brief
+    ///     Convert between parent and child types
+    template<class U>
+    shared_ptr<U> static_pointer_cast()
+    {
+        auto x = shared_ptr<U>();
+        x._int_store = _int_store;
+        return x;
+    }
+
+    bool isSame(const shared_ptr& other)
+    {
+        return other._int_store == _int_store;
+    }
+
     bool isValid() { return _int_store != nullptr; }
 
+    ///
+    /// @brief
+    ///     Release the pointer because we are done with it
+    ///     This is automatically called from our destructor
+    /// 
+    ///     This will decrease the reference count or if it is 0,
+    ///     it will destroy/free the resource
+    /// 
     void release()
     {
         if (!_int_store)
@@ -108,7 +140,10 @@ public:
         if (_int_store->_refcount == 1)
         {
             if constexpr (!std::is_trivially_destructible_v<T>)
-                _int_store->_ptr->~T();
+            {
+                T* t = (T*)_int_store->_ptr;
+                t->~T();
+            }
             radium::GenericAllocator::free_static(_int_store->_ptr);
             delete _int_store;
         }
@@ -123,19 +158,12 @@ public:
 
 private:
 
-    /// @brief
-    ///    A simple container for holding a pointer and  
-    ///    the number of shared_ptrs referencing it
-    /// 
-    struct __ref_cnt_ptr
-    {
-        T* _ptr;
-        uint32_t _refcount;
-    };
 
     __ref_cnt_ptr* _int_store;
 
-
+    template <class U>
+    friend class shared_ptr;
+  
 };
 
 /// Create a new shared pointer

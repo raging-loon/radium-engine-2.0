@@ -29,16 +29,17 @@ int main(int argc, char** argv)
     ResMgr::get().init();
     
     auto s = ResourceManager::get().loadResource<Image>("../logo.png");
+    ResMgr::get().isValidResource(s->getResourceID());
+    auto v = ResourceManager::get().loadResource<Image>("../logo.png");
     ENGINE_INFO("Loaded image : %dx%d nc: %d",s->getHeight(), s->getWidth(), s->getNumChannels());
 
     RID id = s->getResourceID();
 
     if (ResMgr::get().isValidResource(id))
         printf("valid\n");
-    auto i = s;
-    s.release();
-    if (!ResMgr::get().isValidResource(id))
-        printf("invalid\n");
+    if (v.isSame(s))
+        printf("yte\n");
+
 
 }
 
