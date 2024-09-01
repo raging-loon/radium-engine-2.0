@@ -31,10 +31,6 @@ bool ResourceManager::isValidResource(RID rid)
 
 void ResourceManager::releaseResource(RID rid)
 {
-
-    printf("0x%llx would be delted but unordered_map has no delete functoin...\n", *reinterpret_cast<U64*>(&rid));
-    printf("Its hash it 0x%0x btw\n", rtl::hash<RID>::run(rid));
-
     byte* data = m_ridDataMap[rid];
     if (data)
         delete[] data;

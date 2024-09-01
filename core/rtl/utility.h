@@ -102,6 +102,26 @@ constexpr void swap(T& l, T& r)
     r = temp;
 }
 
+template <class T1, class T2>
+struct pair
+{
+    T1 first;
+    T2 second;
+
+    pair() : first{}, second{} {};
+
+    pair(const T1& x, const T2& y)
+        : first(x), second(y) {}
+
+    template <class U1, class U2>
+    pair(U1&& x, U2&& y)
+        : first(x), second(y) 
+    {}
+
+};
+
+
+
 } // rtl
 
 #endif // CORE_RTL_UTILITY_H_

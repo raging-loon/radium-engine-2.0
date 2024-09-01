@@ -7,6 +7,7 @@
 #include <resmgr/ResourceManager.h>
 #include <resmgr/types/Image.h>
 #include <core/rtl/hash_map.h>
+#include <core/rtl/utility.h>
 using namespace radium; 
 
 int main(int argc, char** argv)
