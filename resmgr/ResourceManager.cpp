@@ -10,54 +10,36 @@ using radium::Status;
 using radium::File;
 using radium::RID;
 
-bool ResourceManager::m_isActive = false;
-
 Status ResourceManager::init()
 {
 
 #ifdef RADIUM_API_OPENGL
     stbi_set_flip_vertically_on_load(true);
 #endif // RADIUM_API_OPENGL 
-    m_isActive = true;
     return OK;
 }
 
 void ResourceManager::terminate()
 {
-    for (auto& i : m_ridDataMap)
-    {
-        if (i.displacement != -1 && i.second)
-            releaseResource(i.first);
-    }
+  
     for (auto& i : m_ridPtrMap)
     {
         if (i.displacement != -1)
         {
-            if (i.second.reference_count() <= 1)
-                i.second.~shared_ptr();
+            while (i.second.reference_count() > 1)
+                i.second.release();
         }
     }
 
-    m_isActive = false;
+}
+
+ResourceManager::~ResourceManager()
+{
 }
 
 bool ResourceManager::isValidResource(RID rid)
 {
-    return m_ridDataMap.find(rid) != m_ridDataMap.end();
-}
-
-void ResourceManager::releaseResource(RID rid)
-{
-    if (!m_isActive) return;
-
-    if (!ResourceManager::get().m_ridDataMap.contains(rid))
-        return;
-    byte* data = ResourceManager::get().m_ridDataMap[rid];
-    //ENGINE_INFO("Released RID 0x%0X with data @ %p", *(uint64_t*)(&rid), data);
-    if (data)
-        delete[] data;
-
-    ResourceManager::get().m_ridDataMap.erase(rid);
+    return m_ridPtrMap.find(rid) != m_ridPtrMap.end();
 }
 
 size_t ResourceManager::getRIDRefCount(RID rid)
@@ -69,11 +51,7 @@ size_t ResourceManager::getRIDRefCount(RID rid)
     return iter->second.reference_count();
 }
 
-ResourceManager::~ResourceManager()
-{
-  /*  m_ridDataMap.~unordered_map();
-    m_ridPtrMap.~unordered_map();*/
-}
+
 
 Status ResourceManager::loadResourceFromDisk(const rtl::string& location, byte** out, U32* outSize)
 {
@@ -93,7 +71,6 @@ Status ResourceManager::loadResourceFromDisk(const rtl::string& location, byte**
 
 RID ResourceManager::createResourceID(const rtl::string& name)
 {
-    RID id = { .name = rtl::hash<rtl::string>().run(name) };
-    return id;
+    return rtl::hash<rtl::string>().run(name);
 }
 

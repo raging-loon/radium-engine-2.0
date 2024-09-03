@@ -6,11 +6,13 @@ rtl::shared_ptr<T> radium::ResourceManager::loadResource(const rtl::string & str
     static_assert(std::is_base_of_v<Resource, T>, "T must inherit from radium::Resource");
 
     RID id = createResourceID(str);
-    id.pakID = RID_PID_FILE_IS_ON_DISK;
+    
     auto iter = m_ridPtrMap.find(id);
-    if (iter != m_ridPtrMap.end()) {
+    
+    if (iter != m_ridPtrMap.end())
         return iter->second.static_pointer_cast<T>();
-    }
+
+
     byte* resData = nullptr;
     U32 resSize = 0;
     Status loadStatus = loadResourceFromDisk(str, &resData, &resSize);
@@ -25,12 +27,8 @@ rtl::shared_ptr<T> radium::ResourceManager::loadResource(const rtl::string & str
         return rtl::shared_ptr<T>();
     }
 
-    resPtr->setRID(id);
-
-    m_ridDataMap.insert({ id, resData });
-
+    resPtr->m_data = resData;
+    resPtr->m_rid = id;
     m_ridPtrMap.insert({ id, resPtr });
-    //resPtr.release();
-    //printf("%d\n",resPtr.reference_count());
     return resPtr;
 }

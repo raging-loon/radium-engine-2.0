@@ -3,11 +3,10 @@
 
 radium::Resource::~Resource()
 {
-    if(radium::ResMgr::isActive())
-        radium::ResMgr::releaseResource(m_rid);
+    if (m_data)
+    {
+        delete[] m_data;
+        m_data = nullptr;
+    }
 }
 
-bool radium::operator==(RID l, RID r)
-{
-    return (*(U64*)&l) == (*(U64*)&r);
-}

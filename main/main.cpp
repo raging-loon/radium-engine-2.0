@@ -14,7 +14,7 @@ int main(int argc, char** argv)
 {
     radium::setSEHHandlers();
 
-    //GlobLoggers::init();
+    GlobLoggers::init();
 
 
     //Config engineConfig;
@@ -27,13 +27,15 @@ int main(int argc, char** argv)
     //RenderDevice t;
     //t.init(test.getDisplayInfo());
     ResMgr::get().init();
-
+     
+     auto x = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1.jpg");
     auto s = ResourceManager::get().loadResource<Image>("../logo.png"); 
     auto v = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (2).jpg");
-    auto d = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (3).jpg");
-    auto x = ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1.jpg");
-    ////printf("%zd\n", ResMgr::get().getRIDRefCount(s->getResourceID()));
-
+    ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (3).jpg");
+    auto t5= ResourceManager::get().loadResource<Image>("../game/res/20240101183819_1thumbnail (4).jpg");
+    printf("0x%0X -> %d\n", x->getResourceID(), x.reference_count());
+    printf("0x%0X -> %d\n", s->getResourceID(), s.reference_count());
+    printf("0x%0X -> %d\n", v->getResourceID(), v.reference_count());
     ResMgr::get().terminate();
 }
 
