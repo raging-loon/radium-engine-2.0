@@ -27,5 +27,7 @@ if(API_OPENGL)
     endif()
 endif()
 
-set(GRAPHICS_SOURCES ${GRAPHICS_SOURCES} PARENT_SCOPE)
+set(GRAPHICS_SOURCES ${GRAPHICS_SOURCES} 
+    "renderer/common/Layout.h"
+PARENT_SCOPE)
 

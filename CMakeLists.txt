@@ -62,11 +62,11 @@ add_executable(radium-engine
     ${SCENE_SOURCES}
     ${RESMGR_SOURCES}
     "scene/quadtree/QuadTree.cpp" 
-     "renderer/common/vertex.cpp"
+     
      "thirdparty/stb_image/stb_image.cpp" 
       
 
-  "renderer/interface/Texture.h")
+  "renderer/interface/Texture.h" "renderer/common/RenderList.h")
 
 
 ##########################

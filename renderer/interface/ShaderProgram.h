@@ -2,7 +2,6 @@
 #define RENDERER_INTERFACE_SHADER_PROGRAM_H_
 
 #include <core/types.h>
-
 namespace radium
 {
 
@@ -24,6 +23,8 @@ struct ShaderDescription
     const char* psEntryPoint    {nullptr};
     
     const char* sourceFile      {nullptr};
+
+    VertexDescription* layout;
 
     U16 shaderFlags             { 0 };
 
