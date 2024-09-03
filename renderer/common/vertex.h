@@ -25,7 +25,7 @@ struct VertexDescription
 static const VertexDescription DEFAULT_2D_VERTEX_DESC[2] =
 {
     {3, 0, sizeof(Vertex)},
-    {2, offsetof(Vertex, color), sizeof(Vertex)},
+    {3, offsetof(Vertex, color), sizeof(Vertex)},
 };
 
 

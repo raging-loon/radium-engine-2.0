@@ -61,6 +61,9 @@ public:
 
     void terminate();
 
+	void swapBuffers();
+
+	void bindVertexArray() { glBindVertexArray(m_bufferFactory.m_vao); }
 
 public:
 	/// 

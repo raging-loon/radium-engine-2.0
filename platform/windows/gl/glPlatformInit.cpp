@@ -131,6 +131,9 @@ void oglDevice::_platform_terminate()
 
 }
 
-
+void oglDevice::swapBuffers()
+{
+	SwapBuffers(m_hDevCtx);
+}
 
 #endif // exclude 

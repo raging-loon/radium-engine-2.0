@@ -5,6 +5,7 @@
 ./core/rtl/array.h | 103 |  see if this can be optimized
 ./core/rtl/basic_string.h | 77 |  this  is temporary code
 ./core/rtl/hash_map.h | 21 |  replace this pragma macro with something cross-compiler supported
+./core/rtl/hash_map.h | 277 |  test code
 ./core/system/profiler.cpp | 85 |  add time api
 ./platform/windows/debug/seh.cpp | 48 |  see how big of a file this generates during 
 ./platform/windows/thread/mutex.cpp | 59 |  find better values
