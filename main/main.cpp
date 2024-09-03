@@ -9,6 +9,7 @@
 #include <core/rtl/hash_map.h>
 #include <core/rtl/utility.h>
 #include <renderer/interface/Interface.h>
+#include <renderer/interface/Texture.h>
 using namespace radium; 
 
 int main(int argc, char** argv)
@@ -16,7 +17,7 @@ int main(int argc, char** argv)
     radium::setSEHHandlers();
 
     GlobLoggers::init();
-
+    ResMgr::get().init();
 
     Config engineConfig;
     if (engineConfig.readConfigFromFile("engine.ini") != OK)
@@ -28,6 +29,9 @@ int main(int argc, char** argv)
     RenderDevice rd;
     rd.init(test.getDisplayInfo());
     test.show();
+
+
+    auto myImage = ResMgr::get().loadResource<Image>("../game/res/20240101183819_1thumbnail.jpg");
 
     float testVertices[] =
     {
@@ -69,14 +73,22 @@ int main(int argc, char** argv)
         .shaderFlags = sd.SHADER_IN_FILE,
     };
 
-    auto* shader = rd.createShader(sd);
+    TextureDescription td =
+    {
+        .data = myImage->getImageData(),
+        .height = myImage->getHeight(),
+        .width = myImage->getWidth()
 
+    };
+
+    auto* shader = rd.createShader(sd);
+    auto* tex = rd.createTexture(td);
     auto vbuf = rd.createBuffer(b);
     auto ibuf = rd.createBuffer(b2);
 
     
 
-    while (true)
+    while (!(GetKeyState(VK_SPACE) & 0x8000))
     {
         test.processEvents();
         glClearColor(0.1, 0.1, 0.1, 1.0f);
@@ -91,6 +103,10 @@ int main(int argc, char** argv)
 
         rd.swapBuffers();
     }
+
+
+    ResMgr::get().terminate();
+
 
 }
 

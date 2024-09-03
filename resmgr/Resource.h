@@ -29,11 +29,10 @@ public:
 
 
     RID getResourceID() const { return m_rid; }
-    virtual ~Resource();
+    virtual ~Resource() {};
 private:
 
     RID m_rid{};
-    byte* m_data;
 };
 
 } // radium

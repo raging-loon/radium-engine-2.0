@@ -6,6 +6,7 @@ if(API_OPENGL)
         "renderer/opengl/oglDevice.cpp"
         "renderer/opengl/oglDebug.cpp"
         "renderer/opengl/oglBuffer.cpp"
+        "renderer/opengl/oglTexture.cpp"
         "renderer/opengl/oglBufferFactory.cpp"
         "renderer/opengl/shader/oglShader.cpp"
         "renderer/opengl/shader/oglShaderFactory.cpp"

@@ -13,17 +13,18 @@ public:
 
     RsStatus load(const byte* data, U32 size) override;
     
-    I32 getHeight() const { return m_height; }
-    I32 getWidth() const { return m_width;  }
-    I32 getNumChannels() const { return m_channelCount;  }
+    U32 getHeight() const { return m_height; }
+    U32 getWidth() const { return m_width;  }
+    U32 getNumChannels() const { return m_channelCount;  }
 
+    const byte* getImageData() const { return m_imageData; }
 
+    ~Image() override;
 private:
-    const byte* m_imageData;
-    
-    I32 m_height;
-    I32 m_width;
-    I32 m_channelCount;
+    byte* m_imageData;
+    U32 m_height;
+    U32 m_width;
+    U32 m_channelCount;
 
 };
 

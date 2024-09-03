@@ -9,6 +9,9 @@
 #include <renderer/interface/ShaderProgram.h>
 #include <renderer/opengl/oglBufferFactory.h>
 #include <core/rtl/smart_ptr.h>
+#include <renderer/interface/Texture.h>
+#include <renderer/opengl/oglTexture.h>
+
 namespace radium
 {
 
@@ -72,6 +75,7 @@ public:
 
 	rtl::shared_ptr<Buffer> createBuffer(BufferDescription& bd);
 	Shader* createShader(ShaderDescription& sd);
+	Texture* createTexture(TextureDescription& td);
 private:
 	/// platform specific initialization
 	Status _platform_init();

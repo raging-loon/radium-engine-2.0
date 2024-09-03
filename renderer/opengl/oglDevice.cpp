@@ -75,3 +75,42 @@ Shader* oglDevice::createShader(ShaderDescription& sd)
     return new Shader(spid);
 }
 
+Texture* oglDevice::createTexture(TextureDescription& td)
+{
+    if (!td.data) return nullptr;
+    GLuint texid;
+    glGenTextures(1, &texid);
+
+    glBindTexture(GL_TEXTURE_2D, texid);
+
+    GLint samplestate;
+    switch (td.sampleState)
+    {
+        case TEXTURE_SAMPLER_REPEAT:
+            samplestate = GL_REPEAT;
+            break;
+        case TEXTURE_SAMPLER_CLAMP:
+            samplestate = GL_CLAMP;
+            break;
+        case TEXTURE_SAMPLER_MIRROR:
+            samplestate = GL_MIRRORED_REPEAT;
+            break;
+        default:
+            ENGINE_ERROR("Invalid Texture Sample State passed to oglDevice::createTexture: 0x%0x", td.sampleState);
+            glDeleteTextures(1, &texid);
+            return nullptr;
+    }
+
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, samplestate);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_R, samplestate);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, td.width, td.height, 0, GL_RGB, GL_UNSIGNED_BYTE, td.data);
+
+    // todo: config for this: glGenerateMipMap
+
+    return new oglTexture(texid);
+
+}
+

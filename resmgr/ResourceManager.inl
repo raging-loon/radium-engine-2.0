@@ -27,7 +27,6 @@ rtl::shared_ptr<T> radium::ResourceManager::loadResource(const rtl::string & str
         return rtl::shared_ptr<T>();
     }
 
-    resPtr->m_data = resData;
     resPtr->m_rid = id;
     m_ridPtrMap.insert({ id, resPtr });
     return resPtr;

@@ -16,7 +16,7 @@ Image::Image()
 RsStatus Image::load(const byte* data, U32 size)
 {
 
-    m_imageData = stbi_load_from_memory(data, (int)size, &m_height, &m_width, &m_channelCount, 0);
+    m_imageData = stbi_load_from_memory(data, (int)size, (I32*)&m_height, (I32*)&m_width, (I32*)&m_channelCount, 0);
 
     if (!m_imageData)
     {
@@ -25,4 +25,10 @@ RsStatus Image::load(const byte* data, U32 size)
     }
 
     return RES_OK;
+}
+
+Image::~Image()
+{
+    if (m_imageData)
+        stbi_image_free(m_imageData);
 }
