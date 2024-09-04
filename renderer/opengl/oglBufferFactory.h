@@ -15,10 +15,8 @@ public:
     oglBufferFactory();
     rtl::shared_ptr<oglBuffer> createBuffer(BufferDescription& desc);
     void init();
-    GLuint m_vao;
 private:
 
-    void bindLayout();
 
     /// vertex array object for vertex buffers
     

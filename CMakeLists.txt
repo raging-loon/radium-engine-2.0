@@ -74,7 +74,7 @@ add_executable(radium-engine
 ##########################
 
 target_include_directories(radium-engine PUBLIC 
-    "./" 
+    ${CMAKE_SOURCE_DIR}
     "./thirdparty/glm-1.0.1/" 
     "./thirdparty/stb_image/" 
     ${ADDITIONAL_INCLUDES})

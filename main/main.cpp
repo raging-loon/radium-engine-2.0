@@ -41,6 +41,13 @@ int main(int argc, char** argv)
         -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f
     };
 
+    float testVertices2[] =
+    {
+        -0.5f,  0.1f, 0.0f, 0.0f, 0.0f, 0.0f,
+         0.5f,  0.2f, 0.0f, 0.0f, 1.0f, 0.0f,
+         0.5f, -0.3f, 0.0f, 1.0f, 0.0f, 1.0f,
+        -0.5f, -0.4f, 0.0f, 0.0f, 0.0f, 1.0f
+    };
     int testIndices[] =
     {
         0,1,2,
@@ -65,11 +72,19 @@ int main(int argc, char** argv)
         .data = testIndices
     };
 
+    Layout _2d_layout[2] = {
+            {3, 0, sizeof(Vertex)},
+            {3, offsetof(Vertex, texCoord), sizeof(Vertex)},
+    };
+
+
     ShaderDescription sd =
     {
         .vtxEntryPoint = "VS",
         .psEntryPoint = "PS",
-        .sourceFile = "../renderer/common/default.glsl",
+        .sourceFile = "../game/shaders/default.glsl",
+        .shaderInputLayout = _2d_layout,
+        .numLayouts = 2,
         .shaderFlags = sd.SHADER_IN_FILE,
     };
 
@@ -81,25 +96,31 @@ int main(int argc, char** argv)
 
     };
 
-    auto* shader = rd.createShader(sd);
     auto* tex = rd.createTexture(td);
     auto vbuf = rd.createBuffer(b);
     auto ibuf = rd.createBuffer(b2);
-
-    
+    vbuf->bind();
+    auto* shader = rd.createShader(sd);
+    shader->bind();
+    b.data = testVertices2;
+    auto vbuf2 = rd.createBuffer(b);
+    auto ibuf2 = rd.createBuffer(b2);
 
     while (!(GetKeyState(VK_SPACE) & 0x8000))
     {
         test.processEvents();
         glClearColor(0.1, 0.1, 0.1, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        rd.bindVertexArray();
-        vbuf->bind();
+    /*    vbuf->bind();
         ibuf->bind();
+
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);*/
+
+        vbuf2->bind();
+        ibuf2->bind();
         shader->bind();
 
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
-
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void*)(6 * sizeof(int)));
 
         rd.swapBuffers();
     }

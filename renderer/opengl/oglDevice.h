@@ -66,8 +66,6 @@ public:
 
 	void swapBuffers();
 
-	void bindVertexArray() { glBindVertexArray(m_bufferFactory.m_vao); }
-
 public:
 	/// 
 	/// API OBJECT CREATORS

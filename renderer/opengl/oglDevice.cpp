@@ -69,10 +69,10 @@ rtl::shared_ptr<Buffer> oglDevice::createBuffer(BufferDescription& bd)
 Shader* oglDevice::createShader(ShaderDescription& sd)
 {
     oglShaderFactory osf;
-    GLuint spid = osf.createShaderProgram(sd);
-    if (spid == GL_INVALID_VALUE)
+    auto shaderCreateData = osf.createShaderProgram(sd);
+    if (shaderCreateData.first == GL_INVALID_VALUE || shaderCreateData.second == GL_INVALID_VALUE)
         return nullptr;
-    return new Shader(spid);
+    return new Shader(shaderCreateData.first, shaderCreateData.second);
 }
 
 Texture* oglDevice::createTexture(TextureDescription& td)

@@ -2,6 +2,7 @@
 #define RENDERER_INTERFACE_SHADER_PROGRAM_H_
 
 #include <core/types.h>
+#include <renderer/common/Layout.h>
 namespace radium
 {
 
@@ -24,7 +25,8 @@ struct ShaderDescription
     
     const char* sourceFile      {nullptr};
 
-    VertexDescription* layout;
+    Layout* shaderInputLayout;
+    U32 numLayouts;
 
     U16 shaderFlags             { 0 };
 

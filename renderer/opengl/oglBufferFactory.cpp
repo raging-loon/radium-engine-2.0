@@ -10,7 +10,7 @@ static GLenum descType2GLenum[3] =
     GL_UNIFORM_BUFFER, // BUFFER_TYPE_UNIFORM/CONSTANT
 };
 
-oglBufferFactory::oglBufferFactory() : m_vao(-1), layoutSet(false)
+oglBufferFactory::oglBufferFactory()
 {
  
 }
@@ -24,9 +24,6 @@ rtl::shared_ptr<oglBuffer> oglBufferFactory::createBuffer(BufferDescription& des
 
     glGenBuffers(1, &id);
     glBindBuffer(target, id);
-    
-    if (!layoutSet)
-        bindLayout();
 
     if (target == GL_UNIFORM_BUFFER)
     {
@@ -48,20 +45,5 @@ rtl::shared_ptr<oglBuffer> oglBufferFactory::createBuffer(BufferDescription& des
 
 void oglBufferFactory::init()
 {
-    glGenVertexArrays(1, &m_vao);
-    glBindVertexArray(m_vao);
-    layoutSet = false;
-    glBindVertexArray(0);
 }
 
-void oglBufferFactory::bindLayout()
-{
-    glBindVertexArray(m_vao);
-    auto* v = DEFAULT_2D_VERTEX_DESC;
-    for (U32 i = 0; i < 2; i++)
-    {
-        glVertexAttribPointer(i, v[i].size, GL_FLOAT, GL_FALSE, v[i].stride, (void*)(v[i].offset));
-        glEnableVertexAttribArray(i);
-    }
-    layoutSet = true;
-}

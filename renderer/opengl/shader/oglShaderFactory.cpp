@@ -4,18 +4,20 @@
 #include <core/io/file.h>
 #include <core/debug/globlog.h>
 #include <core/system/profiler.h>
+#include <core/rtl/utility.h>
 using radium::Status;
 using radium::ShaderDescription;
 using radium::oglShaderFactory;
+using radium::ShaderID_VAO_Pair;
 
-GLuint oglShaderFactory::createShaderProgram(ShaderDescription& sd)
+ShaderID_VAO_Pair oglShaderFactory::createShaderProgram(ShaderDescription& sd)
 {
     if ((sd.shaderFlags & sd.SHADER_IN_FILE) == sd.SHADER_IN_FILE)
         return compileShaderFromFile(sd);
 }
 
 
-GLuint oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
+ShaderID_VAO_Pair oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
 {
     PROFILED_FUNCTION("Compile Shader From File");
     rtl::string source;
@@ -27,7 +29,7 @@ GLuint oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
     if (readStat != OK)
     {
         ENGINE_ERROR("Failed to open source file at %s", sd.sourceFile);
-        return GL_INVALID_VALUE;
+        return { GL_INVALID_VALUE, GL_INVALID_VALUE };
     }
 
     vertexSource = m_preprocessor.extractSection(sd.vtxEntryPoint);
@@ -36,14 +38,17 @@ GLuint oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
     if (vertexSource.length() == 0)
     {
         ENGINE_ERROR("Failed to find section \"%s\" in shader source '%s'.", sd.vtxEntryPoint, sd.sourceFile);
-        return GL_INVALID_VALUE;
+        return { GL_INVALID_VALUE, GL_INVALID_VALUE };
     }
 
     if (pixelSource.length() == 0)
     {
         ENGINE_ERROR("Failed to find section \"%s\" in shader source '%s'.", sd.psEntryPoint, sd.sourceFile);
-        return GL_INVALID_VALUE;
+        return { GL_INVALID_VALUE, GL_INVALID_VALUE };
     }
+
+    GLuint VAO = createVAOfromLayout(sd.shaderInputLayout, sd.numLayouts);
+
 
     GLuint vs = createShader(vertexSource, nullptr, vertexSource.length(), GL_VERTEX_SHADER);
     GLuint ps = createShader(pixelSource, nullptr, pixelSource.length(), GL_FRAGMENT_SHADER);
@@ -51,16 +56,15 @@ GLuint oglShaderFactory::compileShaderFromFile(ShaderDescription& sd)
     if (ps == GL_INVALID_VALUE)
     {
         ENGINE_ERROR("Failed to compile shader section %s in file %s", sd.psEntryPoint, sd.sourceFile);
-        return GL_INVALID_VALUE;
+        return { GL_INVALID_VALUE, GL_INVALID_VALUE };
     }
 
     if (vs == GL_INVALID_VALUE)
     {
         ENGINE_ERROR("Failed to compile shader section %s in file %s", sd.vtxEntryPoint, sd.sourceFile);
-        return GL_INVALID_VALUE;
+        return { GL_INVALID_VALUE, GL_INVALID_VALUE };
     }
-
-    return linkShader(vs, ps);
+    return { linkShader(vs, ps), VAO};
 }
 
 Status oglShaderFactory::openShaderSource(const char* filename, rtl::string& out)
@@ -171,4 +175,23 @@ GLuint oglShaderFactory::linkShader(GLuint vs, GLuint ps)
     }
 
     return shaderProgramID;
+}
+
+GLuint radium::oglShaderFactory::createVAOfromLayout(Layout* layout, U32 size)
+{
+    assert(layout && size > 0);
+    GLuint VAO;
+    glGenVertexArrays(1, &VAO);
+    glBindVertexArray(VAO);
+
+    for (U32 i = 0; i < size; i++)
+    {
+        glBindVertexArray(VAO);
+        glVertexAttribPointer(i, layout[i].size, GL_FLOAT, GL_FALSE, layout[i].stride, (void*)(layout[i].offset));
+        glEnableVertexAttribArray(i);
+    }
+   
+    glBindVertexArray(0);
+
+    return VAO;
 }

@@ -2,6 +2,7 @@
 #define RENDERER_OPENGL_SHADER_OGL_SHADER_H_
 
 #include <core/types.h>
+#include <GL/glew.h>
 
 namespace radium
 {
@@ -13,7 +14,7 @@ namespace radium
 class oglShader
 {
 public:
-    oglShader(U32 shaderID) : m_shaderID(shaderID) {}
+    oglShader(U32 shaderID, GLuint vao) : m_shaderID(shaderID), m_vao(vao) {}
 
     void bind();
     void unbind();
@@ -21,6 +22,7 @@ public:
 
 private:
     U32 m_shaderID;
+    GLuint m_vao;
 };
 
 } // radium

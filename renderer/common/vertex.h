@@ -11,7 +11,7 @@ namespace radium
 struct Vertex
 {
     glm::vec3 position;
-    glm::vec3 color;
+    glm::vec3 texCoord;
 };
 
 
@@ -22,11 +22,6 @@ struct VertexDescription
     U32 stride;
 };
 
-static const VertexDescription DEFAULT_2D_VERTEX_DESC[2] =
-{
-    {3, 0, sizeof(Vertex)},
-    {3, offsetof(Vertex, color), sizeof(Vertex)},
-};
 
 
 } // radium

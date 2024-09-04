@@ -6,8 +6,11 @@
 #include <renderer/interface/ShaderProgram.h>
 #include <core/rtl/string.h>
 #include <GL/glew.h>
+#include <core/rtl/utility.h>
 namespace radium
 {
+
+using ShaderID_VAO_Pair = rtl::pair<U32, GLuint>;
 
 class oglShaderFactory
 {
@@ -19,12 +22,12 @@ public:
     /// 
     /// @returns
     ///     -1 on failure
-    GLuint createShaderProgram(ShaderDescription& sd);
+    ShaderID_VAO_Pair createShaderProgram(ShaderDescription& sd);
 
 
-    GLuint compileShaderFromFile(ShaderDescription& sd);
+    ShaderID_VAO_Pair compileShaderFromFile(ShaderDescription& sd);
 
-    GLuint compileShaderFromMemory(ShaderDescription& sd);
+    //GLuint compileShaderFromMemory(ShaderDescription& sd);
 private:
 
     ///
@@ -49,6 +52,9 @@ private:
     bool checkLinkageError(GLuint program);
 
     GLuint linkShader(GLuint vs, GLuint ps);
+
+    GLuint createVAOfromLayout(Layout* layout, U32 size);
+
 private:
     /// preprocesses shader sources
     oglShaderPreprocessor m_preprocessor;
